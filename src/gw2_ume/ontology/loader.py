@@ -18,12 +18,30 @@ from gw2_ume.ontology.schema import (
     Restriction,
 )
 
+# Official Priory Namespaces
+from gw2_ume.ontology.namespaces import (
+    DEFAULT_PRIORY_PREFIXES,
+    PRIORY,
+    PRIORY_REF,
+    ITEM,
+    RECIPE,
+    RARITY,
+    WEAPON,
+    DISCIPLINE,
+    CURRENCY,
+    ARMOR,
+    SLOT,
+    ITEMTYPE,
+    GAMEMODE,
+)
+
 # Standard and GW2 Namespaces
 GW2 = Namespace("https://schema.gw2ume.org/core#")
 GW2LEG = Namespace("https://schema.gw2ume.org/legendary#")
 SCHEMA = Namespace("http://schema.org/")
 
 DEFAULT_PREFIXES = {
+    **DEFAULT_PRIORY_PREFIXES,
     "gw2": GW2,
     "gw2leg": GW2LEG,
     "schema": SCHEMA,
@@ -82,7 +100,30 @@ class OntologyLoader:
         return Path("ontologies").resolve()
 
     def load_defaults(self) -> OntologyLoader:
-        """Loads both gw2_core.ttl and gw2_legendary.ttl from the ontologies directory."""
+        """Loads both local ontologies and master Priory ontologies from gw2-priory-def and gw2-priory-ref if present."""
+        # 1. Check for sibling master Priory repositories
+        workspace_parent = Path.cwd().parent
+        priory_def_dir = workspace_parent / "gw2-priory-def" / "ontology"
+        priory_ref_dir = workspace_parent / "gw2-priory-ref" / "vocab"
+
+        loaded_priory = False
+        if priory_def_dir.exists() and priory_def_dir.is_dir():
+            for ttl in priory_def_dir.rglob("*.ttl"):
+                try:
+                    self.load_file(ttl)
+                    loaded_priory = True
+                except Exception:
+                    pass
+
+        if priory_ref_dir.exists() and priory_ref_dir.is_dir():
+            for ttl in priory_ref_dir.rglob("*.ttl"):
+                try:
+                    self.load_file(ttl)
+                    loaded_priory = True
+                except Exception:
+                    pass
+
+        # 2. Also load local base ontologies
         ont_dir = self.default_ontologies_path()
         core_file = ont_dir / "gw2_core.ttl"
         leg_file = ont_dir / "gw2_legendary.ttl"
