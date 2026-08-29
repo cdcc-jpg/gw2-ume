@@ -199,11 +199,10 @@ class HeuristicNormalizer(LLMNormalizer):
                         adjustments.append(f"Corrected column {col.column_index} ('{col.column_name}') from {old_type} to CraftingMaterial (role: ingredient)")
 
             # Handle intermediate gift vs final weapon output conflict
-            if "intermediate gift" in conflict.message.lower() or "slot mismatch" in conflict.conflict_type.lower():
+            if "intermediate" in conflict.message.lower() or "slot mismatch" in conflict.conflict_type.lower() or conflict.conflict_type == "SLOT_MISMATCH":
                 if conflict.offending_value:
                     offending = str(conflict.offending_value)
-                    if offending in KNOWN_ENTITY_TYPES and KNOWN_ENTITY_TYPES[offending] == "LegendaryGift":
-                        adjustments.append(f"Reclassified '{offending}' from table output subject to ingredient component.")
+                    adjustments.append(f"Reclassified '{offending}' from table output subject to ingredient component.")
 
             # Handle table type reclassification
             if "table type" in conflict.message.lower():

@@ -331,9 +331,11 @@ class TestOntologyIndexBuilder(unittest.TestCase):
 
         # Use fallback embedder for deterministic speed in test
         cls.embedder = LightweightFallbackEmbedder(dimension=128)
-        cls.builder = OntologyIndexBuilder(
-            graph=cls.graph,
-            embedder=cls.embedder,
+
+    def setUp(self):
+        self.builder = OntologyIndexBuilder(
+            graph=self.graph,
+            embedder=self.embedder,
             auto_build=True,
         )
 

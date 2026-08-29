@@ -6,9 +6,13 @@ Combines neural proposal generation (LLM/normalizer) with axiomatic symbolic val
 
 from __future__ import annotations
 
+from collections import deque
 import logging
 import re
 from typing import Any, Dict, List, Optional, Set, Tuple
+
+import rdflib
+from rdflib import URIRef
 
 from gw2_ume.models import (
     CandidateTableInterpretation,
@@ -24,7 +28,16 @@ from gw2_ume.models import (
 )
 from gw2_ume.ontology.loader import OntologyLoader
 from gw2_ume.ontology.reasoner import SymbolicAxiomReasoner as OntologySymbolicAxiomReasoner
-from gw2_ume.normalization.llm_normalizer import HeuristicNormalizer, LLMNormalizer
+from gw2_ume.ontology.vocab import (
+    PROP_HAS_PRECURSOR,
+    PROP_OUTPUT_ITEM,
+    PROP_PRECURSOR_TO,
+    PROP_PRODUCES_ITEM,
+    PROP_REQUIRES_INGREDIENT,
+    PROP_REQUIRES_MATERIAL,
+    PROP_UPGRADES_TO,
+)
+from gw2_ume.normalization.llm_normalizer import HeuristicNormalizer, LLMNormalizer, get_normalizer
 from gw2_ume.normalization.text_cleaner import KNOWN_ENTITY_TYPES, TextCleaner
 
 logger = logging.getLogger(__name__)
@@ -216,38 +229,128 @@ class SymbolicAxiomReasoner:
 
         return conflicts
 
+    def _is_intermediate_component_of(
+        self,
+        subject_name: str,
+        target_name: str,
+        max_depth: int = 4,
+    ) -> bool:
+        """Check dynamically via the ontology graph if subject_name is a sub-component or ingredient of target_name."""
+        if not subject_name or not target_name or subject_name.lower().strip() == target_name.lower().strip():
+            return False
+
+        graph = self.ontology_reasoner.graph
+
+        # Resolve subject IRIs
+        subj_iris: Set[URIRef] = set()
+        for ind in self.loader.find_individuals_by_label(subject_name, exact=False):
+            subj_iris.add(URIRef(ind.iri))
+        resolved_subj = self.loader.resolve_iri(subject_name)
+        if isinstance(resolved_subj, URIRef):
+            subj_iris.add(resolved_subj)
+
+        # Resolve target IRIs
+        target_iris: Set[URIRef] = set()
+        for ind in self.loader.find_individuals_by_label(target_name, exact=False):
+            target_iris.add(URIRef(ind.iri))
+        resolved_target = self.loader.resolve_iri(target_name)
+        if isinstance(resolved_target, URIRef):
+            target_iris.add(resolved_target)
+
+        if not subj_iris or not target_iris:
+            return False
+
+        ingredient_preds = {
+            PROP_REQUIRES_INGREDIENT,
+            PROP_REQUIRES_MATERIAL,
+            PROP_HAS_PRECURSOR,
+            PROP_PRECURSOR_TO,
+            PROP_UPGRADES_TO,
+            URIRef("https://schema.gw2ume.org/legendary#hasMysticForgeIngredient"),
+            URIRef("https://schema.gw2ume.org/core#hasMysticForgeIngredient"),
+            URIRef("https://schema.gw2ume.org/legendary#requiresMaterial"),
+            URIRef("https://schema.gw2ume.org/core#requiresMaterial"),
+            URIRef("https://priory.gw2/def/requiresIngredient"),
+            URIRef("https://priory.gw2/def/hasPrecursor"),
+            URIRef("https://priory.gw2/def/upgradesTo"),
+        }
+
+        output_preds = {
+            PROP_OUTPUT_ITEM,
+            PROP_PRODUCES_ITEM,
+            URIRef("https://schema.gw2ume.org/core#producesItem"),
+            URIRef("https://schema.gw2ume.org/legendary#producesItem"),
+            URIRef("https://priory.gw2/def/producesItem"),
+        }
+
+        for target_uri in target_iris:
+            queue: deque[Tuple[URIRef, int]] = deque([(target_uri, 0)])
+            visited: Set[URIRef] = {target_uri}
+
+            while queue:
+                current_node, depth = queue.popleft()
+                if depth >= max_depth:
+                    continue
+
+                # 1. Direct ingredient links
+                for pred, obj in graph.predicate_objects(current_node):
+                    if pred in ingredient_preds and isinstance(obj, URIRef):
+                        if obj in subj_iris:
+                            return True
+                        if obj not in visited:
+                            visited.add(obj)
+                            queue.append((obj, depth + 1))
+
+                # 2. Recipe nodes producing current_node
+                for out_pred in output_preds:
+                    for recipe_node in graph.subjects(out_pred, current_node):
+                        if isinstance(recipe_node, URIRef):
+                            for pred, ing in graph.predicate_objects(recipe_node):
+                                if pred in ingredient_preds and isinstance(ing, URIRef):
+                                    if ing in subj_iris:
+                                        return True
+                                    if ing not in visited:
+                                        visited.add(ing)
+                                        queue.append((ing, depth + 1))
+
+        return False
+
     def _check_intermediate_gift_semantics(
         self,
         proposal: CandidateTableInterpretation,
     ) -> List[DiagnosticConflict]:
-        """Verify that intermediate Gifts (e.g. Gift of Energy, Gift of Wood) are not mistakenly
+        """Verify dynamically via ontology graph that an intermediate component or gift
 
-        classified as final weapon rewards if the overarching recipe is for a legendary weapon like Nevermore.
+        is not mistakenly classified as the table subject when the table mentions a parent entity/recipe output.
         """
         conflicts: List[DiagnosticConflict] = []
 
-        # Check if subject is an intermediate gift when overarching table is a weapon recipe
-        if proposal.subject_entity:
-            subj_type = KNOWN_ENTITY_TYPES.get(proposal.subject_entity)
-            if subj_type == "LegendaryGift":
-                # Check if table mentions weapon ingredients or legendary goals
-                mentions = [m.normalized_text for m in proposal.cell_mentions]
-                if any("Spiritwood Plank" in m or "Deldrimor Steel Ingot" in m for m in mentions):
-                    # Check if Gift of Energy is matching Nevermore
-                    if proposal.subject_entity == "Gift of Energy" and any("Nevermore" in m for m in mentions):
-                        conflicts.append(
-                            DiagnosticConflict(
-                                conflict_type="SLOT_MISMATCH",
-                                severity="WARNING",
-                                message=(
-                                    f"'{proposal.subject_entity}' is an intermediate LegendaryGift, but is used as the table subject. "
-                                    f"In Nevermore crafting, Gift of Energy is an input slot to Gift of Nevermore."
-                                ),
-                                offending_value=proposal.subject_entity,
-                                suggested_fix="Set subject to Gift of Nevermore or Nevermore, and treat Gift of Energy as intermediate ingredient.",
-                                rule_or_axiom="subComponentOf(Gift of Energy, Gift of Nevermore)",
-                            )
-                        )
+        if not proposal.subject_entity:
+            return conflicts
+
+        subj_name = proposal.subject_entity
+        mentions = [
+            m.normalized_text
+            for m in proposal.cell_mentions
+            if m.normalized_text and m.normalized_text.lower().strip() != subj_name.lower().strip()
+        ]
+
+        for mention_text in set(mentions):
+            if self._is_intermediate_component_of(subj_name, mention_text):
+                conflicts.append(
+                    DiagnosticConflict(
+                        conflict_type="SLOT_MISMATCH",
+                        severity="WARNING",
+                        message=(
+                            f"'{subj_name}' is an intermediate component/gift, but is used as the table subject. "
+                            f"In '{mention_text}' crafting, '{subj_name}' is an intermediate ingredient."
+                        ),
+                        offending_value=subj_name,
+                        suggested_fix=f"Set subject to {mention_text}, and treat '{subj_name}' as intermediate ingredient.",
+                        rule_or_axiom=f"subComponentOf({subj_name}, {mention_text})",
+                    )
+                )
+                break
 
         return conflicts
 
@@ -292,7 +395,7 @@ class NeuroSymbolicPingPongEngine:
         normalizer: Optional[LLMNormalizer] = None,
         reasoner: Optional[SymbolicAxiomReasoner] = None,
     ) -> None:
-        self.normalizer: LLMNormalizer = normalizer or HeuristicNormalizer()
+        self.normalizer: LLMNormalizer = normalizer if normalizer is not None else get_normalizer("auto")
         self.reasoner: SymbolicAxiomReasoner = reasoner or SymbolicAxiomReasoner()
 
     def run(

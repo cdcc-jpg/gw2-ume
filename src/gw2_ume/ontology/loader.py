@@ -163,10 +163,55 @@ class OntologyLoader:
             self._graph.add((rar_uri, RDF.type, OWL.NamedIndividual))
             self._graph.add((rar_uri, RDFS.label, Literal(rar_key.capitalize(), datatype=XSD.string)))
 
+        weapon_discipline_map = {
+            "staff": DISCIPLINE.artificer,
+            "scepter": DISCIPLINE.artificer,
+            "focus": DISCIPLINE.artificer,
+            "sword": DISCIPLINE.weaponsmith,
+            "greatsword": DISCIPLINE.weaponsmith,
+            "axe": DISCIPLINE.weaponsmith,
+            "dagger": DISCIPLINE.weaponsmith,
+            "hammer": DISCIPLINE.weaponsmith,
+            "mace": DISCIPLINE.weaponsmith,
+            "shield": DISCIPLINE.weaponsmith,
+            "pistol": DISCIPLINE.huntsman,
+            "rifle": DISCIPLINE.huntsman,
+            "short_bow": DISCIPLINE.huntsman,
+            "longbow": DISCIPLINE.huntsman,
+            "torch": DISCIPLINE.huntsman,
+            "warhorn": DISCIPLINE.huntsman,
+        }
+
         for wpn_key, wpn_uri in CONTROLLED_WEAPONS.items():
             self._graph.add((wpn_uri, RDF.type, CLASS_WEAPON))
             self._graph.add((wpn_uri, RDF.type, OWL.NamedIndividual))
             self._graph.add((wpn_uri, RDFS.label, Literal(wpn_key.replace("_", " ").title(), datatype=XSD.string)))
+            disc_target = weapon_discipline_map.get(wpn_key)
+            if disc_target:
+                from gw2_ume.ontology.vocab import PROP_CRAFTED_BY_DISCIPLINE
+                self._graph.add((wpn_uri, PROP_CRAFTED_BY_DISCIPLINE, disc_target))
+
+        from gw2_ume.ontology.schema import ENTITY_CATALOG
+        from gw2_ume.ontology.vocab import (
+            CLASS_ITEM,
+            PROP_CRAFTED_BY_DISCIPLINE,
+            PROP_IS_PRECURSOR_OF,
+            PROP_HAS_PRECURSOR,
+            PROP_UPGRADES_TO,
+            PROP_REQUIRES_INGREDIENT,
+        )
+
+        for item_key, item_data in ENTITY_CATALOG.items():
+            item_uri = URIRef(str(item_data["uri"]))
+            item_type = URIRef(str(item_data.get("type", CLASS_ITEM)))
+            self._graph.add((item_uri, RDF.type, item_type))
+            self._graph.add((item_uri, RDF.type, OWL.NamedIndividual))
+            self._graph.add((item_uri, RDFS.label, Literal(item_data["label"], datatype=XSD.string)))
+            if "discipline" in item_data:
+                disc_name = item_data["discipline"].lower().replace(" ", "_")
+                disc_uri = CONTROLLED_DISCIPLINES.get(disc_name)
+                if disc_uri:
+                    self._graph.add((item_uri, PROP_CRAFTED_BY_DISCIPLINE, disc_uri))
 
         return self
 

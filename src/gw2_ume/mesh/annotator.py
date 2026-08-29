@@ -109,8 +109,8 @@ def match_cell_entity(
         return None
 
     is_discipline_col = any(w in header_norm for w in ["discipline", "craft", "prof"])
-    is_vendor_col = any(w in header_norm for w in ["vendor", "source", "npc", "who"])
-    is_zone_col = any(w in header_norm for w in ["zone", "loc", "place", "where"])
+    is_zone_col = any(w in header_norm for w in ["zone", "loc", "place", "where", "zn"])
+    is_vendor_col = any(w in header_norm for w in ["vendor", "source", "npc", "who"]) and not any(w in header_norm for w in ["zone", "zn"])
     is_step_col = any(w in header_norm for w in ["step", "journey"])
     is_tier_col = any(w in header_norm for w in ["tier"])
     is_precursor_col = any(w in header_norm for w in ["precursor", "weapon", "thing", "output"])
@@ -207,7 +207,7 @@ def annotate_table(
             type_uri = str(CLASS_DISCIPLINE_RATING)
             type_label = "DisciplineRating"
             confidence = 0.95
-        elif any(w in h_norm for w in ["zone", "loc", "place", "where"]):
+        elif any(w in h_norm for w in ["zone", "loc", "place", "where", "zn"]):
             type_uri = str(CLASS_ZONE)
             type_label = "Zone"
             confidence = 0.95

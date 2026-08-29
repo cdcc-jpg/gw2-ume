@@ -893,5 +893,46 @@ class SymbolicAxiomReasoner:
 
         return chain
 
+    def get_crafting_discipline(self, item_iri: Union[str, URIRef]) -> Optional[URIRef]:
+        """Returns the crafting discipline associated with an item or weapon type."""
+        iri = self.loader.resolve_iri(item_iri)
+        if not isinstance(iri, URIRef):
+            return None
+
+        disc_props = [
+            self.loader.resolve_iri("priory:craftedByDiscipline"),
+            self.loader.resolve_iri("gw2:hasDiscipline"),
+            self.loader.resolve_iri("gw2:craftedByDiscipline"),
+        ]
+        for prop in disc_props:
+            for obj in self.graph.objects(iri, prop):
+                if isinstance(obj, URIRef):
+                    return obj
+
+        return None
+
+    def is_discipline_compatible(self, item_iri: Union[str, URIRef], discipline_iri: Union[str, URIRef]) -> bool:
+        """Checks if an item or weapon type is compatible with a proposed crafting discipline."""
+        i_uri = self.loader.resolve_iri(item_iri)
+        d_uri = self.loader.resolve_iri(discipline_iri)
+        if not isinstance(i_uri, URIRef) or not isinstance(d_uri, URIRef):
+            return True
+
+        disc_props = [
+            self.loader.resolve_iri("priory:craftedByDiscipline"),
+            self.loader.resolve_iri("gw2:hasDiscipline"),
+            self.loader.resolve_iri("gw2:craftedByDiscipline"),
+        ]
+        expected_discs: Set[URIRef] = set()
+        for prop in disc_props:
+            for obj in self.graph.objects(i_uri, prop):
+                if isinstance(obj, URIRef):
+                    expected_discs.add(obj)
+
+        if not expected_discs:
+            return True
+
+        return d_uri in expected_discs
+
 
 __all__ = ["SymbolicAxiomReasoner"]

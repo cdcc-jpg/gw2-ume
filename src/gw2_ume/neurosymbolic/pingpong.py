@@ -22,6 +22,7 @@ from gw2_ume.ontology.vocab import (
     PROP_OBTAINED_FROM_VENDOR,
     PROP_LOCATED_IN_ZONE,
     PROP_FORGE_SLOT,
+    CONTROLLED_DISCIPLINES,
 )
 from gw2_ume.ontology.schema import ENTITY_CATALOG, build_gw2_ontology_graph
 from gw2_ume.ontology.loader import OntologyLoader
@@ -36,6 +37,13 @@ from gw2_ume.matching.mesh_solver import RelationalMeshSolver
 from gw2_ume.mesh.models import RelationalMesh, MeshNode, MeshEdge
 from gw2_ume.mesh.annotator import parse_table_content, normalize_text, match_cell_entity, annotate_table
 from gw2_ume.mesh.relational_mesh import build_relational_mesh
+from gw2_ume.models import (
+    CandidateTableInterpretation,
+    CellMention,
+    DiagnosticConflict,
+    TableColumnInterpretation,
+)
+from gw2_ume.normalization.llm_normalizer import LLMNormalizer, get_normalizer
 
 
 @dataclass
@@ -92,6 +100,7 @@ class NeuroSymbolicPingPongEngine:
         self,
         reasoner: Optional[SymbolicAxiomReasoner] = None,
         vector_index: Optional[VectorIndex] = None,
+        normalizer: Optional[LLMNormalizer] = None,
     ):
         self.ontology_graph = build_gw2_ontology_graph()
         self.loader = OntologyLoader(graph=self.ontology_graph)
@@ -107,6 +116,7 @@ class NeuroSymbolicPingPongEngine:
         self.cta = ColumnTypeAnnotator(reasoner=self.reasoner, vector_index=self.vector_index)
         self.cpa = ColumnPropertyAnnotator(reasoner=self.reasoner, vector_index=self.vector_index)
         self.solver = RelationalMeshSolver(reasoner=self.reasoner)
+        self.normalizer = normalizer or get_normalizer("auto")
 
     def _populate_vector_index(self) -> None:
         """Populates the vector index with classes, properties, and entities from the ontology."""
@@ -238,21 +248,41 @@ class NeuroSymbolicPingPongEngine:
                         "repair_cue": "Map to PrecursorWeapon entity class and resolve canonical precursor URI.",
                     })
 
-        # 2. OWL Axiom Reasoning: Domain-specific discipline consistency (e.g. Staff precursors require Artificer)
+        # 2. OWL Axiom Reasoning: Domain-specific discipline consistency checked dynamically via SymbolicAxiomReasoner
         disc_col_idx = next((i for i, h in enumerate(headers) if any(w in h.lower() for w in ["discipline", "craft", "prof"])), None)
         item_col_idx = next((i for i, h in enumerate(headers) if any(w in h.lower() for w in ["precursor", "weapon", "step", "item"])), None)
         if disc_col_idx is not None and item_col_idx is not None:
-            for row in rows:
+            for r_idx, row in enumerate(rows):
                 if item_col_idx < len(row) and disc_col_idx < len(row):
                     item_val = row[item_col_idx]
                     disc_val = row[disc_col_idx]
-                    if any(w in item_val.lower() for w in ["staff", "branch", "raven spirit", "living ravens"]):
-                        if disc_val.lower() in ["weaponsmith", "leatherworker", "tailor", "armorsmith"]:
+                    if not item_val.strip() or not disc_val.strip():
+                        continue
+
+                    # Lookup candidate URI for item and discipline
+                    item_prop = next((p for p in initial_proposals if p["row"] == r_idx and p["col"] == item_col_idx), None)
+                    item_uri = item_prop["proposed_uri"] if item_prop else None
+
+                    disc_prop = next((p for p in initial_proposals if p["row"] == r_idx and p["col"] == disc_col_idx), None)
+                    disc_uri = disc_prop["proposed_uri"] if disc_prop else None
+                    if not disc_uri or not str(disc_uri).startswith("http"):
+                        disc_key = disc_val.lower().strip().replace(" ", "_")
+                        if disc_key in CONTROLLED_DISCIPLINES:
+                            disc_uri = str(CONTROLLED_DISCIPLINES[disc_key])
+
+                    if item_uri and disc_uri:
+                        if not self.reasoner.is_discipline_compatible(item_uri, disc_uri):
+                            expected_disc = self.reasoner.get_crafting_discipline(item_uri)
+                            expected_label = (
+                                self.loader.get_labels(expected_disc)["label"][0]
+                                if expected_disc and self.loader.get_labels(expected_disc)["label"]
+                                else (str(expected_disc).split("/")[-1].title() if expected_disc else "Artificer")
+                            )
                             violations.append({
                                 "type": "DisciplineMismatchViolation",
                                 "focus": item_val,
-                                "message": f"Staff item '{item_val}' proposed with discipline {disc_val}; violates OWL axiom (Staff requires Artificer).",
-                                "repair_cue": "Rebind discipline relation to Artificer.",
+                                "message": f"Item '{item_val}' proposed with discipline {disc_val}; violates OWL axiom ({item_val} requires {expected_label}).",
+                                "repair_cue": f"Rebind discipline relation to {expected_label}.",
                             })
 
         # 3. OWL Axiom Reasoning: Domain / Range consistency on column relations
@@ -309,16 +339,79 @@ class NeuroSymbolicPingPongEngine:
         ))
 
         # -------------------------------------------------------------------------
-        # Round 2: Neural/Solver Repair (Relational Mesh Joint Optimization)
+        # Round 2: Neural/Solver Repair (Relational Mesh Joint Optimization & LLM Normalizer)
         # -------------------------------------------------------------------------
+        # Convert Round 1 symbolic violations into DiagnosticConflict objects
+        diagnostic_conflicts: List[DiagnosticConflict] = []
+        for v in violations:
+            diagnostic_conflicts.append(
+                DiagnosticConflict(
+                    conflict_type=v.get("type", "ONTOLOGY_VIOLATION"),
+                    message=v.get("message", ""),
+                    severity="ERROR",
+                    offending_value=v.get("focus"),
+                    suggested_fix=v.get("repair_cue"),
+                    rule_or_axiom=v.get("type", ""),
+                )
+            )
+
+        # Build candidate interpretation from Round 1 proposals to pass to LLMNormalizer
+        col_interpretations: List[TableColumnInterpretation] = []
+        for col_idx in range(len(headers)):
+            col_cand = cta_map.get(col_idx, [])
+            c_type = col_cand[0].class_label if col_cand else "Item"
+            col_interpretations.append(
+                TableColumnInterpretation(
+                    column_index=col_idx,
+                    column_name=headers[col_idx],
+                    predicted_type=c_type,
+                    role="ingredient",
+                    confidence=col_cand[0].confidence if col_cand else 0.85,
+                )
+            )
+
+        cell_mentions_list: List[CellMention] = []
+        for p in initial_proposals:
+            cell_mentions_list.append(
+                CellMention(
+                    row_idx=p["row"],
+                    col_idx=p["col"],
+                    raw_text=p["raw"],
+                    normalized_text=p["proposed_label"],
+                    entity_type=p["proposed_type"],
+                    confidence=p["confidence"],
+                )
+            )
+
+        cand_interpretation = CandidateTableInterpretation(
+            columns=col_interpretations,
+            table_type="CraftingRecipe",
+            subject_entity=table_name,
+            cell_mentions=cell_mentions_list,
+            confidence=round(avg_conf, 2),
+            reasoning=f"Round 1 neural proposals across {len(headers)} columns.",
+        )
+
+        # Process diagnostic conflicts through LLMNormalizer
+        refined_proposal = self.normalizer.resolve_ambiguity(cand_interpretation, diagnostic_conflicts)
+
+        # Apply constraint optimization using RelationalMeshSolver
         mesh_solved = self.solver.solve(table_grid, cell_candidates_map, cta_map, cpa_map)
         repairs: List[Dict[str, Any]] = []
+
+        # Collect repairs from LLMNormalizer resolution
+        for adj in refined_proposal.adjustments_made:
+            repairs.append({
+                "focus": "LLMNormalizer",
+                "repair_action": "NORMALIZER_REPAIR",
+                "detail": adj,
+            })
 
         for v in violations:
             repairs.append({
                 "focus": v["focus"],
                 "repair_action": "APPLIED_ONTOLOGICAL_CLOSURE",
-                "detail": f"Disambiguated and re-typed '{v['focus']}' using global relational mesh context and constraint solver.",
+                "detail": f"Disambiguated and re-typed '{v['focus']}' using global relational mesh context, LLM normalizer, and constraint solver.",
             })
 
         for log_entry in mesh_solved.solver_log:
@@ -340,7 +433,7 @@ class NeuroSymbolicPingPongEngine:
             round_number=2,
             speaker="Neural Proposer",
             action="REPAIR",
-            message=f"Received symbolic feedback. Applied {len(repairs)} ontological repairs and disambiguated all polysemous entities.",
+            message=f"Received symbolic feedback. Applied {len(repairs)} ontological repairs and disambiguated all polysemous entities via LLM normalizer & RelationalMeshSolver.",
             proposals=repairs,
             confidence=0.96,
         ))

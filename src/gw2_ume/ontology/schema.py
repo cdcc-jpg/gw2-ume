@@ -298,436 +298,556 @@ class AxiomVerificationResult:
         }
 
 
-# Canonical Entity Catalog for Disambiguation and CEA Matching
-ENTITY_CATALOG: Dict[str, Dict[str, Any]] = {
+# Canonical Named Individuals ABox Definition for GW2-UME
+BASE_NAMED_INDIVIDUALS: List[Dict[str, Any]] = [
     # Precursors
-    "ravenswood_branch": {
-        "label": "Ravenswood Branch",
-        "type": CLASS_PRECURSOR_WEAPON,
-        "type_label": "PrecursorWeapon",
+    {
         "uri": ITEM["ravenswood_branch"],
+        "type": CLASS_PRECURSOR_WEAPON,
+        "label": "Ravenswood Branch",
+        "aliases": ["ravenswood branch", "branch", "tier 1 precursor", "ravenswood staff 1"],
         "tier": 1,
         "discipline": "Artificer",
         "min_rating": 450,
-        "aliases": ["ravenswood branch", "branch", "tier 1 precursor", "ravenswood staff 1"],
+        "requires_ingredient": [ITEM["spiritwood_plank"]],
+        "comment": "Tier 1 precursor weapon for Nevermore",
     },
-    "ravenswood_staff": {
-        "label": "Ravenswood Staff",
-        "type": CLASS_PRECURSOR_WEAPON,
-        "type_label": "PrecursorWeapon",
+    {
         "uri": ITEM["ravenswood_staff"],
+        "type": CLASS_PRECURSOR_WEAPON,
+        "label": "Ravenswood Staff",
+        "aliases": ["ravenswood staff", "staff", "tier 2 precursor", "spiritwood staff 2"],
         "tier": 2,
         "discipline": "Artificer",
         "min_rating": 450,
-        "aliases": ["ravenswood staff", "staff", "tier 2 precursor", "spiritwood staff 2"],
+        "requires_ingredient": [ITEM["spiritwood_plank"]],
+        "comment": "Tier 2 precursor weapon for Nevermore",
     },
-    "the_raven_spirit": {
-        "label": "The Raven Spirit",
-        "type": CLASS_PRECURSOR_WEAPON,
-        "type_label": "PrecursorWeapon",
+    {
         "uri": ITEM["the_raven_spirit"],
+        "type": CLASS_PRECURSOR_WEAPON,
+        "label": "The Raven Spirit",
+        "aliases": ["the raven spirit", "raven spirit", "tier 3 precursor", "raven", "spirit"],
         "tier": 3,
         "discipline": "Artificer",
         "min_rating": 450,
-        "aliases": ["the raven spirit", "raven spirit", "tier 3 precursor", "raven", "spirit"],
+        "requires_ingredient": [ITEM["spiritwood_plank"]],
+        "comment": "Tier 3 precursor weapon for Nevermore",
     },
-    "the_living_ravens": {
-        "label": "The Living Ravens",
-        "type": CLASS_PRECURSOR_WEAPON,
-        "type_label": "PrecursorWeapon",
+    {
         "uri": ITEM["the_living_ravens"],
+        "type": CLASS_PRECURSOR_WEAPON,
+        "label": "The Living Ravens",
+        "aliases": ["the living ravens", "living ravens", "tier 4 precursor", "the livinq ravens", "living raven"],
         "tier": 4,
         "discipline": "Artificer",
         "min_rating": 450,
-        "aliases": ["the living ravens", "living ravens", "tier 4 precursor", "the livinq ravens", "living raven"],
+        "requires_ingredient": [ITEM["spiritwood_plank"]],
+        "comment": "Tier 4 precursor weapon for Nevermore",
     },
     # Legendary Weapon
-    "nevermore": {
-        "label": "Nevermore",
-        "type": CLASS_LEGENDARY_WEAPON,
-        "type_label": "LegendaryWeapon",
+    {
         "uri": ITEM["nevermore"],
+        "type": CLASS_LEGENDARY_WEAPON,
+        "label": "Nevermore",
         "aliases": ["nevermore", "n3vermore", "legendary staff", "raven staff"],
+        "comment": "Generation 2 Legendary Staff",
     },
     # Mystic Forge Components
-    "gift_of_nevermore": {
-        "label": "Gift of Nevermore",
-        "type": CLASS_COMPONENT_ITEM,
-        "type_label": "ComponentItem",
+    {
         "uri": ITEM["gift_of_nevermore"],
+        "type": CLASS_COMPONENT_ITEM,
+        "label": "Gift of Nevermore",
         "aliases": ["gift of nevermore", "gift of n3vermore", "nevermore gift", "gift"],
+        "comment": "Weapon-specific gift for Nevermore",
     },
-    "mystic_tribute": {
-        "label": "Mystic Tribute",
-        "type": CLASS_COMPONENT_ITEM,
-        "type_label": "ComponentItem",
+    {
         "uri": ITEM["mystic_tribute"],
+        "type": CLASS_COMPONENT_ITEM,
+        "label": "Mystic Tribute",
         "aliases": ["mystic tribute", "mystic tribut", "tribute", "mystick tribute"],
+        "comment": "Universal Gen 2 tribute component",
     },
-    "gift_of_mastery": {
-        "label": "Gift of Mastery",
-        "type": CLASS_COMPONENT_ITEM,
-        "type_label": "ComponentItem",
+    {
         "uri": ITEM["gift_of_mastery"],
+        "type": CLASS_COMPONENT_ITEM,
+        "label": "Gift of Mastery",
         "aliases": ["gift of mastery", "mastery gift", "gift mastery"],
+        "comment": "Core legendary gift component",
     },
-    "gift_of_wood": {
-        "label": "Gift of Wood",
-        "type": CLASS_COMPONENT_ITEM,
-        "type_label": "ComponentItem",
+    {
         "uri": ITEM["gift_of_wood"],
-        "aliases": ["gift of wood", "wood gift"],
-    },
-    "gift_of_energy": {
-        "label": "Gift of Energy",
         "type": CLASS_COMPONENT_ITEM,
-        "type_label": "ComponentItem",
+        "label": "Gift of Wood",
+        "aliases": ["gift of wood", "wood gift"],
+        "comment": "Component gift made of refined woods",
+    },
+    {
         "uri": ITEM["gift_of_energy"],
+        "type": CLASS_COMPONENT_ITEM,
+        "label": "Gift of Energy",
         "aliases": ["gift of energy", "energy gift"],
+        "comment": "Component gift crafted by Artificer",
     },
     # Materials
-    "spiritwood_plank": {
-        "label": "Spiritwood Plank",
-        "type": CLASS_CRAFTING_MATERIAL,
-        "type_label": "CraftingMaterial",
+    {
         "uri": ITEM["spiritwood_plank"],
+        "type": CLASS_CRAFTING_MATERIAL,
+        "label": "Spiritwood Plank",
         "aliases": ["spiritwood plank", "spiritwood", "spiritwood planks", "spirit plank"],
+        "comment": "Ascended wood crafting material",
     },
-    "elder_wood_plank": {
-        "label": "Elder Wood Plank",
-        "type": CLASS_CRAFTING_MATERIAL,
-        "type_label": "CraftingMaterial",
+    {
         "uri": ITEM["elder_wood_plank"],
+        "type": CLASS_CRAFTING_MATERIAL,
+        "label": "Elder Wood Plank",
         "aliases": ["elder wood plank", "elder wood", "elder plank", "elder planks"],
+        "comment": "Refined tier 5 wood material",
     },
-    "ancient_wood_plank": {
-        "label": "Ancient Wood Plank",
-        "type": CLASS_CRAFTING_MATERIAL,
-        "type_label": "CraftingMaterial",
+    {
         "uri": ITEM["ancient_wood_plank"],
+        "type": CLASS_CRAFTING_MATERIAL,
+        "label": "Ancient Wood Plank",
         "aliases": ["ancient wood plank", "ancient wood", "ancient plank", "ancient planks"],
+        "comment": "Refined tier 6 wood material",
     },
-    "deldrimor_steel_ingot": {
-        "label": "Deldrimor Steel Ingot",
-        "type": CLASS_CRAFTING_MATERIAL,
-        "type_label": "CraftingMaterial",
+    {
         "uri": ITEM["deldrimor_steel_ingot"],
+        "type": CLASS_CRAFTING_MATERIAL,
+        "label": "Deldrimor Steel Ingot",
         "aliases": ["deldrimor steel ingot", "deldrimor steel", "deldrimor ingot", "deldrimor"],
+        "comment": "Ascended metal crafting material",
     },
-    "elonian_leather_square": {
-        "label": "Elonian Leather Square",
-        "type": CLASS_CRAFTING_MATERIAL,
-        "type_label": "CraftingMaterial",
+    {
         "uri": ITEM["elonian_leather_square"],
+        "type": CLASS_CRAFTING_MATERIAL,
+        "label": "Elonian Leather Square",
         "aliases": ["elonian leather square", "elonian leather", "elonian square"],
+        "comment": "Ascended leather crafting material",
     },
-    "bolt_of_damask": {
-        "label": "Bolt of Damask",
-        "type": CLASS_CRAFTING_MATERIAL,
-        "type_label": "CraftingMaterial",
+    {
         "uri": ITEM["bolt_of_damask"],
+        "type": CLASS_CRAFTING_MATERIAL,
+        "label": "Bolt of Damask",
         "aliases": ["bolt of damask", "damask bolt", "damask"],
+        "comment": "Ascended cloth crafting material",
     },
-    "mystic_clover": {
-        "label": "Mystic Clover",
-        "type": CLASS_CRAFTING_MATERIAL,
-        "type_label": "CraftingMaterial",
+    {
         "uri": ITEM["mystic_clover"],
+        "type": CLASS_CRAFTING_MATERIAL,
+        "label": "Mystic Clover",
         "aliases": ["mystic clover", "mystic clovers", "clover", "clovers"],
+        "comment": "Mystic component for legendary tributes",
     },
-    "mystic_coin": {
-        "label": "Mystic Coin",
-        "type": CLASS_CRAFTING_MATERIAL,
-        "type_label": "CraftingMaterial",
+    {
         "uri": ITEM["mystic_coin"],
+        "type": CLASS_CRAFTING_MATERIAL,
+        "label": "Mystic Coin",
         "aliases": ["mystic coin", "mystic coins", "coin", "coins"],
+        "comment": "Valuable token for Mystic Forge recipes",
     },
-    "amalgamated_gemstone": {
-        "label": "Amalgamated Gemstone",
-        "type": CLASS_CRAFTING_MATERIAL,
-        "type_label": "CraftingMaterial",
+    {
         "uri": ITEM["amalgamated_gemstone"],
+        "type": CLASS_CRAFTING_MATERIAL,
+        "label": "Amalgamated Gemstone",
         "aliases": ["amalgamated gemstone", "amalgamated gemstones", "amalgamated gem", "amalgams"],
+        "comment": "Composite gemstone for Mystic Tribute",
     },
-    "bloodstone_shard": {
-        "label": "Bloodstone Shard",
-        "type": CLASS_CRAFTING_MATERIAL,
-        "type_label": "CraftingMaterial",
+    {
         "uri": ITEM["bloodstone_shard"],
+        "type": CLASS_CRAFTING_MATERIAL,
+        "label": "Bloodstone Shard",
         "aliases": ["bloodstone shard", "bloodstone shards", "bloodstone"],
+        "comment": "Mystic component purchased from Miyani",
     },
-    "icy_runestone": {
-        "label": "Icy Runestone",
-        "type": CLASS_CRAFTING_MATERIAL,
-        "type_label": "CraftingMaterial",
+    {
         "uri": ITEM["icy_runestone"],
-        "aliases": ["icy runestone", "icy runestones", "runestone", "runestones"],
-    },
-    "crystalline_ore": {
-        "label": "Crystalline Ore",
         "type": CLASS_CRAFTING_MATERIAL,
-        "type_label": "CraftingMaterial",
+        "label": "Icy Runestone",
+        "aliases": ["icy runestone", "icy runestones", "runestone", "runestones"],
+        "comment": "Vendor component sold by Riel Runecrafter",
+    },
+    {
         "uri": ITEM["crystalline_ore"],
+        "type": CLASS_CRAFTING_MATERIAL,
+        "label": "Crystalline Ore",
         "aliases": ["crystalline ore", "cryst ore"],
+        "comment": "Ore from Dragon's Stand pods",
     },
     # Additional Journey / Collection Items
-    "essence_of_the_raven": {
-        "label": "Essence of the Raven",
-        "type": CLASS_TROPHY_ITEM,
-        "type_label": "TrophyItem",
+    {
         "uri": ITEM["essence_of_the_raven"],
+        "type": CLASS_TROPHY_ITEM,
+        "label": "Essence of the Raven",
         "aliases": ["essence of the raven", "raven essence"],
+        "comment": "Trophy item for Nevermore journey",
     },
-    "jar_of_luminescence": {
-        "label": "Jar of Luminescence",
-        "type": CLASS_COMPONENT_ITEM,
-        "type_label": "ComponentItem",
+    {
         "uri": ITEM["jar_of_luminescence"],
-        "aliases": ["jar of luminescence", "luminescence jar", "jar of luminesce"],
-    },
-    "spiritwood_staff_shaft": {
-        "label": "Spiritwood Staff Shaft",
         "type": CLASS_COMPONENT_ITEM,
-        "type_label": "ComponentItem",
+        "label": "Jar of Luminescence",
+        "aliases": ["jar of luminescence", "luminescence jar", "jar of luminesce"],
+        "comment": "Component item for precursor collections",
+    },
+    {
         "uri": ITEM["spiritwood_staff_shaft"],
+        "type": CLASS_COMPONENT_ITEM,
+        "label": "Spiritwood Staff Shaft",
         "aliases": ["spiritwood staff shaft", "staff shaft"],
+        "comment": "Staff shaft component",
     },
-    "raven_egg": {
-        "label": "Raven Egg",
-        "type": CLASS_TROPHY_ITEM,
-        "type_label": "TrophyItem",
+    {
         "uri": ITEM["raven_egg"],
+        "type": CLASS_TROPHY_ITEM,
+        "label": "Raven Egg",
         "aliases": ["raven egg", "egg"],
+        "comment": "Quest trophy item for Nevermore IV",
     },
-    "heart_of_the_mists_essence": {
-        "label": "Heart of the Mists Essence",
-        "type": CLASS_TROPHY_ITEM,
-        "type_label": "TrophyItem",
+    {
         "uri": ITEM["heart_of_the_mists_essence"],
+        "type": CLASS_TROPHY_ITEM,
+        "label": "Heart of the Mists Essence",
         "aliases": ["heart of the mists essence", "heart of mists essence", "mist essence"],
+        "comment": "Trophy from Heart of the Mists",
     },
-    "spiritwood_dowel": {
-        "label": "Spiritwood Dowel",
-        "type": CLASS_CRAFTING_MATERIAL,
-        "type_label": "CraftingMaterial",
+    {
         "uri": ITEM["spiritwood_dowel"],
+        "type": CLASS_CRAFTING_MATERIAL,
+        "label": "Spiritwood Dowel",
         "aliases": ["spiritwood dowel", "spiritwood dowels"],
+        "comment": "Ascended crafting dowel",
     },
-    "friends_of_the_owl": {
-        "label": "Friends of the Owl",
-        "type": CLASS_TROPHY_ITEM,
-        "type_label": "TrophyItem",
+    {
         "uri": ITEM["friends_of_the_owl"],
+        "type": CLASS_TROPHY_ITEM,
+        "label": "Friends of the Owl",
         "aliases": ["friends of the owl", "friend of the owl", "friend owl"],
+        "comment": "Collection trophy",
     },
-    "friends_of_the_raven": {
-        "label": "Friends of the Raven",
-        "type": CLASS_TROPHY_ITEM,
-        "type_label": "TrophyItem",
+    {
         "uri": ITEM["friends_of_the_raven"],
-        "aliases": ["friends of the raven", "friend of the raven", "friend raven"],
-    },
-    "wood_for_the_roost": {
-        "label": "Wood for the Roost",
         "type": CLASS_TROPHY_ITEM,
-        "type_label": "TrophyItem",
+        "label": "Friends of the Raven",
+        "aliases": ["friends of the raven", "friend of the raven", "friend raven"],
+        "comment": "Collection trophy",
+    },
+    {
         "uri": ITEM["wood_for_the_roost"],
+        "type": CLASS_TROPHY_ITEM,
+        "label": "Wood for the Roost",
         "aliases": ["wood for the roost", "wood for roost", "roost wood"],
+        "comment": "Collection trophy",
     },
     # Vendors (priory-ref:vendor/)
-    "miyani": {
-        "label": "Miyani",
-        "type": CLASS_NPC_VENDOR,
-        "type_label": "NPCVendor",
+    {
         "uri": PRIORY_REF["vendor/miyani"],
+        "type": CLASS_NPC_VENDOR,
+        "label": "Miyani",
         "zone": "Lion's Arch",
+        "located_in": PRIORY_REF["zone/lions_arch"],
         "aliases": ["miyani", "mystic forge vendor"],
+        "comment": "Mystic Forge attendant in Lion's Arch",
     },
-    "grandmaster_craftsman_hobbs": {
-        "label": "Grandmaster Craftsman Hobbs",
-        "type": CLASS_NPC_VENDOR,
-        "type_label": "NPCVendor",
+    {
         "uri": PRIORY_REF["vendor/grandmaster_craftsman_hobbs"],
+        "type": CLASS_NPC_VENDOR,
+        "label": "Grandmaster Craftsman Hobbs",
         "zone": "Lion's Arch",
+        "located_in": PRIORY_REF["zone/lions_arch"],
         "aliases": ["grandmaster craftsman hobbs", "hobbs", "legendary vendor"],
+        "comment": "Legendary crafting merchant in Lion's Arch",
     },
-    "riel_runecrafter": {
-        "label": "Riel Runecrafter",
-        "type": CLASS_NPC_VENDOR,
-        "type_label": "NPCVendor",
+    {
         "uri": PRIORY_REF["vendor/riel_runecrafter"],
+        "type": CLASS_NPC_VENDOR,
+        "label": "Riel Runecrafter",
         "zone": "Lion's Arch",
+        "located_in": PRIORY_REF["zone/frostgorge_sound"],
         "aliases": ["riel runecrafter", "riel", "runecrafter vendor"],
+        "comment": "Merchant selling Icy Runestones",
     },
-    "shaman_sigurlina": {
-        "label": "Shaman Sigurlina",
-        "type": CLASS_NPC_VENDOR,
-        "type_label": "NPCVendor",
+    {
         "uri": PRIORY_REF["vendor/shaman_sigurlina"],
+        "type": CLASS_NPC_VENDOR,
+        "label": "Shaman Sigurlina",
         "zone": "Wayfarer Foothills",
+        "located_in": PRIORY_REF["zone/wayfarer_foothills"],
         "aliases": ["shaman sigurlina", "sigurlina"],
+        "comment": "Vendor in Wayfarer Foothills",
     },
-    "hylek_alchemist": {
-        "label": "Hylek Alchemist",
-        "type": CLASS_NPC_VENDOR,
-        "type_label": "NPCVendor",
+    {
         "uri": PRIORY_REF["vendor/hylek_alchemist"],
+        "type": CLASS_NPC_VENDOR,
+        "label": "Hylek Alchemist",
         "zone": "Sparkfly Fen",
+        "located_in": PRIORY_REF["zone/sparkfly_fen"],
         "aliases": ["hylek alchemist", "hylek alchemists", "alchemists", "alchemist"],
+        "comment": "Vendor in Sparkfly Fen",
     },
-    "great_raven_spirit": {
-        "label": "Great Raven Spirit",
-        "type": CLASS_NPC_VENDOR,
-        "type_label": "NPCVendor",
+    {
         "uri": PRIORY_REF["vendor/great_raven_spirit"],
+        "type": CLASS_NPC_VENDOR,
+        "label": "Great Raven Spirit",
         "zone": "Lornar's Pass",
+        "located_in": PRIORY_REF["zone/lornars_pass"],
         "aliases": ["great raven spirit", "great raven spirit roost", "raven spirit npc"],
+        "comment": "Spirit NPC in Lornar's Pass",
     },
-    "mist_warrior": {
-        "label": "Mist Warrior",
-        "type": CLASS_NPC_VENDOR,
-        "type_label": "NPCVendor",
+    {
         "uri": PRIORY_REF["vendor/mist_warrior"],
-        "zone": "Heart of the Mists",
-        "aliases": ["mist warrior", "mist warriors"],
-    },
-    "owl_shaman": {
-        "label": "Owl Shaman",
         "type": CLASS_NPC_VENDOR,
-        "type_label": "NPCVendor",
+        "label": "Mist Warrior",
+        "zone": "Heart of the Mists",
+        "located_in": PRIORY_REF["zone/heart_of_the_mists"],
+        "aliases": ["mist warrior", "mist warriors"],
+        "comment": "NPC in Heart of the Mists",
+    },
+    {
         "uri": PRIORY_REF["vendor/owl_shaman"],
+        "type": CLASS_NPC_VENDOR,
+        "label": "Owl Shaman",
         "zone": "Dredgehaunt Cliffs",
+        "located_in": PRIORY_REF["zone/dredgehaunt_cliffs"],
         "aliases": ["owl shaman"],
+        "comment": "Shaman in Dredgehaunt Cliffs",
     },
     # Zones (priory-ref:zone/)
-    "lions_arch": {
-        "label": "Lion's Arch",
-        "type": CLASS_ZONE,
-        "type_label": "Zone",
+    {
         "uri": PRIORY_REF["zone/lions_arch"],
+        "type": CLASS_ZONE,
+        "label": "Lion's Arch",
         "aliases": ["lion's arch", "lions arch", "la"],
+        "comment": "Major trading port city",
     },
-    "frostgorge_sound": {
-        "label": "Frostgorge Sound",
-        "type": CLASS_ZONE,
-        "type_label": "Zone",
+    {
         "uri": PRIORY_REF["zone/frostgorge_sound"],
+        "type": CLASS_ZONE,
+        "label": "Frostgorge Sound",
         "aliases": ["frostgorge sound", "frostgorge", "fgs"],
+        "comment": "Shiverpeaks high level zone",
     },
-    "verdant_brink": {
-        "label": "Verdant Brink",
-        "type": CLASS_ZONE,
-        "type_label": "Zone",
+    {
         "uri": PRIORY_REF["zone/verdant_brink"],
+        "type": CLASS_ZONE,
+        "label": "Verdant Brink",
         "aliases": ["verdant brink", "vb"],
+        "comment": "Heart of Maguuma canopy zone",
     },
-    "auric_basin": {
-        "label": "Auric Basin",
-        "type": CLASS_ZONE,
-        "type_label": "Zone",
+    {
         "uri": PRIORY_REF["zone/auric_basin"],
+        "type": CLASS_ZONE,
+        "label": "Auric Basin",
         "aliases": ["auric basin", "ab"],
+        "comment": "Heart of Maguuma zone with Tarir",
     },
-    "tangled_depths": {
-        "label": "Tangled Depths",
-        "type": CLASS_ZONE,
-        "type_label": "Zone",
+    {
         "uri": PRIORY_REF["zone/tangled_depths"],
+        "type": CLASS_ZONE,
+        "label": "Tangled Depths",
         "aliases": ["tangled depths", "td"],
+        "comment": "Heart of Maguuma underground zone",
     },
-    "dragons_stand": {
-        "label": "Dragon's Stand",
-        "type": CLASS_ZONE,
-        "type_label": "Zone",
+    {
         "uri": PRIORY_REF["zone/dragons_stand"],
+        "type": CLASS_ZONE,
+        "label": "Dragon's Stand",
         "aliases": ["dragon's stand", "dragons stand", "ds"],
+        "comment": "Heart of Maguuma jungle zone",
     },
-    "wayfarer_foothills": {
-        "label": "Wayfarer Foothills",
-        "type": CLASS_ZONE,
-        "type_label": "Zone",
+    {
         "uri": PRIORY_REF["zone/wayfarer_foothills"],
+        "type": CLASS_ZONE,
+        "label": "Wayfarer Foothills",
         "aliases": ["wayfarer foothills", "wayfarer"],
+        "comment": "Norn starting zone",
     },
-    "sparkfly_fen": {
-        "label": "Sparkfly Fen",
-        "type": CLASS_ZONE,
-        "type_label": "Zone",
+    {
         "uri": PRIORY_REF["zone/sparkfly_fen"],
+        "type": CLASS_ZONE,
+        "label": "Sparkfly Fen",
         "aliases": ["sparkfly fen", "sparkfly"],
+        "comment": "Tequatl swamp zone",
     },
-    "lornars_pass": {
-        "label": "Lornar's Pass",
-        "type": CLASS_ZONE,
-        "type_label": "Zone",
+    {
         "uri": PRIORY_REF["zone/lornars_pass"],
+        "type": CLASS_ZONE,
+        "label": "Lornar's Pass",
         "aliases": ["lornar's pass", "lornars pass"],
+        "comment": "Shiverpeaks pass zone",
     },
-    "heart_of_the_mists": {
-        "label": "Heart of the Mists",
-        "type": CLASS_ZONE,
-        "type_label": "Zone",
+    {
         "uri": PRIORY_REF["zone/heart_of_the_mists"],
-        "aliases": ["heart of the mists", "mists", "pvp lobby"],
-    },
-    "dredgehaunt_cliffs": {
-        "label": "Dredgehaunt Cliffs",
         "type": CLASS_ZONE,
-        "type_label": "Zone",
+        "label": "Heart of the Mists",
+        "aliases": ["heart of the mists", "mists", "pvp lobby"],
+        "comment": "PvP lobby area",
+    },
+    {
         "uri": PRIORY_REF["zone/dredgehaunt_cliffs"],
+        "type": CLASS_ZONE,
+        "label": "Dredgehaunt Cliffs",
         "aliases": ["dredgehaunt cliffs", "dredgehaunt"],
+        "comment": "Shiverpeaks dredge zone",
     },
     # Disciplines (priory-ref:discipline/)
-    "artificer": {
-        "label": "Artificer",
-        "type": CLASS_CRAFTING_DISCIPLINE,
-        "type_label": "CraftingDiscipline",
+    {
         "uri": DISCIPLINE.artificer,
+        "type": CLASS_CRAFTING_DISCIPLINE,
+        "label": "Artificer",
         "aliases": ["artificer", "artifice"],
+        "comment": "Crafting magical weapons and staves",
     },
-    "weaponsmith": {
-        "label": "Weaponsmith",
-        "type": CLASS_CRAFTING_DISCIPLINE,
-        "type_label": "CraftingDiscipline",
+    {
         "uri": DISCIPLINE.weaponsmith,
+        "type": CLASS_CRAFTING_DISCIPLINE,
+        "label": "Weaponsmith",
         "aliases": ["weaponsmith", "weapon smith"],
+        "comment": "Crafting melee weapons",
     },
-    "huntsman": {
-        "label": "Huntsman",
-        "type": CLASS_CRAFTING_DISCIPLINE,
-        "type_label": "CraftingDiscipline",
+    {
         "uri": DISCIPLINE.huntsman,
+        "type": CLASS_CRAFTING_DISCIPLINE,
+        "label": "Huntsman",
         "aliases": ["huntsman", "hunt"],
+        "comment": "Crafting ranged weapons",
     },
-    "armorsmith": {
-        "label": "Armorsmith",
-        "type": CLASS_CRAFTING_DISCIPLINE,
-        "type_label": "CraftingDiscipline",
+    {
         "uri": DISCIPLINE.armorsmith,
+        "type": CLASS_CRAFTING_DISCIPLINE,
+        "label": "Armorsmith",
         "aliases": ["armorsmith", "armor smith"],
+        "comment": "Crafting heavy armor",
     },
-    "tailor": {
-        "label": "Tailor",
-        "type": CLASS_CRAFTING_DISCIPLINE,
-        "type_label": "CraftingDiscipline",
+    {
         "uri": DISCIPLINE.tailor,
+        "type": CLASS_CRAFTING_DISCIPLINE,
+        "label": "Tailor",
         "aliases": ["tailor"],
+        "comment": "Crafting light armor",
     },
-    "leatherworker": {
-        "label": "Leatherworker",
-        "type": CLASS_CRAFTING_DISCIPLINE,
-        "type_label": "CraftingDiscipline",
+    {
         "uri": DISCIPLINE.leatherworker,
-        "aliases": ["leatherworker", "leather worker"],
-    },
-    "mystic_forge": {
-        "label": "Mystic Forge",
         "type": CLASS_CRAFTING_DISCIPLINE,
-        "type_label": "CraftingDiscipline",
-        "uri": DISCIPLINE.mystic_forge,
-        "aliases": ["mystic forge", "mystic frge", "mystick forge", "zommoros"],
+        "label": "Leatherworker",
+        "aliases": ["leatherworker", "leather worker"],
+        "comment": "Crafting medium armor",
     },
-}
+    {
+        "uri": DISCIPLINE.mystic_forge,
+        "type": CLASS_CRAFTING_DISCIPLINE,
+        "label": "Mystic Forge",
+        "aliases": ["mystic forge", "mystic frge", "mystick forge", "zommoros"],
+        "comment": "Mystic Forge crafting conduit",
+    },
+]
+
+
+def extract_entity_catalog_from_graph(graph: Graph) -> Dict[str, Dict[str, Any]]:
+    """Extracts an entity catalog dictionary from all owl:NamedIndividual instances in an RDF graph."""
+    import re
+    catalog: Dict[str, Dict[str, Any]] = {}
+
+    tier_preds = [GW2.tier, PRIORY.tierNumber, PROP_TIER_NUMBER]
+    disc_preds = [GW2.discipline, PRIORY.craftedByDiscipline, PROP_CRAFTED_BY_DISCIPLINE]
+    rating_preds = [GW2.minRating, PRIORY.requiresDisciplineRating, PROP_REQUIRES_DISCIPLINE_RATING]
+    zone_preds = [GW2.zone, PRIORY.locatedInZone, PROP_LOCATED_IN_ZONE]
+
+    for s in set(graph.subjects(RDF.type, OWL.NamedIndividual)):
+        if not isinstance(s, URIRef):
+            continue
+
+        s_str = str(s)
+        if "#" in s_str:
+            frag = s_str.split("#")[-1]
+        else:
+            frag = s_str.rstrip("/").split("/")[-1]
+
+        key = re.sub(r"(?<!^)(?=[A-Z])", "_", frag).lower()
+
+        # Labels
+        pref_labels = [str(o) for o in graph.objects(s, SKOS.prefLabel)]
+        rdfs_labels = [str(o) for o in graph.objects(s, RDFS.label)]
+        alt_labels = [str(o) for o in graph.objects(s, SKOS.altLabel)]
+
+        if pref_labels:
+            label = pref_labels[0]
+        elif rdfs_labels:
+            label = rdfs_labels[0]
+        else:
+            label = key.replace("_", " ").title()
+
+        # Types
+        types = [o for o in graph.objects(s, RDF.type) if o not in (OWL.NamedIndividual, OWL.Thing)]
+        main_type = types[0] if types else CLASS_ITEM
+
+        type_str = str(main_type)
+        if "#" in type_str:
+            type_label = type_str.split("#")[-1]
+        else:
+            type_label = type_str.rstrip("/").split("/")[-1]
+
+        # Comments
+        comments = [str(o) for o in graph.objects(s, RDFS.comment)]
+        comment = comments[0] if comments else None
+
+        # Build aliases
+        aliases: List[str] = []
+        for a in alt_labels:
+            if a and a not in aliases:
+                aliases.append(a)
+        if label.lower() not in aliases:
+            aliases.append(label.lower())
+
+        entry: Dict[str, Any] = {
+            "label": label,
+            "type": main_type,
+            "type_label": type_label,
+            "uri": s,
+            "aliases": aliases,
+        }
+        if comment:
+            entry["comment"] = comment
+            entry["description"] = comment
+
+        # Custom properties
+        for p in tier_preds:
+            val = graph.value(s, p)
+            if val is not None:
+                try:
+                    entry["tier"] = int(val)
+                    break
+                except (ValueError, TypeError):
+                    pass
+
+        for p in disc_preds:
+            val = graph.value(s, p)
+            if val is not None:
+                val_str = str(val).split("#")[-1].split("/")[-1].replace("_", " ").title()
+                entry["discipline"] = val_str
+                break
+
+        for p in rating_preds:
+            val = graph.value(s, p)
+            if val is not None:
+                try:
+                    entry["min_rating"] = int(val)
+                    break
+                except (ValueError, TypeError):
+                    pass
+
+        for p in zone_preds:
+            val = graph.value(s, p)
+            if val is not None:
+                val_label = graph.value(val, RDFS.label)
+                if val_label:
+                    entry["zone"] = str(val_label)
+                else:
+                    entry["zone"] = str(val).split("#")[-1].split("/")[-1].replace("_", " ").title()
+                break
+
+        catalog[key] = entry
+
+    return catalog
 
 
 def build_gw2_ontology_graph() -> Graph:
@@ -839,23 +959,113 @@ def build_gw2_ontology_graph() -> Graph:
         g.add((disc_uri, RDF.type, CLASS_CRAFTING_DISCIPLINE))
         g.add((disc_uri, RDF.type, OWL.NamedIndividual))
         g.add((disc_uri, RDFS.label, Literal(disc_key.replace("_", " ").title(), datatype=XSD.string)))
+        g.add((disc_uri, SKOS.prefLabel, Literal(disc_key.replace("_", " ").title(), datatype=XSD.string)))
 
     for curr_key, curr_uri in CONTROLLED_CURRENCIES.items():
         g.add((curr_uri, RDF.type, CLASS_CURRENCY))
         g.add((curr_uri, RDF.type, OWL.NamedIndividual))
         g.add((curr_uri, RDFS.label, Literal(curr_key.replace("_", " ").title(), datatype=XSD.string)))
+        g.add((curr_uri, SKOS.prefLabel, Literal(curr_key.replace("_", " ").title(), datatype=XSD.string)))
 
     for rar_key, rar_uri in CONTROLLED_RARITIES.items():
         g.add((rar_uri, RDF.type, CLASS_RARITY))
         g.add((rar_uri, RDF.type, OWL.NamedIndividual))
         g.add((rar_uri, RDFS.label, Literal(rar_key.capitalize(), datatype=XSD.string)))
+        g.add((rar_uri, SKOS.prefLabel, Literal(rar_key.capitalize(), datatype=XSD.string)))
+
+    weapon_discipline_map = {
+        "staff": DISCIPLINE.artificer,
+        "scepter": DISCIPLINE.artificer,
+        "focus": DISCIPLINE.artificer,
+        "sword": DISCIPLINE.weaponsmith,
+        "greatsword": DISCIPLINE.weaponsmith,
+        "axe": DISCIPLINE.weaponsmith,
+        "dagger": DISCIPLINE.weaponsmith,
+        "hammer": DISCIPLINE.weaponsmith,
+        "mace": DISCIPLINE.weaponsmith,
+        "shield": DISCIPLINE.weaponsmith,
+        "pistol": DISCIPLINE.huntsman,
+        "rifle": DISCIPLINE.huntsman,
+        "short_bow": DISCIPLINE.huntsman,
+        "longbow": DISCIPLINE.huntsman,
+        "torch": DISCIPLINE.huntsman,
+        "warhorn": DISCIPLINE.huntsman,
+    }
 
     for wpn_key, wpn_uri in CONTROLLED_WEAPONS.items():
         g.add((wpn_uri, RDF.type, CLASS_WEAPON))
         g.add((wpn_uri, RDF.type, OWL.NamedIndividual))
         g.add((wpn_uri, RDFS.label, Literal(wpn_key.replace("_", " ").title(), datatype=XSD.string)))
+        g.add((wpn_uri, SKOS.prefLabel, Literal(wpn_key.replace("_", " ").title(), datatype=XSD.string)))
+        disc_target = weapon_discipline_map.get(wpn_key)
+        if disc_target:
+            g.add((wpn_uri, PROP_CRAFTED_BY_DISCIPLINE, disc_target))
+
+    # Populate Base Named Individuals (ABox Domain Individuals)
+    for ind in BASE_NAMED_INDIVIDUALS:
+        u = ind["uri"]
+        g.add((u, RDF.type, OWL.NamedIndividual))
+        g.add((u, RDF.type, ind["type"]))
+        g.add((u, RDFS.label, Literal(ind["label"], datatype=XSD.string)))
+        g.add((u, SKOS.prefLabel, Literal(ind["label"], datatype=XSD.string)))
+
+        for alias in ind.get("aliases", []):
+            g.add((u, SKOS.altLabel, Literal(alias, datatype=XSD.string)))
+
+        if ind.get("tier") is not None:
+            g.add((u, GW2.tier, Literal(ind["tier"], datatype=XSD.integer)))
+            g.add((u, PROP_TIER_NUMBER, Literal(ind["tier"], datatype=XSD.integer)))
+
+        if ind.get("discipline"):
+            g.add((u, GW2.discipline, Literal(ind["discipline"], datatype=XSD.string)))
+            disc_slug = ind["discipline"].lower().replace(" ", "_")
+            if disc_slug in CONTROLLED_DISCIPLINES:
+                g.add((u, PROP_CRAFTED_BY_DISCIPLINE, CONTROLLED_DISCIPLINES[disc_slug]))
+
+        if ind.get("min_rating") is not None:
+            g.add((u, GW2.minRating, Literal(ind["min_rating"], datatype=XSD.integer)))
+            g.add((u, PROP_REQUIRES_DISCIPLINE_RATING, Literal(ind["min_rating"], datatype=XSD.integer)))
+
+        if ind.get("zone"):
+            g.add((u, GW2.zone, Literal(ind["zone"], datatype=XSD.string)))
+
+        if ind.get("located_in"):
+            g.add((u, PROP_LOCATED_IN_ZONE, ind["located_in"]))
+
+        for ing in ind.get("requires_ingredient", []):
+            g.add((u, PROP_REQUIRES_INGREDIENT, ing))
+
+        if ind.get("comment"):
+            g.add((u, RDFS.comment, Literal(ind["comment"], datatype=XSD.string)))
+
+    # Populate precursor progression & component dependencies
+    g.add((URIRef(str(ITEM["the_living_ravens"])), PROP_IS_PRECURSOR_OF, URIRef(str(ITEM["nevermore"]))))
+    g.add((URIRef(str(ITEM["nevermore"])), PROP_HAS_PRECURSOR, URIRef(str(ITEM["the_living_ravens"]))))
+    g.add((URIRef(str(ITEM["ravenswood_branch"])), PROP_UPGRADES_TO, URIRef(str(ITEM["ravenswood_staff"]))))
+    g.add((URIRef(str(ITEM["ravenswood_staff"])), PROP_UPGRADES_TO, URIRef(str(ITEM["the_raven_spirit"]))))
+    g.add((URIRef(str(ITEM["the_raven_spirit"])), PROP_UPGRADES_TO, URIRef(str(ITEM["the_living_ravens"]))))
+
+    g.add((URIRef(str(ITEM["nevermore"])), PROP_REQUIRES_INGREDIENT, URIRef(str(ITEM["gift_of_nevermore"]))))
+    g.add((URIRef(str(ITEM["nevermore"])), PROP_REQUIRES_INGREDIENT, URIRef(str(ITEM["mystic_tribute"]))))
+    g.add((URIRef(str(ITEM["nevermore"])), PROP_REQUIRES_INGREDIENT, URIRef(str(ITEM["gift_of_mastery"]))))
+    g.add((URIRef(str(ITEM["nevermore"])), PROP_REQUIRES_INGREDIENT, URIRef(str(ITEM["the_living_ravens"]))))
+
+    g.add((URIRef(str(ITEM["gift_of_nevermore"])), PROP_REQUIRES_INGREDIENT, URIRef(str(ITEM["gift_of_wood"]))))
+    g.add((URIRef(str(ITEM["gift_of_nevermore"])), PROP_REQUIRES_INGREDIENT, URIRef(str(ITEM["gift_of_energy"]))))
+    g.add((URIRef(str(ITEM["gift_of_nevermore"])), PROP_REQUIRES_INGREDIENT, URIRef(str(ITEM["icy_runestone"]))))
+
+    g.add((URIRef(str(ITEM["mystic_tribute"])), PROP_REQUIRES_INGREDIENT, URIRef(str(ITEM["mystic_clover"]))))
+    g.add((URIRef(str(ITEM["mystic_tribute"])), PROP_REQUIRES_INGREDIENT, URIRef(str(ITEM["amalgamated_gemstone"]))))
+
+    g.add((URIRef(str(ITEM["gift_of_wood"])), PROP_REQUIRES_INGREDIENT, URIRef(str(ITEM["spiritwood_plank"]))))
+    g.add((URIRef(str(ITEM["gift_of_wood"])), PROP_REQUIRES_INGREDIENT, URIRef(str(ITEM["elder_wood_plank"]))))
+    g.add((URIRef(str(ITEM["gift_of_wood"])), PROP_REQUIRES_INGREDIENT, URIRef(str(ITEM["ancient_wood_plank"]))))
 
     return g
+
+
+# Dynamically populated Entity Catalog driven from Ontology Graph ABox
+ENTITY_CATALOG: Dict[str, Dict[str, Any]] = extract_entity_catalog_from_graph(build_gw2_ontology_graph())
 
 
 __all__ = [
@@ -865,6 +1075,7 @@ __all__ = [
     "DatatypeProperty",
     "Individual",
     "AxiomVerificationResult",
+    "extract_entity_catalog_from_graph",
     "ENTITY_CATALOG",
     "build_gw2_ontology_graph",
 ]

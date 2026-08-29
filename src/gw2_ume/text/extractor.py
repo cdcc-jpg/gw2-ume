@@ -33,9 +33,11 @@ from gw2_ume.ontology.vocab import (
     PROP_REQUIRES_MATERIAL,
     PROP_INGREDIENT_QUANTITY,
     PROP_CRAFTED_BY_DISCIPLINE,
+    PROP_REQUIRES_DISCIPLINE_RATING,
     PROP_OBTAINED_FROM_VENDOR,
     PROP_LOCATED_IN_ZONE,
     PROP_PRECURSOR_TO,
+    PROP_UPGRADES_TO,
 )
 from gw2_ume.ontology.schema import ENTITY_CATALOG, build_gw2_ontology_graph
 from gw2_ume.ontology.shacl_rules import validate_mesh_shacl
@@ -279,7 +281,8 @@ class TextEntityRelationExtractor:
         g = build_gw2_ontology_graph()
         for ent in extracted_entities:
             s = URIRef(ent["uri"])
-            type_uri = URIRef(str(GW2[ent["type_label"]]))
+            type_lbl = ent["type_label"].replace(" ", "")
+            type_uri = getattr(PRIORY, type_lbl, getattr(GW2, type_lbl, CLASS_ITEM))
             g.add((s, RDF.type, type_uri))
             g.add((s, RDFS.label, Literal(ent["label"], datatype=XSD.string)))
 
@@ -501,11 +504,21 @@ class CrossModalTriangulator:
             fused_graph.add((subj_uri, RDF.type, type_uri))
             fused_graph.add((subj_uri, RDFS.label, Literal(label, datatype=XSD.string)))
 
-            if etype == "PrecursorWeapon":
-                fused_graph.add((subj_uri, PROP_CRAFTED_BY_DISCIPLINE, DISCIPLINE.artificer))
-                fused_graph.add((subj_uri, PROP_REQUIRES_INGREDIENT, ITEM["spiritwood_plank"]))
-            elif etype == "NPCVendor":
-                fused_graph.add((subj_uri, PROP_LOCATED_IN_ZONE, PRIORY_REF["zone/lions_arch"]))
+            # Dynamically query ontology graph and vector index for known individual properties
+            for _, p, o in self.ontology_graph.triples((subj_uri, None, None)):
+                if p in (PROP_CRAFTED_BY_DISCIPLINE, PROP_REQUIRES_INGREDIENT, PROP_LOCATED_IN_ZONE, PROP_PRECURSOR_TO, PROP_UPGRADES_TO, PROP_REQUIRES_DISCIPLINE_RATING):
+                    fused_graph.add((subj_uri, p, o))
+
+            v_meta = self.vector_index.entities.get(uri)
+            if v_meta and v_meta.metadata:
+                if "discipline" in v_meta.metadata and v_meta.metadata["discipline"]:
+                    disc_slug = str(v_meta.metadata["discipline"]).lower().replace(" ", "_")
+                    disc_uri = getattr(DISCIPLINE, disc_slug, PRIORY_REF[f"discipline/{disc_slug}"])
+                    fused_graph.add((subj_uri, PROP_CRAFTED_BY_DISCIPLINE, disc_uri))
+                if "zone" in v_meta.metadata and v_meta.metadata["zone"]:
+                    zone_slug = str(v_meta.metadata["zone"]).lower().replace("'", "").replace(" ", "_")
+                    zone_uri = getattr(ZONE, zone_slug, PRIORY_REF[f"zone/{zone_slug}"])
+                    fused_graph.add((subj_uri, PROP_LOCATED_IN_ZONE, zone_uri))
 
         # 4. Fuse Triples with Provenance and Confidence Boosting
         triangulated_triples: List[TriangulatedTriple] = []
@@ -643,20 +656,36 @@ class CrossModalTriangulator:
                         if len(current_forge_ings) == 4:
                             break
 
-        # SHACL satisfaction for all Precursors and Vendors across both modalities
+        # Dynamically satisfy precursor and vendor relations via ontology graph and vector index queries
         for s, _, _ in list(fused_graph.triples((None, RDF.type, PRIORY.PrecursorWeapon))):
             if not list(fused_graph.objects(s, PROP_REQUIRES_INGREDIENT)):
-                fused_graph.add((s, PROP_REQUIRES_INGREDIENT, ITEM["spiritwood_plank"]))
+                for _, _, ing in self.ontology_graph.triples((s, PROP_REQUIRES_INGREDIENT, None)):
+                    fused_graph.add((s, PROP_REQUIRES_INGREDIENT, ing))
             if not list(fused_graph.objects(s, PROP_CRAFTED_BY_DISCIPLINE)):
-                fused_graph.add((s, PROP_CRAFTED_BY_DISCIPLINE, DISCIPLINE.artificer))
+                for _, _, disc in self.ontology_graph.triples((s, PROP_CRAFTED_BY_DISCIPLINE, None)):
+                    fused_graph.add((s, PROP_CRAFTED_BY_DISCIPLINE, disc))
 
         for s, _, _ in list(fused_graph.triples((None, RDF.type, PRIORY.NPCVendor))):
             if not list(fused_graph.objects(s, PROP_LOCATED_IN_ZONE)):
-                fused_graph.add((s, PROP_LOCATED_IN_ZONE, PRIORY_REF["zone/lions_arch"]))
+                for _, _, z in self.ontology_graph.triples((s, PROP_LOCATED_IN_ZONE, None)):
+                    fused_graph.add((s, PROP_LOCATED_IN_ZONE, z))
+                if not list(fused_graph.objects(s, PROP_LOCATED_IN_ZONE)):
+                    v_meta = self.vector_index.entities.get(str(s))
+                    if v_meta and v_meta.metadata and v_meta.metadata.get("zone"):
+                        z_name = v_meta.metadata["zone"]
+                        z_slug = z_name.lower().replace("'", "").replace(" ", "_")
+                        fused_graph.add((s, PROP_LOCATED_IN_ZONE, PRIORY_REF[f"zone/{z_slug}"]))
 
         for s, _, o in list(fused_graph.triples((None, PROP_OBTAINED_FROM_VENDOR, None))):
             if not list(fused_graph.objects(o, PROP_LOCATED_IN_ZONE)):
-                fused_graph.add((o, PROP_LOCATED_IN_ZONE, PRIORY_REF["zone/lions_arch"]))
+                for _, _, z in self.ontology_graph.triples((o, PROP_LOCATED_IN_ZONE, None)):
+                    fused_graph.add((o, PROP_LOCATED_IN_ZONE, z))
+                if not list(fused_graph.objects(o, PROP_LOCATED_IN_ZONE)):
+                    v_meta = self.vector_index.entities.get(str(o))
+                    if v_meta and v_meta.metadata and v_meta.metadata.get("zone"):
+                        z_name = v_meta.metadata["zone"]
+                        z_slug = z_name.lower().replace("'", "").replace(" ", "_")
+                        fused_graph.add((o, PROP_LOCATED_IN_ZONE, PRIORY_REF[f"zone/{z_slug}"]))
 
         # 5. SHACL Validation
         validation_status = "CONFORMING"

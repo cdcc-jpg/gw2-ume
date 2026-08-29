@@ -258,6 +258,7 @@ class DeterministicDenseEmbedder:
 
     def embed(self, text: str) -> np.ndarray:
         """Embed text deterministically into normalized vector space."""
+        import zlib
         vec = np.zeros(self.dim, dtype=np.float32)
         if not text or not text.strip():
             return vec
@@ -266,24 +267,23 @@ class DeterministicDenseEmbedder:
         tokens = tokenize(text_norm)
         ngrams = list(char_ngrams(text_norm, 3)) + list(char_ngrams(text_norm, 4))
 
+        def _h(s: str) -> int:
+            return zlib.crc32(s.encode("utf-8")) % self.dim
+
         # Hash tokens & bigrams
         for token in tokens:
-            h = hash(token) % self.dim
-            vec[h] += 2.0
+            vec[_h(token)] += 2.0
         for i in range(len(tokens) - 1):
             bi = f"{tokens[i]}_{tokens[i+1]}"
-            h = hash(bi) % self.dim
-            vec[h] += 1.5
+            vec[_h(bi)] += 1.5
 
         # Hash ngrams
         for ng in ngrams:
-            h = hash(ng) % self.dim
-            vec[h] += 1.0
+            vec[_h(ng)] += 1.0
 
         # Positional character weight
         for idx, ch in enumerate(text_norm[:32]):
-            h = (hash(ch) + idx * 31) % self.dim
-            vec[h] += 0.5
+            vec[(_h(ch) + idx * 31) % self.dim] += 0.5
 
         norm = np.linalg.norm(vec)
         if norm > 1e-9:

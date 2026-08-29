@@ -44,6 +44,7 @@ from gw2_ume.normalization.text_cleaner import (
 from gw2_ume.pipeline.enricher import KnowledgeGraphEnricher
 from gw2_ume.pipeline.engine import UMEEngine
 from gw2_ume.pipeline.pingpong import NeuroSymbolicPingPongEngine, SymbolicAxiomReasoner
+from gw2_ume.neurosymbolic.pingpong import NeuroSymbolicPingPongEngine as DialoguePingPongEngine
 
 
 class TestTextCleanerAndParsers(unittest.TestCase):
@@ -437,6 +438,59 @@ class TestNeuroSymbolicPingPongEngine(unittest.TestCase):
         self.assertIn("Deldrimor Steel Ingot", relation_objects)
         self.assertIn("Glob of Ectoplasm", relation_objects)
         self.assertIn("Mystic Clover", relation_objects)
+
+    def test_dynamic_intermediate_gift_semantics(self):
+        """Verify dynamic ontology graph traversal correctly flags intermediate gifts/components
+
+        when table mentions the parent recipe output without hardcoded string checks.
+        """
+        proposal = CandidateTableInterpretation(
+            columns=[
+                TableColumnInterpretation(column_index=0, column_name="Component", predicted_type="ComponentItem", role="ingredient"),
+                TableColumnInterpretation(column_index=1, column_name="Quantity", predicted_type="Quantity", role="quantity"),
+            ],
+            cell_mentions=[
+                CellMention(row_idx=0, col_idx=0, raw_text="Gift of Wood", normalized_text="Gift of Wood", entity_type="ComponentItem"),
+                CellMention(row_idx=1, col_idx=0, raw_text="Nevermore", normalized_text="Nevermore", entity_type="LegendaryWeapon"),
+            ],
+            table_type="CraftingRecipe",
+            subject_entity="Gift of Energy",
+            row_relations=[],
+        )
+        dummy_grid = TableGrid(headers=["Component", "Quantity"], rows=[["Gift of Wood", "1"], ["Nevermore", "1"]])
+
+        conflicts = self.reasoner.validate_interpretation(proposal, dummy_grid)
+        self.assertTrue(any(c.conflict_type == "SLOT_MISMATCH" for c in conflicts))
+        slot_conflict = next(c for c in conflicts if c.conflict_type == "SLOT_MISMATCH")
+        self.assertEqual(slot_conflict.offending_value, "Gift of Energy")
+        self.assertIn("Nevermore", slot_conflict.message)
+
+    def test_dynamic_discipline_compatibility(self):
+        """Verify ontology reasoner dynamically checks discipline-weapon compatibility."""
+        # Artificer with Ravenswood Branch should be valid
+        artificer_uri = "https://priory.gw2/ref/discipline/artificer"
+        branch_uri = "https://priory.gw2/id/item/ravenswood_branch"
+        weaponsmith_uri = "https://priory.gw2/ref/discipline/weaponsmith"
+
+        self.assertTrue(self.reasoner.ontology_reasoner.is_discipline_compatible(branch_uri, artificer_uri))
+        self.assertFalse(self.reasoner.ontology_reasoner.is_discipline_compatible(branch_uri, weaponsmith_uri))
+
+    def test_dialogue_pingpong_with_llm_normalizer_and_solver(self):
+        """Verify DialoguePingPongEngine runs 2 rounds with LLMNormalizer and RelationalMeshSolver."""
+        dialogue_engine = DialoguePingPongEngine(normalizer=self.normalizer)
+        table_csv = "Item,Qty,Discipline\nRavenswood Branch,1,Weaponsmith\n"
+        result = dialogue_engine.run_dialogue(table_csv, table_name="test_discipline_repair")
+
+        self.assertEqual(len(result.turns), 4)
+        # Turn 1 should have flagged discipline violation
+        turn_1_eval = result.turns[1]
+        self.assertTrue(any(v.get("type") == "DisciplineMismatchViolation" for v in turn_1_eval.violations))
+
+        # Turn 2 should have repair proposals from LLMNormalizer / RelationalMeshSolver
+        turn_2_repair = result.turns[2]
+        self.assertEqual(turn_2_repair.action, "REPAIR")
+        self.assertTrue(len(turn_2_repair.proposals) > 0)
+        self.assertTrue(result.conforms_shacl)
 
 
 class TestKnowledgeGraphEnricherAndRDF(unittest.TestCase):
