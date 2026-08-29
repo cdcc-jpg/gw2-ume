@@ -1,0 +1,800 @@
+@prefix currency: <https://priory.gw2/ref/currency/> .
+@prefix discipline: <https://priory.gw2/ref/discipline/> .
+@prefix gw2: <https://gw2ume.org/ontology#> .
+@prefix gw21: <https://schema.gw2ume.org/core#> .
+@prefix item: <https://priory.gw2/id/item/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix priory: <https://priory.gw2/def/> .
+@prefix rarity: <https://priory.gw2/ref/rarity/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix recipe: <https://priory.gw2/id/recipe/> .
+@prefix vendor: <https://priory.gw2/ref/vendor/> .
+@prefix weapon: <https://priory.gw2/ref/weapon/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix zone: <https://priory.gw2/ref/zone/> .
+
+gw2: a owl:Ontology .
+
+<https://gw2ume.org/resource/entity/nevermore_i_experimental_staff> a gw2:Item ;
+    rdfs:label "Nevermore I: Experimental Staff"^^xsd:string ;
+    priory:confidenceScore 0.95 ;
+    priory:ingredientQuantity 3 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    gw21:confidenceScore 0.95 .
+
+<https://gw2ume.org/resource/entity/nevermore_ii_the_mnemonic_device> a gw2:Item ;
+    rdfs:label "Nevermore II: The Mnemonic Device"^^xsd:string ;
+    priory:confidenceScore 0.95 ;
+    priory:ingredientQuantity 1 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    gw21:confidenceScore 0.95 .
+
+<https://gw2ume.org/resource/entity/nevermore_iii_the_raven_spirit> a gw2:Item ;
+    rdfs:label "Nevermore III: The Raven Spirit"^^xsd:string ;
+    priory:confidenceScore 0.95 ;
+    priory:ingredientQuantity 1 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    gw21:confidenceScore 0.95 .
+
+priory:CollectionHuntPrecursor a owl:Class ;
+    rdfs:label "Precursor Journey Hunt Step"^^xsd:string ;
+    rdfs:subClassOf priory:Item .
+
+priory:CollectionTier a owl:Class ;
+    rdfs:label "Precursor Collection Tier (1-4)"^^xsd:string .
+
+priory:ComponentItem a owl:Class ;
+    rdfs:label "Component or Sub-Ingredient Item"^^xsd:string ;
+    rdfs:subClassOf priory:Item .
+
+priory:CraftingMaterial a owl:Class ;
+    rdfs:label "Raw or Refined Crafting Material"^^xsd:string ;
+    rdfs:subClassOf priory:Item ;
+    owl:disjointWith priory:EquipableItem .
+
+priory:Discipline a owl:Class ;
+    rdfs:label "Crafting Discipline"^^xsd:string .
+
+priory:DisciplineRating a owl:Class ;
+    rdfs:label "Required Crafting Skill Level"^^xsd:string .
+
+priory:IngredientQuantity a owl:Class ;
+    rdfs:label "Quantity count for recipe ingredient"^^xsd:string .
+
+priory:Trinket a owl:Class ;
+    rdfs:label "Accessory or Trinket"^^xsd:string ;
+    rdfs:subClassOf priory:EquipableItem .
+
+priory:TrophyItem a owl:Class ;
+    rdfs:label "Collection Trophy or Quest Item"^^xsd:string ;
+    rdfs:subClassOf priory:Item .
+
+priory:acquisitionMethod a owl:DatatypeProperty ;
+    rdfs:label "acquisitionMethod"^^xsd:string ;
+    rdfs:domain priory:Item ;
+    rdfs:range xsd:string .
+
+priory:confidenceScore a owl:DatatypeProperty ;
+    rdfs:label "confidenceScore"^^xsd:string ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:float .
+
+priory:craftedByDiscipline a owl:ObjectProperty ;
+    rdfs:label "craftedByDiscipline"^^xsd:string ;
+    rdfs:domain priory:Item ;
+    rdfs:range priory:CraftingDiscipline .
+
+priory:forgeSlot a owl:DatatypeProperty ;
+    rdfs:label "forgeSlot"^^xsd:string ;
+    rdfs:domain priory:MysticForgeRecipe ;
+    rdfs:range xsd:string .
+
+priory:hasPrecursor a owl:ObjectProperty ;
+    rdfs:label "hasPrecursor"^^xsd:string ;
+    rdfs:domain priory:LegendaryWeapon ;
+    rdfs:range priory:PrecursorWeapon .
+
+priory:ingredientQuantity a owl:DatatypeProperty ;
+    rdfs:label "ingredientQuantity"^^xsd:string ;
+    rdfs:domain priory:Item ;
+    rdfs:range xsd:integer .
+
+priory:locatedInZone a owl:ObjectProperty ;
+    rdfs:label "locatedInZone"^^xsd:string ;
+    rdfs:domain priory:NPCVendor ;
+    rdfs:range priory:Zone .
+
+priory:partOfCollection a owl:ObjectProperty ;
+    rdfs:label "partOfCollection"^^xsd:string ;
+    rdfs:domain priory:Item ;
+    rdfs:range priory:CuratedCollection .
+
+priory:precursorTo a owl:ObjectProperty ;
+    rdfs:label "precursorTo"^^xsd:string ;
+    rdfs:domain priory:PrecursorWeapon ;
+    rdfs:range priory:PrecursorWeapon .
+
+priory:producesItem a owl:ObjectProperty ;
+    rdfs:label "producesItem"^^xsd:string ;
+    rdfs:domain priory:DisciplineRecipe ;
+    rdfs:range priory:Item .
+
+priory:requiresCurrency a owl:ObjectProperty ;
+    rdfs:label "requiresCurrency"^^xsd:string ;
+    rdfs:domain priory:Item ;
+    rdfs:range priory:Currency .
+
+priory:requiresDisciplineRating a owl:DatatypeProperty ;
+    rdfs:label "requiresDisciplineRating"^^xsd:string ;
+    rdfs:domain priory:Item ;
+    rdfs:range xsd:integer .
+
+priory:requiresIngredient a owl:ObjectProperty ;
+    rdfs:label "requiresIngredient"^^xsd:string ;
+    rdfs:domain priory:Item ;
+    rdfs:range priory:Item .
+
+priory:rewardForStep a owl:ObjectProperty ;
+    rdfs:label "rewardForStep"^^xsd:string ;
+    rdfs:domain priory:Item ;
+    rdfs:range priory:CollectionStep .
+
+priory:soldBy a owl:ObjectProperty ;
+    rdfs:label "soldBy"^^xsd:string ;
+    rdfs:domain priory:Item ;
+    rdfs:range priory:NPCVendor .
+
+priory:tierNumber a owl:DatatypeProperty ;
+    rdfs:label "tierNumber"^^xsd:string ;
+    rdfs:domain priory:Item ;
+    rdfs:range xsd:integer .
+
+priory:upgradesTo a owl:ObjectProperty ;
+    rdfs:label "upgradesTo"^^xsd:string ;
+    rdfs:domain priory:Item ;
+    rdfs:range priory:Item .
+
+item:bloodstone_shard a gw2:CraftingMaterial ;
+    rdfs:label "Bloodstone Shard"^^xsd:string ;
+    priory:confidenceScore 0.88 ;
+    gw21:confidenceScore 0.88 .
+
+item:icy_runestone a gw2:CraftingMaterial ;
+    rdfs:label "Icy Runestone"^^xsd:string ;
+    priory:confidenceScore 0.88 ;
+    gw21:confidenceScore 0.88 .
+
+item:mystic_clover a gw2:CraftingMaterial ;
+    rdfs:label "Mystic Clover"^^xsd:string ;
+    priory:confidenceScore 0.88 ;
+    gw21:confidenceScore 0.88 .
+
+item:mystic_coin a gw2:CraftingMaterial ;
+    rdfs:label "Mystic Coin"^^xsd:string ;
+    priory:confidenceScore 0.88 ;
+    gw21:confidenceScore 0.88 .
+
+item:nevermore a gw2:LegendaryWeapon ;
+    rdfs:label "Nevermore"^^xsd:string ;
+    priory:confidenceScore 0.91 ;
+    priory:hasPrecursor item:the_living_ravens ;
+    gw21:confidenceScore 0.91 .
+
+recipe:nevermore_mystic_forge a priory:MysticForgeRecipe ;
+    rdfs:label "Mystic Forge: Nevermore"^^xsd:string ;
+    priory:requiresIngredient item:gift_of_mastery,
+        item:gift_of_nevermore,
+        item:mystic_tribute,
+        item:the_living_ravens .
+
+currency:coin a owl:NamedIndividual,
+        priory:Currency ;
+    rdfs:label "Coin"^^xsd:string .
+
+currency:gold a owl:NamedIndividual,
+        priory:Currency ;
+    rdfs:label "Gold"^^xsd:string .
+
+currency:karma a owl:NamedIndividual,
+        priory:Currency ;
+    rdfs:label "Karma"^^xsd:string .
+
+currency:laurel a owl:NamedIndividual,
+        priory:Currency ;
+    rdfs:label "Laurel"^^xsd:string .
+
+currency:mystic_clover a owl:NamedIndividual,
+        priory:Currency ;
+    rdfs:label "Mystic Clover"^^xsd:string .
+
+currency:spirit_shard a owl:NamedIndividual,
+        priory:Currency ;
+    rdfs:label "Spirit Shard"^^xsd:string .
+
+discipline:armorsmith a owl:NamedIndividual,
+        priory:CraftingDiscipline ;
+    rdfs:label "Armorsmith"^^xsd:string .
+
+discipline:chef a owl:NamedIndividual,
+        priory:CraftingDiscipline ;
+    rdfs:label "Chef"^^xsd:string .
+
+discipline:huntsman a owl:NamedIndividual,
+        gw2:CraftingDiscipline,
+        priory:CraftingDiscipline ;
+    rdfs:label "Huntsman"^^xsd:string ;
+    priory:confidenceScore 0.88 ;
+    gw21:confidenceScore 0.88 .
+
+discipline:jeweler a owl:NamedIndividual,
+        priory:CraftingDiscipline ;
+    rdfs:label "Jeweler"^^xsd:string .
+
+discipline:mystic_forge a owl:NamedIndividual,
+        gw2:CraftingDiscipline,
+        priory:CraftingDiscipline ;
+    rdfs:label "Mystic Forge"^^xsd:string ;
+    priory:confidenceScore 0.88 ;
+    gw21:confidenceScore 0.88 .
+
+discipline:scribe a owl:NamedIndividual,
+        priory:CraftingDiscipline ;
+    rdfs:label "Scribe"^^xsd:string .
+
+rarity:ascended a owl:NamedIndividual,
+        priory:Rarity ;
+    rdfs:label "Ascended"^^xsd:string .
+
+rarity:basic a owl:NamedIndividual,
+        priory:Rarity ;
+    rdfs:label "Basic"^^xsd:string .
+
+rarity:exotic a owl:NamedIndividual,
+        priory:Rarity ;
+    rdfs:label "Exotic"^^xsd:string .
+
+rarity:fine a owl:NamedIndividual,
+        priory:Rarity ;
+    rdfs:label "Fine"^^xsd:string .
+
+rarity:junk a owl:NamedIndividual,
+        priory:Rarity ;
+    rdfs:label "Junk"^^xsd:string .
+
+rarity:legendary a owl:NamedIndividual,
+        priory:Rarity ;
+    rdfs:label "Legendary"^^xsd:string .
+
+rarity:masterwork a owl:NamedIndividual,
+        priory:Rarity ;
+    rdfs:label "Masterwork"^^xsd:string .
+
+rarity:rare a owl:NamedIndividual,
+        priory:Rarity ;
+    rdfs:label "Rare"^^xsd:string .
+
+weapon:axe a owl:NamedIndividual,
+        priory:Weapon ;
+    rdfs:label "Axe"^^xsd:string .
+
+weapon:dagger a owl:NamedIndividual,
+        priory:Weapon ;
+    rdfs:label "Dagger"^^xsd:string .
+
+weapon:focus a owl:NamedIndividual,
+        priory:Weapon ;
+    rdfs:label "Focus"^^xsd:string .
+
+weapon:greatsword a owl:NamedIndividual,
+        priory:Weapon ;
+    rdfs:label "Greatsword"^^xsd:string .
+
+weapon:hammer a owl:NamedIndividual,
+        priory:Weapon ;
+    rdfs:label "Hammer"^^xsd:string .
+
+weapon:longbow a owl:NamedIndividual,
+        priory:Weapon ;
+    rdfs:label "Longbow"^^xsd:string .
+
+weapon:mace a owl:NamedIndividual,
+        priory:Weapon ;
+    rdfs:label "Mace"^^xsd:string .
+
+weapon:pistol a owl:NamedIndividual,
+        priory:Weapon ;
+    rdfs:label "Pistol"^^xsd:string .
+
+weapon:rifle a owl:NamedIndividual,
+        priory:Weapon ;
+    rdfs:label "Rifle"^^xsd:string .
+
+weapon:scepter a owl:NamedIndividual,
+        priory:Weapon ;
+    rdfs:label "Scepter"^^xsd:string .
+
+weapon:shield a owl:NamedIndividual,
+        priory:Weapon ;
+    rdfs:label "Shield"^^xsd:string .
+
+weapon:short_bow a owl:NamedIndividual,
+        priory:Weapon ;
+    rdfs:label "Short Bow"^^xsd:string .
+
+weapon:staff a owl:NamedIndividual,
+        priory:Weapon ;
+    rdfs:label "Staff"^^xsd:string .
+
+weapon:sword a owl:NamedIndividual,
+        priory:Weapon ;
+    rdfs:label "Sword"^^xsd:string .
+
+weapon:torch a owl:NamedIndividual,
+        priory:Weapon ;
+    rdfs:label "Torch"^^xsd:string .
+
+weapon:warhorn a owl:NamedIndividual,
+        priory:Weapon ;
+    rdfs:label "Warhorn"^^xsd:string .
+
+zone:dragons_stand a gw2:Zone ;
+    rdfs:label "Dragon's Stand"^^xsd:string ;
+    priory:confidenceScore 0.88 ;
+    gw21:confidenceScore 0.88 .
+
+priory:Armor a owl:Class ;
+    rdfs:label "Defensive Armor"^^xsd:string ;
+    rdfs:subClassOf priory:EquipableItem .
+
+priory:CollectionStep a owl:Class ;
+    rdfs:label "Individual Collection Step"^^xsd:string .
+
+priory:CuratedCollection a owl:Class ;
+    rdfs:label "Legendary Precursor Journey Collection"^^xsd:string .
+
+priory:DisciplineRecipe a owl:Class ;
+    rdfs:label "Discipline Crafting Recipe"^^xsd:string .
+
+priory:LegendaryWeapon a owl:Class ;
+    rdfs:label "Gen 2 Legendary Weapon"^^xsd:string ;
+    rdfs:subClassOf priory:Weapon .
+
+item:amalgamated_gemstone a gw2:CraftingMaterial ;
+    rdfs:label "Amalgamated Gemstone"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:craftedByDiscipline discipline:artificer ;
+    priory:ingredientQuantity 10 ;
+    priory:requiresDisciplineRating 450 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    priory:tierNumber <https://gw2ume.org/resource/entity/tier_2> ;
+    gw21:confidenceScore 1.0 .
+
+item:bolt_of_damask a gw2:CraftingMaterial ;
+    rdfs:label "Bolt of Damask"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:craftedByDiscipline discipline:tailor ;
+    priory:ingredientQuantity 3 ;
+    priory:requiresDisciplineRating 450 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    priory:tierNumber <https://gw2ume.org/resource/entity/tier_1> ;
+    gw21:confidenceScore 1.0 .
+
+item:deldrimor_steel_ingot a gw2:CraftingMaterial ;
+    rdfs:label "Deldrimor Steel Ingot"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:craftedByDiscipline discipline:weaponsmith ;
+    priory:ingredientQuantity 3 ;
+    priory:requiresDisciplineRating 450 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    priory:tierNumber <https://gw2ume.org/resource/entity/tier_1> ;
+    gw21:confidenceScore 1.0 .
+
+item:elonian_leather_square a gw2:CraftingMaterial ;
+    rdfs:label "Elonian Leather Square"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:craftedByDiscipline discipline:leatherworker ;
+    priory:ingredientQuantity 3 ;
+    priory:requiresDisciplineRating 450 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    priory:tierNumber <https://gw2ume.org/resource/entity/tier_1> ;
+    gw21:confidenceScore 1.0 .
+
+item:essence_of_the_raven a gw2:TrophyItem ;
+    rdfs:label "Essence of the Raven"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:craftedByDiscipline discipline:artificer ;
+    priory:ingredientQuantity 1 ;
+    priory:requiresDisciplineRating 450 ;
+    priory:soldBy vendor:shaman_sigurlina ;
+    priory:tierNumber <https://gw2ume.org/resource/entity/tier_1> ;
+    gw21:confidenceScore 1.0 .
+
+item:friends_of_the_owl a gw2:TrophyItem ;
+    rdfs:label "Friends of the Owl"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:craftedByDiscipline discipline:artificer ;
+    priory:ingredientQuantity 1 ;
+    priory:requiresDisciplineRating 450 ;
+    priory:soldBy vendor:owl_shaman ;
+    priory:tierNumber <https://gw2ume.org/resource/entity/tier_4> ;
+    gw21:confidenceScore 1.0 .
+
+item:friends_of_the_raven a gw2:TrophyItem ;
+    rdfs:label "Friends of the Raven"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:craftedByDiscipline discipline:artificer ;
+    priory:ingredientQuantity 1 ;
+    priory:requiresDisciplineRating 450 ;
+    priory:soldBy vendor:shaman_sigurlina ;
+    priory:tierNumber <https://gw2ume.org/resource/entity/tier_4> ;
+    gw21:confidenceScore 1.0 .
+
+item:gift_of_mastery a gw2:ComponentItem ;
+    rdfs:label "Gift of Mastery"^^xsd:string ;
+    priory:confidenceScore 0.88 ;
+    gw21:confidenceScore 0.88 .
+
+item:gift_of_nevermore a gw2:ComponentItem ;
+    rdfs:label "Gift of Nevermore"^^xsd:string ;
+    priory:confidenceScore 0.88 ;
+    gw21:confidenceScore 0.88 .
+
+item:heart_of_the_mists_essence a gw2:TrophyItem ;
+    rdfs:label "Heart of the Mists Essence"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:craftedByDiscipline discipline:artificer ;
+    priory:ingredientQuantity 1 ;
+    priory:requiresDisciplineRating 450 ;
+    priory:soldBy vendor:mist_warrior ;
+    priory:tierNumber <https://gw2ume.org/resource/entity/tier_3> ;
+    gw21:confidenceScore 1.0 .
+
+item:jar_of_luminescence a gw2:ComponentItem ;
+    rdfs:label "Jar of Luminescence"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:craftedByDiscipline discipline:artificer ;
+    priory:ingredientQuantity 1 ;
+    priory:requiresDisciplineRating 450 ;
+    priory:soldBy vendor:hylek_alchemist ;
+    priory:tierNumber <https://gw2ume.org/resource/entity/tier_2> ;
+    gw21:confidenceScore 1.0 .
+
+item:mystic_tribute a gw2:ComponentItem ;
+    rdfs:label "Mystic Tribute"^^xsd:string ;
+    priory:confidenceScore 0.88 ;
+    gw21:confidenceScore 0.88 .
+
+item:raven_egg a gw2:TrophyItem ;
+    rdfs:label "Raven Egg"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:craftedByDiscipline discipline:artificer ;
+    priory:ingredientQuantity 1 ;
+    priory:requiresDisciplineRating 450 ;
+    priory:soldBy vendor:great_raven_spirit ;
+    priory:tierNumber <https://gw2ume.org/resource/entity/tier_3> ;
+    gw21:confidenceScore 1.0 .
+
+item:ravenswood_branch a gw2:PrecursorWeapon ;
+    rdfs:label "Ravenswood Branch"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:craftedByDiscipline discipline:artificer,
+        discipline:leatherworker,
+        discipline:tailor,
+        discipline:weaponsmith ;
+    priory:ingredientQuantity 1,
+        3 ;
+    priory:precursorTo item:ravenswood_staff ;
+    priory:requiresDisciplineRating 450 ;
+    priory:requiresIngredient item:bolt_of_damask,
+        item:deldrimor_steel_ingot,
+        item:elonian_leather_square,
+        item:essence_of_the_raven,
+        item:spiritwood_plank ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs,
+        vendor:shaman_sigurlina ;
+    priory:tierNumber <https://gw2ume.org/resource/entity/tier_1>,
+        <https://gw2ume.org/resource/entity/tier_2> ;
+    gw21:confidenceScore 1.0 .
+
+item:spiritwood_dowel a gw2:CraftingMaterial ;
+    rdfs:label "Spiritwood Dowel"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:craftedByDiscipline discipline:artificer ;
+    priory:ingredientQuantity 5 ;
+    priory:requiresDisciplineRating 450 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    priory:tierNumber <https://gw2ume.org/resource/entity/tier_3> ;
+    gw21:confidenceScore 1.0 .
+
+item:spiritwood_staff_shaft a gw2:ComponentItem ;
+    rdfs:label "Spiritwood Staff Shaft"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:craftedByDiscipline discipline:artificer ;
+    priory:ingredientQuantity 1 ;
+    priory:requiresDisciplineRating 450 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    priory:tierNumber <https://gw2ume.org/resource/entity/tier_2> ;
+    gw21:confidenceScore 1.0 .
+
+item:wood_for_the_roost a gw2:TrophyItem ;
+    rdfs:label "Wood for the Roost"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:craftedByDiscipline discipline:artificer ;
+    priory:ingredientQuantity 1 ;
+    priory:requiresDisciplineRating 450 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    priory:tierNumber <https://gw2ume.org/resource/entity/tier_4> ;
+    gw21:confidenceScore 1.0 .
+
+zone:dredgehaunt_cliffs a gw2:Zone,
+        priory:Zone ;
+    rdfs:label "Dredgehaunt Cliffs"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:ingredientQuantity 1 ;
+    priory:soldBy vendor:owl_shaman ;
+    gw21:confidenceScore 1.0 .
+
+zone:heart_of_the_mists a gw2:Zone,
+        priory:Zone ;
+    rdfs:label "Heart of the Mists"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:ingredientQuantity 1 ;
+    priory:soldBy vendor:mist_warrior ;
+    gw21:confidenceScore 1.0 .
+
+zone:lions_arch a gw2:Zone,
+        priory:Zone ;
+    rdfs:label "Lion's Arch"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:ingredientQuantity 3 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    gw21:confidenceScore 1.0 .
+
+zone:lornars_pass a gw2:Zone,
+        priory:Zone ;
+    rdfs:label "Lornar's Pass"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:ingredientQuantity 1 ;
+    priory:soldBy vendor:great_raven_spirit ;
+    gw21:confidenceScore 1.0 .
+
+zone:sparkfly_fen a gw2:Zone,
+        priory:Zone ;
+    rdfs:label "Sparkfly Fen"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:ingredientQuantity 1 ;
+    priory:soldBy vendor:hylek_alchemist ;
+    gw21:confidenceScore 1.0 .
+
+zone:wayfarer_foothills a gw2:Zone,
+        priory:Zone ;
+    rdfs:label "Wayfarer Foothills"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:ingredientQuantity 1 ;
+    priory:soldBy vendor:shaman_sigurlina ;
+    gw21:confidenceScore 1.0 .
+
+priory:MysticForgeRecipe a owl:Class ;
+    rdfs:label "4-Slot Mystic Forge Recipe"^^xsd:string .
+
+item:ravenswood_staff a gw2:PrecursorWeapon ;
+    rdfs:label "Ravenswood Staff"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:craftedByDiscipline discipline:artificer ;
+    priory:ingredientQuantity 1,
+        10 ;
+    priory:precursorTo item:the_raven_spirit ;
+    priory:requiresDisciplineRating 450 ;
+    priory:requiresIngredient item:amalgamated_gemstone,
+        item:jar_of_luminescence,
+        item:ravenswood_branch,
+        item:spiritwood_plank,
+        item:spiritwood_staff_shaft ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs,
+        vendor:hylek_alchemist ;
+    priory:tierNumber <https://gw2ume.org/resource/entity/tier_2>,
+        <https://gw2ume.org/resource/entity/tier_3> ;
+    gw21:confidenceScore 1.0 .
+
+item:the_raven_spirit a gw2:PrecursorWeapon ;
+    rdfs:label "The Raven Spirit"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:craftedByDiscipline discipline:artificer ;
+    priory:ingredientQuantity 1,
+        5 ;
+    priory:precursorTo item:the_living_ravens ;
+    priory:requiresDisciplineRating 450 ;
+    priory:requiresIngredient item:heart_of_the_mists_essence,
+        item:raven_egg,
+        item:ravenswood_staff,
+        item:spiritwood_dowel,
+        item:spiritwood_plank ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs,
+        vendor:great_raven_spirit,
+        vendor:mist_warrior ;
+    priory:tierNumber <https://gw2ume.org/resource/entity/tier_3>,
+        <https://gw2ume.org/resource/entity/tier_4> ;
+    gw21:confidenceScore 1.0 .
+
+discipline:leatherworker a owl:NamedIndividual,
+        gw2:CraftingDiscipline,
+        priory:CraftingDiscipline ;
+    rdfs:label "Leatherworker"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:ingredientQuantity 3 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    gw21:confidenceScore 1.0 .
+
+discipline:tailor a owl:NamedIndividual,
+        gw2:CraftingDiscipline,
+        priory:CraftingDiscipline ;
+    rdfs:label "Tailor"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:ingredientQuantity 3 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    gw21:confidenceScore 1.0 .
+
+discipline:weaponsmith a owl:NamedIndividual,
+        gw2:CraftingDiscipline,
+        priory:CraftingDiscipline ;
+    rdfs:label "Weaponsmith"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:ingredientQuantity 3 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    gw21:confidenceScore 1.0 .
+
+priory:PrecursorWeapon a owl:Class ;
+    rdfs:label "Precursor Weapon Tier"^^xsd:string ;
+    rdfs:subClassOf priory:Weapon .
+
+item:the_living_ravens a gw2:PrecursorWeapon ;
+    rdfs:label "The Living Ravens"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:craftedByDiscipline discipline:artificer ;
+    priory:ingredientQuantity 1 ;
+    priory:requiresDisciplineRating 450 ;
+    priory:requiresIngredient item:friends_of_the_owl,
+        item:friends_of_the_raven,
+        item:spiritwood_plank,
+        item:the_raven_spirit,
+        item:wood_for_the_roost ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs,
+        vendor:owl_shaman,
+        vendor:shaman_sigurlina ;
+    priory:tierNumber <https://gw2ume.org/resource/entity/tier_4> ;
+    gw21:confidenceScore 1.0 .
+
+priory:EquipableItem a owl:Class ;
+    rdfs:label "Equipable Item"^^xsd:string ;
+    rdfs:subClassOf priory:Item .
+
+item:spiritwood_plank a gw2:CraftingMaterial ;
+    rdfs:label "Spiritwood Plank"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:craftedByDiscipline discipline:artificer ;
+    priory:ingredientQuantity 3 ;
+    priory:requiresDisciplineRating 450 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    priory:tierNumber <https://gw2ume.org/resource/entity/tier_1> ;
+    gw21:confidenceScore 1.0 .
+
+vendor:great_raven_spirit a gw2:NPCVendor,
+        priory:NPCVendor ;
+    rdfs:label "Great Raven Spirit"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:ingredientQuantity 1 ;
+    priory:locatedInZone zone:lornars_pass ;
+    priory:soldBy vendor:great_raven_spirit ;
+    gw21:confidenceScore 1.0 .
+
+vendor:hylek_alchemist a gw2:NPCVendor,
+        priory:NPCVendor ;
+    rdfs:label "Hylek Alchemist"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:ingredientQuantity 1 ;
+    priory:locatedInZone zone:sparkfly_fen ;
+    priory:soldBy vendor:hylek_alchemist ;
+    gw21:confidenceScore 1.0 .
+
+vendor:mist_warrior a gw2:NPCVendor,
+        priory:NPCVendor ;
+    rdfs:label "Mist Warrior"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:ingredientQuantity 1 ;
+    priory:locatedInZone zone:heart_of_the_mists ;
+    priory:soldBy vendor:mist_warrior ;
+    gw21:confidenceScore 1.0 .
+
+vendor:owl_shaman a gw2:NPCVendor,
+        priory:NPCVendor ;
+    rdfs:label "Owl Shaman"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:ingredientQuantity 1 ;
+    priory:locatedInZone zone:dredgehaunt_cliffs ;
+    priory:soldBy vendor:owl_shaman ;
+    gw21:confidenceScore 1.0 .
+
+<https://gw2ume.org/resource/entity/tier_2> a gw2:Item ;
+    rdfs:label "Tier 2"^^xsd:string ;
+    priory:confidenceScore 0.92 ;
+    priory:ingredientQuantity 1 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    gw21:confidenceScore 0.92 .
+
+<https://gw2ume.org/resource/entity/tier_3> a gw2:Item ;
+    rdfs:label "Tier 3"^^xsd:string ;
+    priory:confidenceScore 0.92 ;
+    priory:ingredientQuantity 1 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    gw21:confidenceScore 0.92 .
+
+<https://gw2ume.org/resource/entity/tier_4> a gw2:Item ;
+    rdfs:label "Tier 4"^^xsd:string ;
+    priory:confidenceScore 0.92 ;
+    priory:ingredientQuantity 1 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    gw21:confidenceScore 0.92 .
+
+<https://gw2ume.org/resource/entity/tier_1> a gw2:Item ;
+    rdfs:label "Tier 1"^^xsd:string ;
+    priory:confidenceScore 0.92 ;
+    priory:ingredientQuantity 3 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    gw21:confidenceScore 0.92 .
+
+vendor:shaman_sigurlina a gw2:NPCVendor,
+        priory:NPCVendor ;
+    rdfs:label "Shaman Sigurlina"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:ingredientQuantity 1 ;
+    priory:locatedInZone zone:wayfarer_foothills ;
+    priory:soldBy vendor:shaman_sigurlina ;
+    gw21:confidenceScore 1.0 .
+
+gw2:Item owl:equivalentClass priory:Item .
+
+priory:Currency a owl:Class ;
+    rdfs:label "In-Game Currency"^^xsd:string .
+
+priory:Rarity a owl:Class ;
+    rdfs:label "Item Rarity Tier"^^xsd:string .
+
+priory:Zone a owl:Class ;
+    rdfs:label "Tyria Geographic Zone"^^xsd:string ;
+    owl:disjointWith priory:NPCVendor .
+
+priory:NPCVendor a owl:Class ;
+    rdfs:label "NPC Vendor or Quest Giver"^^xsd:string .
+
+priory:CraftingDiscipline a owl:Class ;
+    rdfs:label "Crafting Profession Discipline"^^xsd:string .
+
+discipline:artificer a owl:NamedIndividual,
+        gw2:CraftingDiscipline,
+        priory:CraftingDiscipline ;
+    rdfs:label "Artificer"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:ingredientQuantity 3 ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    gw21:confidenceScore 1.0 .
+
+priory:Weapon a owl:Class ;
+    rdfs:label "Combat Weapon"^^xsd:string ;
+    rdfs:subClassOf priory:EquipableItem ;
+    owl:disjointWith priory:Armor .
+
+priory:Item a owl:Class ;
+    rdfs:label "Base Item in GW2"^^xsd:string ;
+    owl:disjointWith priory:CraftingDiscipline,
+        priory:NPCVendor,
+        priory:Zone .
+
+vendor:grandmaster_craftsman_hobbs a gw2:NPCVendor,
+        priory:NPCVendor ;
+    rdfs:label "Grandmaster Craftsman Hobbs"^^xsd:string ;
+    priory:confidenceScore 1.0 ;
+    priory:ingredientQuantity 3 ;
+    priory:locatedInZone zone:lions_arch ;
+    priory:soldBy vendor:grandmaster_craftsman_hobbs ;
+    gw21:confidenceScore 1.0 .
+

@@ -1,9 +1,12 @@
-"""Unit test suite for OWL 2 ontology loading, introspection, and symbolic axiom reasoning."""
-
 from __future__ import annotations
 
-import unittest
+import sys
 from pathlib import Path
+import unittest
+
+# Add src to sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+
 
 import rdflib
 from rdflib import Literal, URIRef

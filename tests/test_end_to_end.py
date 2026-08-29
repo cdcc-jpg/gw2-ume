@@ -50,7 +50,7 @@ class TestEndToEndPipeline(unittest.TestCase):
         self.assertGreater(len(mesh.nodes), 20)
         self.assertGreater(len(mesh.edges), 10)
         self.assertEqual(mesh.validation_status, "CONFORMING")
-        self.assertIn("@prefix gw2:", mesh.turtle)
+        self.assertIn("@prefix priory:", mesh.turtle)
         self.assertTrue(len(mesh.json_ld) > 0)
 
     def test_unstructured_text_extraction(self):

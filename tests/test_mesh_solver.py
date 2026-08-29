@@ -1,6 +1,12 @@
 """Unit tests for Relational Mesh Constraint Solver in gw2-ume."""
 
+import sys
+from pathlib import Path
 import unittest
+
+# Add src to sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+
 from gw2_ume.ontology.namespaces import (
     GW2,
     CLASS_THING,

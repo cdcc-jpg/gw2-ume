@@ -1,0 +1,67 @@
+{
+  "dataset": "skyscale_acquisition_tracker",
+  "table_id": "bench_skyscale_acquisition",
+  "cta": {
+    "STEP": "https://gw2ume.org/ontology#CollectionStep",
+    "ITEM": "https://gw2ume.org/ontology#ComponentItem",
+    "AMOUNT": "https://gw2ume.org/ontology#IngredientQuantity",
+    "AMOUNT NEEDED": "https://gw2ume.org/ontology#IngredientQuantity",
+    "COMPLETED?": "https://gw2ume.org/ontology#Item",
+    "STEPS": "https://gw2ume.org/ontology#CollectionStep",
+    "STEPS COMPLETED": "https://gw2ume.org/ontology#CollectionStep"
+  },
+  "cpa": [
+    {
+      "source_column": "STEP",
+      "target_column": "ITEM",
+      "property": "https://gw2ume.org/ontology#requiresIngredient"
+    },
+    {
+      "source_column": "ITEM",
+      "target_column": "AMOUNT",
+      "property": "https://gw2ume.org/ontology#ingredientQuantity"
+    },
+    {
+      "source_column": "ITEM",
+      "target_column": "AMOUNT NEEDED",
+      "property": "https://gw2ume.org/ontology#ingredientQuantity"
+    },
+    {
+      "source_column": "STEP",
+      "target_column": "STEPS",
+      "property": "https://gw2ume.org/ontology#tierNumber"
+    }
+  ],
+  "cea_entities": {
+    "Complete Descent (Living World Chapter 4 Final Story Step)": "https://gw2ume.org/resource/step/complete_descent",
+    "Gathering Items Beforehand": "https://gw2ume.org/resource/step/gathering_items_beforehand",
+    "Kralkatite Ore": "https://gw2ume.org/resource/item/kralkatite_ore",
+    "Difluorite Crystal": "https://gw2ume.org/resource/item/difluorite_crystal",
+    "Inscribed Shard": "https://gw2ume.org/resource/item/inscribed_shard",
+    "Lump of Mistonium": "https://gw2ume.org/resource/item/lump_of_mistonium",
+    "Branded Mass": "https://gw2ume.org/resource/item/branded_mass",
+    "Mistborn Mote": "https://gw2ume.org/resource/item/mistborn_mote",
+    "Gold": "https://gw2ume.org/resource/currency/gold",
+    "Volatile Magic": "https://gw2ume.org/resource/currency/volatile_magic",
+    "Trade Contract": "https://gw2ume.org/resource/currency/trade_contract",
+    "Piece of Skyscale Food (Gold or Crafted)": "https://gw2ume.org/resource/item/piece_of_skyscale_food",
+    "Grow Lamp (Gold or Crafted)": "https://gw2ume.org/resource/item/grow_lamp",
+    "Charged Quartz Crystal (If Crafting)": "https://gw2ume.org/resource/item/charged_quartz_crystal",
+    "Jackal's Shifting Sands Mastery": "https://gw2ume.org/resource/step/jackals_shifting_sands_mastery",
+    "Newborn Skyscales": "https://gw2ume.org/resource/step/newborn_skyscales",
+    "Skyscale Medicine": "https://gw2ume.org/resource/step/skyscale_medicine",
+    "Skyscale Scales": "https://gw2ume.org/resource/step/skyscale_scales",
+    "Skyscale Fever": "https://gw2ume.org/resource/step/skyscale_fever",
+    "Skyscale Eggs": "https://gw2ume.org/resource/step/skyscale_eggs",
+    "Saving Skyscales": "https://gw2ume.org/resource/step/saving_skyscales",
+    "Raising Skyscales": "https://gw2ume.org/resource/step/raising_skyscales",
+    "Skyscale Care": "https://gw2ume.org/resource/step/skyscale_care",
+    "Skyscale Treats": "https://gw2ume.org/resource/step/skyscale_treats",
+    "Skyscale Toys": "https://gw2ume.org/resource/step/skyscale_toys",
+    "Skyscale Lost": "https://gw2ume.org/resource/step/skyscale_lost",
+    "Skyscale Reflexes": "https://gw2ume.org/resource/step/skyscale_reflexes",
+    "Skyscale Stealth": "https://gw2ume.org/resource/step/skyscale_stealth",
+    "Skyscale Saddle": "https://gw2ume.org/resource/step/skyscale_saddle",
+    "Skyscale Flight": "https://gw2ume.org/resource/step/skyscale_flight"
+  }
+}

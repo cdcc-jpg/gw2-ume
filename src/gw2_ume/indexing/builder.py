@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Union
 
@@ -38,11 +39,17 @@ def _format_entity_for_embedding(payload: Dict[str, Any]) -> str:
     label = payload.get("label", "").strip()
     entity_id = payload.get("id", "").strip()
     description = payload.get("description", "").strip()
-    synonyms = payload.get("synonyms", [])
+    synonyms = list(payload.get("synonyms", []))
     domains = payload.get("domain", [])
     ranges = payload.get("range", [])
     superclasses = payload.get("superclasses", [])
     types = payload.get("types", [])
+
+    # Add space-separated version of camelCase or snake_case labels
+    expanded_label = re.sub(r"([a-z])([A-Z])", r"\1 \2", label).replace("_", " ").strip()
+    if expanded_label.lower() != label.lower() and expanded_label not in synonyms:
+        synonyms.append(expanded_label)
+
 
     parts = [f"[{entity_type}] {label}"]
     if entity_id and entity_id.lower() != label.lower():

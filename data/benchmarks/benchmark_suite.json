@@ -1,54 +1,68 @@
 {
-  "suite_name": "GW2-UME Semantic Mesh vs Pure NLP Benchmark",
+  "suite_name": "GW2-UME Multi-Domain Semantic Benchmark Suite",
   "version": "1.0.0",
-  "description": "Proof-of-value benchmark comparing Pure NLP baseline against GW2-UME Neuro-Symbolic Relational Mesh across clean, ambiguous, and noisy game domain tables.",
+  "description": "Proof-of-value multi-domain benchmark comparing Pure NLP baseline against GW2-UME Neuro-Symbolic Relational Mesh across 5 distinct game domains.",
   "benchmarks": [
     {
-      "id": "bench_nevermore_steps",
-      "name": "Nevermore 4-Tier Steps (Clean Wiki Table)",
+      "id": "bench_nevermore_journey",
+      "name": "Gen 2 Precursor Weapon Journeys (Nevermore)",
+      "domain": "Gen 2 Precursor Weapon Journeys",
       "table_path": "data/sample_tables/legendary_nevermore_steps.csv",
-      "type": "clean",
-      "expected_cea_count": 17,
+      "ground_truth_path": "data/benchmarks/ground_truth_nevermore.json",
+      "type": "clean_wiki_table",
+      "description": "4-tier legendary precursor crafting collection for the Nevermore staff.",
+      "expected_cea_count": 119,
       "expected_cta_count": 9,
-      "expected_cpa_count": 5
+      "expected_cpa_count": 15
     },
     {
-      "id": "bench_mystic_forge_tribute",
-      "name": "Mystic Forge Tribute Matrix (Multi-ingredient Combination)",
-      "table_path": "data/sample_tables/mystic_forge_tribute_matrix.csv",
-      "type": "clean_nested",
-      "expected_cea_count": 4,
+      "id": "bench_hope_bifrost_forge",
+      "name": "Gen 1 & Gen 2 Multi-Precursor & Mystic Forge (HOPE / Bifrost)",
+      "domain": "Gen 1 & Gen 2 Multi-Precursor & Mystic Forge",
+      "table_path": "data/sample_tables/google_sheet_hope_bifrost_tracker.csv",
+      "ground_truth_path": "data/benchmarks/ground_truth_hope_bifrost.json",
+      "type": "spreadsheet_tracker",
+      "description": "Complex multi-precursor and Mystic Forge ingredient matrix tracker.",
+      "expected_cea_count": 798,
+      "expected_cta_count": 20,
+      "expected_cpa_count": 0
+    },
+    {
+      "id": "bench_skyscale_acquisition",
+      "name": "Mount Acquisition Chains (Skyscale Tracker)",
+      "domain": "Mount Acquisition Chains",
+      "table_path": "data/sample_tables/skyscale_acquisition_tracker.csv",
+      "ground_truth_path": "data/benchmarks/ground_truth_skyscale.json",
+      "type": "hierarchical_quest_tracker",
+      "description": "Multi-stage hierarchical collection for the Skyscale mount.",
+      "expected_cea_count": 60,
       "expected_cta_count": 7,
       "expected_cpa_count": 4
     },
     {
       "id": "bench_crafting_discipline_materials",
-      "name": "Crafting Discipline Materials (Discipline & Tier Relations)",
+      "name": "Multi-Discipline Crafting Matrices (Crafting Discipline Materials)",
+      "domain": "Multi-Discipline Crafting Matrices",
       "table_path": "data/sample_tables/crafting_discipline_materials.csv",
-      "type": "clean_multi_tier",
-      "expected_cea_count": 17,
+      "ground_truth_path": "data/benchmarks/ground_truth_crafting_discipline_materials.json",
+      "type": "multi_tier_matrix",
+      "description": "Multi-tier material requirements across multiple crafting disciplines.",
+      "expected_cea_count": 85,
       "expected_cta_count": 7,
-      "expected_cpa_count": 4
-    },
-    {
-      "id": "bench_ambiguous_matrix",
-      "name": "Ambiguous Crafting Matrix (Polysemy & Vague Headers)",
-      "table_path": "data/sample_tables/ambiguous_crafting_matrix.csv",
-      "type": "ambiguous",
-      "challenges": ["polysemous_terms", "vague_headers", "untyped_numbers"],
-      "expected_cea_count": 7,
-      "expected_cta_count": 6,
-      "expected_cpa_count": 3
+      "expected_cpa_count": 18
     },
     {
       "id": "bench_noisy_scraped_tribute",
-      "name": "Noisy Scraped Tribute (Typos, OCR Errors, Missing Cells)",
+      "name": "Noisy Scraped OCR Tables (Noisy Scraped Tribute)",
+      "domain": "Noisy Scraped OCR Tables",
       "table_path": "data/sample_tables/noisy_scraped_tribute.csv",
-      "type": "noisy",
+      "ground_truth_path": "data/benchmarks/ground_truth_noisy_tribute.json",
+      "type": "noisy_ocr_table",
+      "description": "Web scraped table with OCR typos, leetspeak corruption, and missing cells.",
       "challenges": ["ocr_noise", "leetspeak_typos", "null_cells"],
-      "expected_cea_count": 6,
+      "expected_cea_count": 35,
       "expected_cta_count": 7,
-      "expected_cpa_count": 3
+      "expected_cpa_count": 14
     }
   ]
 }

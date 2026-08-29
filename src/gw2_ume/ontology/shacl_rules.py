@@ -8,45 +8,50 @@ import pyshacl
 
 SHACL_RULES_TURTLE = """
 @prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix gw2: <https://gw2ume.org/ontology#> .
+@prefix priory: <https://priory.gw2/def/> .
+@prefix priory-ref: <https://priory.gw2/ref/> .
+@prefix item: <https://priory.gw2/id/item/> .
+@prefix recipe: <https://priory.gw2/id/recipe/> .
+@prefix gw2: <https://priory.gw2/def/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 
-gw2:PrecursorStaffShape a sh:NodeShape ;
-    sh:targetClass gw2:PrecursorWeapon ;
+priory:PrecursorStaffShape a sh:NodeShape ;
+    sh:targetClass priory:PrecursorWeapon ;
     sh:property [
-        sh:path gw2:craftedByDiscipline ;
+        sh:path priory:craftedByDiscipline ;
         sh:minCount 1 ;
         sh:message "Precursor weapons must specify a crafting discipline." ;
     ] ;
     sh:property [
-        sh:path gw2:requiresIngredient ;
+        sh:path priory:requiresIngredient ;
         sh:minCount 1 ;
         sh:message "Precursor weapons must have at least one required ingredient." ;
     ] .
 
-gw2:MysticForgeRecipeShape a sh:NodeShape ;
-    sh:targetClass gw2:MysticForgeRecipe ;
+priory:MysticForgeRecipeShape a sh:NodeShape ;
+    sh:targetClass priory:MysticForgeRecipe ;
     sh:property [
-        sh:path gw2:requiresIngredient ;
+        sh:path priory:requiresIngredient ;
         sh:minCount 4 ;
         sh:maxCount 4 ;
         sh:message "A Mystic Forge recipe for a legendary weapon must require exactly 4 ingredients." ;
     ] .
 
-gw2:ItemQuantityShape a sh:NodeShape ;
-    sh:targetClass gw2:Item ;
+priory:ItemQuantityShape a sh:NodeShape ;
+    sh:targetClass priory:Item ;
     sh:property [
-        sh:path gw2:ingredientQuantity ;
+        sh:path priory:ingredientQuantity ;
         sh:datatype xsd:integer ;
         sh:minInclusive 1 ;
         sh:message "Ingredient quantity must be a positive integer >= 1." ;
     ] .
 
-gw2:VendorLocationShape a sh:NodeShape ;
-    sh:targetClass gw2:NPCVendor ;
+priory:VendorLocationShape a sh:NodeShape ;
+    sh:targetClass priory:NPCVendor ;
     sh:property [
-        sh:path gw2:locatedInZone ;
+        sh:path priory:locatedInZone ;
         sh:minCount 1 ;
         sh:message "Every NPC vendor must have an associated geographic zone." ;
     ] .

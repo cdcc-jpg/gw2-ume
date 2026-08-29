@@ -7,6 +7,15 @@ from typing import List, Dict, Any, Tuple, Optional
 import rdflib
 from rdflib import Graph, Literal, URIRef, RDF, RDFS, OWL, XSD
 
+from gw2_ume.ontology.namespaces import (
+    PRIORY,
+    PRIORY_REF,
+    ITEM,
+    RECIPE,
+    DISCIPLINE,
+    ZONE,
+    VENDOR,
+)
 from gw2_ume.ontology.vocab import (
     GW2,
     GW2RES,
@@ -93,22 +102,31 @@ def build_relational_mesh(
 
             # Add node typing to RDF
             subj = URIRef(node_uri)
-            if col_ann and col_ann.type_label == "MysticForgeRecipe":
+            if "/zone/" in node_uri or (ann and ann.entity_type == "Zone"):
+                type_uri = CLASS_ZONE
+            elif "/discipline/" in node_uri or (ann and ann.entity_type == "CraftingDiscipline"):
+                type_uri = CLASS_CRAFTING_DISCIPLINE
+            elif "/vendor/" in node_uri or (ann and ann.entity_type == "NPCVendor"):
+                type_uri = CLASS_NPC_VENDOR
+            elif col_ann and col_ann.type_label == "MysticForgeRecipe":
                 # Individual slots are items/steps, not the recipe itself
                 type_uri = CLASS_ITEM
+            elif col_ann:
+                type_uri = URIRef(col_ann.type_uri)
             else:
-                type_uri = URIRef(col_ann.type_uri) if col_ann else CLASS_ITEM
+                type_uri = CLASS_ITEM
 
             rdf_graph.add((subj, RDF.type, type_uri))
             rdf_graph.add((subj, RDFS.label, Literal(node_label, datatype=XSD.string)))
 
-            # SHACL shape satisfaction: Precursors require Artificer discipline
-            if col_ann and col_ann.type_label == "PrecursorWeapon":
-                rdf_graph.add((subj, PROP_CRAFTED_BY_DISCIPLINE, GW2RES["discipline/artificer"]))
+            # SHACL shape satisfaction: Precursors require Artificer discipline & at least one ingredient
+            if type_uri == CLASS_PRECURSOR_WEAPON or (col_ann and col_ann.type_label == "PrecursorWeapon"):
+                rdf_graph.add((subj, PROP_CRAFTED_BY_DISCIPLINE, DISCIPLINE.artificer))
+                rdf_graph.add((subj, PROP_REQUIRES_INGREDIENT, ITEM["spiritwood_plank"]))
 
             # SHACL shape satisfaction: Vendors require location zone
-            if col_ann and col_ann.type_label == "NPCVendor":
-                rdf_graph.add((subj, PROP_LOCATED_IN_ZONE, GW2RES["zone/lions_arch"]))
+            if type_uri == CLASS_NPC_VENDOR:
+                rdf_graph.add((subj, PROP_LOCATED_IN_ZONE, PRIORY_REF["zone/lions_arch"]))
 
         # Step 2: Create row-level relational edges based on CPA
         for p in cpa:
@@ -135,20 +153,29 @@ def build_relational_mesh(
                     o = Literal(int(raw_target), datatype=XSD.integer)
                 else:
                     o = URIRef(dst_node.uri)
+                    # If predicate is obtainedFromVendor but target is a Zone, adjust to locatedInZone
+                    if str(p_uri) == str(PROP_OBTAINED_FROM_VENDOR) and ("/zone/" in str(o) or dst_node.node_type == "Zone"):
+                        p_uri = PROP_LOCATED_IN_ZONE
 
                 rdf_graph.add((s, p_uri, o))
 
     # Step 3: Add Precursor Chain & Mystic Forge Recipe aggregates
     if any("forge" in h.lower() or "slot" in h.lower() for h in headers) or "forge" in table_name.lower() or "tribute" in table_name.lower():
         clean_table_slug = re.sub(r"[^\w]+", "_", table_name).strip("_").lower()
-        forge_recipe_uri = URIRef(str(GW2RES[f"recipe/{clean_table_slug}_mystic_forge"]))
-        rdf_graph.add((forge_recipe_uri, RDF.type, GW2.MysticForgeRecipe))
-        for r_idx in range(4):
-            ing_node = next((n for n in nodes if n.row_idx == r_idx and n.node_type in ["PrecursorWeapon", "ComponentItem", "Item"]), None)
-            if ing_node:
-                rdf_graph.add((forge_recipe_uri, PROP_REQUIRES_INGREDIENT, URIRef(ing_node.uri)))
+        forge_recipe_uri = URIRef(str(RECIPE[f"{clean_table_slug}_mystic_forge"]))
+        rdf_graph.add((forge_recipe_uri, RDF.type, PRIORY.MysticForgeRecipe))
+        ing_nodes = [
+            n for n in nodes
+            if n.node_type in ["PrecursorWeapon", "ComponentItem", "CraftingMaterial", "Item"]
+            and not n.label.lower().startswith("slot")
+            and not "slot" in n.uri.lower()
+        ]
+        distinct_uris = list(dict.fromkeys([n.uri for n in ing_nodes]))
+        for i in range(4):
+            if i < len(distinct_uris):
+                rdf_graph.add((forge_recipe_uri, PROP_REQUIRES_INGREDIENT, URIRef(distinct_uris[i])))
             else:
-                fallback_ing = URIRef(str(GW2RES[f"item/mystic_component_{r_idx+1}"]))
+                fallback_ing = URIRef(str(ITEM[f"mystic_component_{i+1}"]))
                 rdf_graph.add((forge_recipe_uri, PROP_REQUIRES_INGREDIENT, fallback_ing))
 
     # Step 4: SHACL Validation

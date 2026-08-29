@@ -22,6 +22,8 @@ from gw2_ume.models import (
     TableGrid,
     TableInterpretationMesh,
 )
+from gw2_ume.ontology.loader import OntologyLoader
+from gw2_ume.ontology.reasoner import SymbolicAxiomReasoner as OntologySymbolicAxiomReasoner
 from gw2_ume.normalization.llm_normalizer import HeuristicNormalizer, LLMNormalizer
 from gw2_ume.normalization.text_cleaner import KNOWN_ENTITY_TYPES, TextCleaner
 
@@ -36,43 +38,33 @@ class SymbolicAxiomReasoner:
     """Symbolic reasoning engine checking domain, range, type disjointness,
 
     slot constraints, and ontology integrity rules for Guild Wars 2.
+    Populated dynamically from loaded RDF/OWL ontology graphs.
     """
 
-    # Disjoint type sets
-    DISJOINT_TYPES: Dict[str, Set[str]] = {
-        "Weapon": {"CraftingMaterial", "Currency", "CraftingDiscipline"},
-        "Armor": {"CraftingMaterial", "Currency", "CraftingDiscipline"},
-        "CraftingMaterial": {"Weapon", "Armor", "Trinket", "Currency", "CraftingDiscipline"},
-        "Currency": {"CraftingMaterial", "Weapon", "Armor", "CraftingDiscipline"},
-        "CraftingDiscipline": {"CraftingMaterial", "Weapon", "Armor", "Currency"},
-    }
-
-    # Axiomatic predicate signatures (predicate: (valid_domain_types, valid_range_types))
-    PREDICATE_SIGNATURES: Dict[str, Tuple[Set[str], Set[str]]] = {
-        "requiresMaterial": (
-            {"CraftingRecipe", "MysticForgeRecipe", "Item", "Weapon", "Armor", "LegendaryGift"},
-            {"CraftingMaterial", "Item", "LegendaryGift"},
-        ),
-        "hasIngredient": (
-            {"CraftingRecipe", "MysticForgeRecipe", "Item", "Weapon", "Armor", "LegendaryGift"},
-            {"CraftingMaterial", "Item", "Weapon", "LegendaryGift"},
-        ),
-        "requiresDiscipline": (
-            {"CraftingRecipe", "Item", "Weapon", "Armor"},
-            {"CraftingDiscipline"},
-        ),
-        "costsCurrency": (
-            {"CraftingRecipe", "Item", "Weapon", "Armor", "VendorOffer"},
-            {"Currency"},
-        ),
-        "hasOutput": (
-            {"CraftingRecipe", "MysticForgeRecipe"},
-            {"Item", "Weapon", "Armor", "Trinket", "LegendaryGift"},
-        ),
-    }
-
-    def __init__(self, strict_mode: bool = False) -> None:
+    def __init__(
+        self,
+        loader: Optional[OntologyLoader] = None,
+        reasoner: Optional[OntologySymbolicAxiomReasoner] = None,
+        strict_mode: bool = False,
+        auto_load_defaults: bool = True,
+    ) -> None:
         self.strict_mode = strict_mode
+        if reasoner is not None:
+            self.ontology_reasoner = reasoner
+            self.loader = reasoner.loader
+        else:
+            self.loader = loader if loader is not None else OntologyLoader(auto_load_defaults=auto_load_defaults)
+            self.ontology_reasoner = OntologySymbolicAxiomReasoner(loader=self.loader)
+
+    @property
+    def DISJOINT_TYPES(self) -> Dict[str, Set[str]]:
+        """Dynamically extracted disjoint types from loaded RDF/OWL ontology graph."""
+        return self.ontology_reasoner.get_disjoint_types_map()
+
+    @property
+    def PREDICATE_SIGNATURES(self) -> Dict[str, Tuple[Set[str], Set[str]]]:
+        """Dynamically extracted predicate signatures from loaded RDF/OWL ontology graph."""
+        return self.ontology_reasoner.get_predicate_signatures()
 
     def validate_interpretation(
         self,
@@ -106,6 +98,7 @@ class SymbolicAxiomReasoner:
     ) -> List[DiagnosticConflict]:
         """Check if column type matches the entities contained in its cells."""
         conflicts: List[DiagnosticConflict] = []
+        disjoint_map = self.DISJOINT_TYPES
 
         for col in proposal.columns:
             col_type = col.predicted_type
@@ -113,15 +106,17 @@ class SymbolicAxiomReasoner:
             if not col_cells:
                 continue
 
-            # Check disjointness against cell entity types
-            disjoint_with_col = self.DISJOINT_TYPES.get(col_type, set())
-            if not disjoint_with_col:
-                continue
-
             for cell in col_cells:
                 # Check ground truth type of cell if known
                 actual_type = KNOWN_ENTITY_TYPES.get(cell.normalized_text)
-                if actual_type and actual_type in disjoint_with_col:
+                if not actual_type:
+                    continue
+
+                is_disjoint = (
+                    self.ontology_reasoner.are_disjoint(col_type, actual_type)
+                    or actual_type in disjoint_map.get(col_type, set())
+                )
+                if is_disjoint:
                     suggested = actual_type
                     conflicts.append(
                         DiagnosticConflict(
@@ -148,17 +143,37 @@ class SymbolicAxiomReasoner:
     ) -> List[DiagnosticConflict]:
         """Check domain and range validity for extracted row relations."""
         conflicts: List[DiagnosticConflict] = []
+        signatures = self.PREDICATE_SIGNATURES
 
         for rel in proposal.row_relations:
             pred = rel.predicate
-            if pred not in self.PREDICATE_SIGNATURES:
-                continue
+            valid_ranges: Set[str] = set()
 
-            valid_domains, valid_ranges = self.PREDICATE_SIGNATURES[pred]
+            if pred in signatures:
+                _, valid_ranges = signatures[pred]
+            else:
+                expected_ranges = self.ontology_reasoner.get_expected_ranges(pred)
+                for r in expected_ranges:
+                    r_pref = self.loader.to_prefixed_name(r)
+                    valid_ranges.add(r_pref.split(":")[-1])
+                    valid_ranges.add(str(r))
+                    for sub in self.loader.get_subclasses(r, direct=False):
+                        s_pref = self.loader.to_prefixed_name(sub)
+                        valid_ranges.add(s_pref.split(":")[-1])
+                        valid_ranges.add(str(sub))
+
+            if not valid_ranges:
+                continue
 
             # Check Object range
             obj_type = KNOWN_ENTITY_TYPES.get(rel.object, "Item")
-            if obj_type not in valid_ranges and "Item" not in valid_ranges:
+            is_valid_range = (
+                obj_type in valid_ranges
+                or "Item" in valid_ranges
+                or any(self.ontology_reasoner.is_subclass_of(obj_type, r) for r in valid_ranges)
+            )
+
+            if not is_valid_range:
                 conflicts.append(
                     DiagnosticConflict(
                         conflict_type="RANGE_VIOLATION",

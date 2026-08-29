@@ -4,9 +4,14 @@ LLM Integration, and Knowledge Graph Enrichment.
 """
 
 import json
+import sys
+from pathlib import Path
 import unittest
 
 import rdflib
+
+# Add src to sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
 
 from gw2_ume.models import (
     CandidateTableInterpretation,
@@ -14,6 +19,7 @@ from gw2_ume.models import (
     DiagnosticConflict,
     EntitySpan,
     PingPongResult,
+    RefinedProposal,
     TableColumnInterpretation,
     TableGrid,
     TableInterpretationMesh,
@@ -195,6 +201,159 @@ class TestLLMNormalizers(unittest.TestCase):
 
         n2 = get_normalizer("auto")
         self.assertIsInstance(n2, HeuristicNormalizer)
+
+    def test_api_normalizer_fallback_without_keys(self):
+        """Test APILLMNormalizer falls back with transparent logging when API keys are absent."""
+        import os
+        from unittest.mock import patch
+
+        with patch.dict(os.environ, {}, clear=True):
+            gemini_norm = APILLMNormalizer(provider="gemini")
+            self.assertFalse(gemini_norm._has_api_key())
+            self.assertEqual(gemini_norm.normalize_text("spirtwood"), "Spiritwood Plank")
+
+            spans = gemini_norm.extract_entity_spans("Need 250x spirtwood")
+            self.assertTrue(len(spans) > 0)
+            self.assertEqual(spans[0].normalized_text, "Spiritwood Plank")
+
+            grid = TableGrid(headers=["Item"], rows=[["Spiritwood Plank"]])
+            prop = gemini_norm.extract_table_mentions(grid)
+            self.assertIsInstance(prop, CandidateTableInterpretation)
+
+            refined = gemini_norm.resolve_ambiguity(prop, [])
+            self.assertIsInstance(refined, RefinedProposal)
+
+    def test_api_normalizer_gemini_mocked_calls(self):
+        """Test APILLMNormalizer HTTP request execution and JSON parsing for Gemini."""
+        import io
+        import os
+        from unittest.mock import MagicMock, patch
+
+        mock_resp_data = {
+            "candidates": [
+                {
+                    "content": {
+                        "parts": [
+                            {"text": json.dumps({"normalized_text": "Spiritwood Plank"})}
+                        ]
+                    }
+                }
+            ]
+        }
+        mock_resp = MagicMock()
+        mock_resp.read.return_value = json.dumps(mock_resp_data).encode("utf-8")
+        mock_resp.__enter__.return_value = mock_resp
+
+        with patch.dict(os.environ, {"GEMINI_API_KEY": "fake_gemini_key"}):
+            with patch("urllib.request.urlopen", return_value=mock_resp) as mock_urlopen:
+                normalizer = APILLMNormalizer(provider="gemini", model="gemini-2.5-flash")
+                self.assertTrue(normalizer._has_api_key())
+                res = normalizer.normalize_text("spirtwood")
+                self.assertEqual(res, "Spiritwood Plank")
+                mock_urlopen.assert_called_once()
+                req = mock_urlopen.call_args[0][0]
+                self.assertIn("key=fake_gemini_key", req.full_url)
+                self.assertIn("gemini-2.5-flash", req.full_url)
+
+    def test_api_normalizer_openai_mocked_calls(self):
+        """Test APILLMNormalizer HTTP request execution and JSON parsing for OpenAI."""
+        import os
+        from unittest.mock import MagicMock, patch
+
+        mock_resp_data = {
+            "choices": [
+                {
+                    "message": {
+                        "content": json.dumps([
+                            {
+                                "raw_text": "Spiritwood Plank",
+                                "normalized_text": "Spiritwood Plank",
+                                "entity_type": "CraftingMaterial",
+                                "quantity": 250,
+                                "unit": "count",
+                                "start": 0,
+                                "end": 16,
+                                "confidence": 0.99,
+                            }
+                        ])
+                    }
+                }
+            ]
+        }
+        mock_resp = MagicMock()
+        mock_resp.read.return_value = json.dumps(mock_resp_data).encode("utf-8")
+        mock_resp.__enter__.return_value = mock_resp
+
+        with patch.dict(os.environ, {"OPENAI_API_KEY": "fake_openai_key"}):
+            with patch("urllib.request.urlopen", return_value=mock_resp) as mock_urlopen:
+                normalizer = APILLMNormalizer(provider="openai", model="gpt-4o-mini")
+                self.assertTrue(normalizer._has_api_key())
+                spans = normalizer.extract_entity_spans("Spiritwood Plank")
+                self.assertEqual(len(spans), 1)
+                self.assertEqual(spans[0].normalized_text, "Spiritwood Plank")
+                self.assertEqual(spans[0].quantity, 250)
+
+                req = mock_urlopen.call_args[0][0]
+                self.assertIn("Bearer fake_openai_key", req.headers["Authorization"])
+
+    def test_api_normalizer_anthropic_mocked_calls(self):
+        """Test APILLMNormalizer HTTP request execution and JSON parsing for Anthropic."""
+        import os
+        from unittest.mock import MagicMock, patch
+
+        mock_resp_data = {
+            "content": [
+                {
+                    "text": json.dumps({
+                        "columns": [
+                            {"column_index": 0, "column_name": "Requirement", "predicted_type": "CraftingMaterial", "role": "ingredient", "confidence": 0.95},
+                            {"column_index": 1, "column_name": "Quantity", "predicted_type": "Quantity", "role": "quantity", "confidence": 0.95},
+                        ],
+                        "table_type": "CraftingRecipe",
+                        "subject_entity": "Nevermore",
+                        "row_relations": [
+                            {"row_idx": 0, "subject": "Nevermore", "predicate": "requiresMaterial", "object": "Spiritwood Plank", "quantity": 250, "unit": "count", "confidence": 0.95}
+                        ],
+                        "cell_mentions": [
+                            {"row_idx": 0, "col_idx": 0, "raw_text": "Spiritwood Plank", "normalized_text": "Spiritwood Plank", "entity_type": "CraftingMaterial", "quantity": 250, "unit": "count", "confidence": 0.95}
+                        ],
+                        "confidence": 0.95,
+                        "reasoning": "Extracted via Anthropic Claude."
+                    })
+                }
+            ]
+        }
+        mock_resp = MagicMock()
+        mock_resp.read.return_value = json.dumps(mock_resp_data).encode("utf-8")
+        mock_resp.__enter__.return_value = mock_resp
+
+        with patch.dict(os.environ, {"ANTHROPIC_API_KEY": "fake_anthropic_key"}):
+            with patch("urllib.request.urlopen", return_value=mock_resp) as mock_urlopen:
+                normalizer = APILLMNormalizer(provider="anthropic", model="claude-3-5-sonnet-20241022")
+                self.assertTrue(normalizer._has_api_key())
+                grid = TableGrid(headers=["Requirement", "Quantity"], rows=[["Spiritwood Plank", "250"]])
+                prop = normalizer.extract_table_mentions(grid)
+
+                self.assertEqual(prop.table_type, "CraftingRecipe")
+                self.assertEqual(prop.subject_entity, "Nevermore")
+                self.assertEqual(len(prop.columns), 2)
+                self.assertEqual(prop.columns[0].predicted_type, "CraftingMaterial")
+
+                req = mock_urlopen.call_args[0][0]
+                self.assertEqual(req.headers["X-api-key"], "fake_anthropic_key")
+                self.assertEqual(req.headers["Anthropic-version"], "2023-06-01")
+
+    def test_api_normalizer_http_error_fallback(self):
+        """Test APILLMNormalizer gracefully catches HTTP errors and falls back to heuristic engine."""
+        import os
+        import urllib.error
+        from unittest.mock import patch
+
+        with patch.dict(os.environ, {"GEMINI_API_KEY": "fake_key"}):
+            with patch("urllib.request.urlopen", side_effect=urllib.error.HTTPError("url", 401, "Unauthorized", {}, None)):
+                normalizer = APILLMNormalizer(provider="gemini")
+                res = normalizer.normalize_text("spirtwood")
+                self.assertEqual(res, "Spiritwood Plank")
 
 
 class TestNeuroSymbolicPingPongEngine(unittest.TestCase):

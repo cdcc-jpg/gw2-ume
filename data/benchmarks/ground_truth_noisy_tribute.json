@@ -1,0 +1,58 @@
+{
+  "dataset": "noisy_scraped_tribute",
+  "table_id": "bench_noisy_scraped_tribute",
+  "cta": {
+    "Forge_S1ot": "https://gw2ume.org/ontology#MysticForgeRecipe",
+    "Ingred_N@me": "https://gw2ume.org/ontology#PrecursorWeapon",
+    "Sub_Ingredients": "https://gw2ume.org/ontology#ComponentItem",
+    "Qty": "https://gw2ume.org/ontology#IngredientQuantity",
+    "Craft_Disc": "https://gw2ume.org/ontology#CraftingDiscipline",
+    "Aquisition_Met": "https://gw2ume.org/ontology#Item",
+    "Vendor_Zn": "https://gw2ume.org/ontology#Zone"
+  },
+  "cpa": [
+    {
+      "source_column": "Ingred_N@me",
+      "target_column": "Sub_Ingredients",
+      "property": "https://gw2ume.org/ontology#requiresIngredient"
+    },
+    {
+      "source_column": "Ingred_N@me",
+      "target_column": "Craft_Disc",
+      "property": "https://gw2ume.org/ontology#craftedByDiscipline"
+    },
+    {
+      "source_column": "Ingred_N@me",
+      "target_column": "Vendor_Zn",
+      "property": "https://gw2ume.org/ontology#obtainedFromVendor"
+    },
+    {
+      "source_column": "Sub_Ingredients",
+      "target_column": "Qty",
+      "property": "https://gw2ume.org/ontology#ingredientQuantity"
+    }
+  ],
+  "cea_entities": {
+    "The Livinq Ravens": "https://gw2ume.org/resource/item/the_living_ravens",
+    "The Raven Sp1rit": "https://gw2ume.org/resource/item/the_raven_spirit",
+    "Fri3nds of Owl": "https://gw2ume.org/resource/item/friends_of_the_owl",
+    "Gift of N3vermore": "https://gw2ume.org/resource/item/gift_of_nevermore",
+    "Gift of Raven": "https://gw2ume.org/resource/item/gift_of_the_raven",
+    "Mystic Tribbute": "https://gw2ume.org/resource/item/mystic_tribute",
+    "Mystik Clovr": "https://gw2ume.org/resource/item/mystic_clover",
+    "Mytic Coin": "https://gw2ume.org/resource/item/mystic_coin",
+    "G1ft of Mastry": "https://gw2ume.org/resource/item/gift_of_mastery",
+    "Bloodst0ne Shard": "https://gw2ume.org/resource/item/bloodstone_shard",
+    "G1ft of Battle": "https://gw2ume.org/resource/item/gift_of_battle",
+    "Obisidian": "https://gw2ume.org/resource/item/obsidian_shard",
+    "Gift of Condnsed Magic": "https://gw2ume.org/resource/item/gift_of_condensed_magic",
+    "Artifcer": "https://gw2ume.org/resource/discipline/artificer",
+    "Mystic Frge": "https://gw2ume.org/resource/discipline/mystic_forge",
+    "Mystick Forge": "https://gw2ume.org/resource/discipline/mystic_forge",
+    "Huntsmn": "https://gw2ume.org/resource/discipline/huntsman",
+    "Lion's Arxh": "https://gw2ume.org/resource/zone/lions_arch",
+    "Lions Arch": "https://gw2ume.org/resource/zone/lions_arch",
+    "Mystic Plza": "https://gw2ume.org/resource/zone/lions_arch",
+    "Miyani Lion's Arch": "https://gw2ume.org/resource/vendor/miyani"
+  }
+}

@@ -1,81 +1,75 @@
 """Table Annotator for Cell Entity Annotation (CEA), Column Type Annotation (CTA), and Column Property Annotation (CPA)."""
 
 from __future__ import annotations
+
 import csv
 import io
 import re
-import difflib
-from typing import List, Dict, Any, Tuple, Optional
+from typing import Any, Dict, List, Optional, Tuple
+
+from gw2_ume.mesh.models import CellAnnotation, ColumnAnnotation, ColumnPropertyAnnotation
 from gw2_ume.ontology.vocab import (
-    GW2,
-    GW2RES,
-    CLASS_ITEM,
-    CLASS_LEGENDARY_WEAPON,
-    CLASS_PRECURSOR_WEAPON,
-    CLASS_COMPONENT_ITEM,
-    CLASS_TROPHY_ITEM,
-    CLASS_CRAFTING_MATERIAL,
-    CLASS_CURATED_COLLECTION,
     CLASS_COLLECTION_STEP,
     CLASS_COLLECTION_TIER,
-    CLASS_MYSTIC_FORGE_RECIPE,
-    CLASS_CRAFTING_RECIPE,
+    CLASS_COMPONENT_ITEM,
     CLASS_CRAFTING_DISCIPLINE,
-    CLASS_NPC_VENDOR,
-    CLASS_ZONE,
+    CLASS_CRAFTING_MATERIAL,
+    CLASS_CURATED_COLLECTION,
     CLASS_DISCIPLINE_RATING,
     CLASS_INGREDIENT_QUANTITY,
-    PROP_REQUIRES_INGREDIENT,
-    PROP_INGREDIENT_QUANTITY,
-    PROP_CRAFTED_BY_DISCIPLINE,
-    PROP_REQUIRES_DISCIPLINE_RATING,
-    PROP_OBTAINED_FROM_VENDOR,
-    PROP_LOCATED_IN_ZONE,
-    PROP_HAS_PRECURSOR,
-    PROP_PART_OF_COLLECTION,
+    CLASS_ITEM,
+    CLASS_LEGENDARY_WEAPON,
+    CLASS_MYSTIC_FORGE_RECIPE,
+    CLASS_NPC_VENDOR,
+    CLASS_PRECURSOR_WEAPON,
+    CLASS_TROPHY_ITEM,
+    CLASS_ZONE,
+    GW2,
+    GW2RES,
     PROP_COLLECTION_TIER,
+    PROP_CRAFTED_BY_DISCIPLINE,
     PROP_FORGE_SLOT,
+    PROP_HAS_PRECURSOR,
+    PROP_INGREDIENT_QUANTITY,
+    PROP_LOCATED_IN_ZONE,
+    PROP_OBTAINED_FROM_VENDOR,
+    PROP_PART_OF_COLLECTION,
+    PROP_REQUIRES_DISCIPLINE_RATING,
+    PROP_REQUIRES_INGREDIENT,
 )
-from gw2_ume.ontology.schema import ENTITY_CATALOG
-from gw2_ume.mesh.models import CellAnnotation, ColumnAnnotation, ColumnPropertyAnnotation
+from gw2_ume.retrieval.vector_index import VectorIndex, get_default_vector_index
 
 
 def parse_table_content(content: str, filename: str = "") -> Tuple[List[str], List[List[str]]]:
-    """Parses CSV or Markdown formatted table content into headers and rows."""
-    content = content.strip()
-    if not content:
+    """Parses tabular content from Markdown, CSV, or TSV formats into structured headers and rows."""
+    content_clean = content.strip()
+    if not content_clean:
         return [], []
 
-    # Markdown table detection
-    if "|" in content and ("---" in content or content.startswith("|")):
-        lines = [line.strip() for line in content.splitlines() if line.strip()]
-        table_lines = [l for l in lines if "|" in l and not re.match(r"^\|?\s*[-:]+\s*(\|\s*[-:]+\s*)+\|?$", l)]
+    # Detect Markdown Table (| col1 | col2 |)
+    if "|" in content_clean:
+        lines = [line.strip() for line in content_clean.split("\n") if line.strip()]
+        table_lines = [l for l in lines if l.startswith("|") and not re.match(r"^\|[\s\-:|]+\|$", l)]
         if not table_lines:
             return [], []
         headers = [c.strip() for c in table_lines[0].strip("|").split("|")]
         rows = []
         for line in table_lines[1:]:
             cells = [c.strip() for c in line.strip("|").split("|")]
-            # pad or truncate cells to header length
             if len(cells) < len(headers):
                 cells += [""] * (len(headers) - len(cells))
             rows.append(cells[:len(headers)])
         return headers, rows
 
-    # CSV parsing
-    reader = csv.reader(io.StringIO(content))
+    # Detect TSV or CSV
+    delimiter = "\t" if "\t" in content_clean.split("\n")[0] else ","
+    reader = csv.reader(io.StringIO(content_clean), delimiter=delimiter)
     all_rows = list(reader)
     if not all_rows:
         return [], []
+
     headers = [h.strip() for h in all_rows[0]]
-    rows = []
-    for r in all_rows[1:]:
-        if not r or all(c.strip() == "" for c in r):
-            continue
-        cells = [c.strip() for c in r]
-        if len(cells) < len(headers):
-            cells += [""] * (len(headers) - len(cells))
-        rows.append(cells[:len(headers)])
+    rows = [[c.strip() for c in r] for r in all_rows[1:] if any(c.strip() for c in r)]
     return headers, rows
 
 
@@ -84,13 +78,18 @@ def normalize_text(text: str) -> str:
     text = text.lower().strip()
     text = re.sub(r"[@#$%^&*_+=\[\]{};:<>?/\\|~]", " ", text)
     # Common OCR/leetspeak normalizations
-    text = text.replace("0", "o").replace("1", "i").replace("3", "e").replace("4", "a").replace("5", "s").replace("q", "g")
+    text = text.replace("0", "o").replace("1", "i").replace("3", "e").replace("4", "a").replace("5", "s")
+    text = re.sub(r"q(?!u)", "g", text)
     text = re.sub(r"\s+", " ", text).strip()
     return text
 
 
-def match_cell_entity(cell_val: str, column_header: str = "") -> Optional[Tuple[str, str, str, float]]:
-    """Matches a cell string to an entity in ENTITY_CATALOG.
+def match_cell_entity(
+    cell_val: str,
+    column_header: str = "",
+    vector_index: Optional[VectorIndex] = None,
+) -> Optional[Tuple[str, str, str, float]]:
+    """Matches a cell string to an entity in the vector index.
 
     Returns:
         (entity_uri, canonical_label, entity_type_label, confidence) or None
@@ -104,73 +103,65 @@ def match_cell_entity(cell_val: str, column_header: str = "") -> Optional[Tuple[
         return None
 
     norm = normalize_text(raw)
-
     header_norm = normalize_text(column_header)
+
     if any(k in header_norm for k in ["qty", "quant", "cost", "count", "amount", "rating", "minrating", "level"]) and any(c.isdigit() for c in raw):
         return None
 
     is_discipline_col = any(w in header_norm for w in ["discipline", "craft", "prof"])
     is_vendor_col = any(w in header_norm for w in ["vendor", "source", "npc", "who"])
     is_zone_col = any(w in header_norm for w in ["zone", "loc", "place", "where"])
-    is_step_col = any(w in header_norm for w in ["step", "tier"])
+    is_step_col = any(w in header_norm for w in ["step", "journey"])
+    is_tier_col = any(w in header_norm for w in ["tier"])
+    is_precursor_col = any(w in header_norm for w in ["precursor", "weapon", "thing", "output"])
 
-    best_match: Optional[Tuple[str, str, str, float]] = None
-    best_score = 0.0
+    slug = re.sub(r"[^\w\s-]", "", raw).strip().lower().replace(" ", "_")
 
-    for key, item in ENTITY_CATALOG.items():
-        canonical_label = item["label"]
-        uri = str(item["uri"])
-        type_label = item["type_label"]
-        aliases = item.get("aliases", [])
+    if is_tier_col or (is_step_col and norm.startswith("tier")):
+        return str(GW2RES[f"tier/{slug}"]), raw, "CollectionTier", 0.95
 
-        # Check exact label match
-        if raw.lower() == canonical_label.lower():
-            return uri, canonical_label, type_label, 1.0
+    if is_step_col:
+        return str(GW2RES[f"step/{slug}"]), raw, "CollectionStep", 0.95
 
-        # Check aliases
-        for alias in aliases:
-            norm_alias = normalize_text(alias)
-            if norm == norm_alias:
-                score = 0.98
-                if is_vendor_col and type_label == "NPCVendor":
-                    score = 1.0
-                elif is_discipline_col and type_label == "CraftingDiscipline":
-                    score = 1.0
-                elif is_zone_col and type_label == "Zone":
-                    score = 1.0
-                return uri, canonical_label, type_label, score
+    index = vector_index if vector_index is not None else get_default_vector_index()
+    results = index.search_entities(raw, top_k=5)
 
-            # Fuzzy match
-            ratio = difflib.SequenceMatcher(None, norm, norm_alias).ratio()
-            if ratio > 0.70 and ratio > best_score:
-                adjusted_score = ratio
-                if is_discipline_col and type_label != "CraftingDiscipline":
-                    adjusted_score -= 0.15
-                elif is_vendor_col and type_label != "NPCVendor":
-                    adjusted_score -= 0.15
-                elif is_zone_col and type_label != "Zone":
-                    adjusted_score -= 0.15
+    if results:
+        top_cand = results[0]
+        score = top_cand.score
+        type_label = top_cand.metadata.get("type_label", top_cand.types[0] if top_cand.types else "Item")
+        canonical_label = top_cand.metadata.get("canonical_label", top_cand.label)
+        uri = top_cand.iri
 
-                if adjusted_score > best_score:
-                    best_score = adjusted_score
-                    best_match = (uri, canonical_label, type_label, adjusted_score)
+        if is_discipline_col and type_label == "CraftingDiscipline":
+            score = max(score, 0.98)
+        elif is_vendor_col and type_label == "NPCVendor":
+            score = max(score, 0.98)
+        elif is_zone_col and type_label == "Zone":
+            score = max(score, 0.98)
+        elif is_precursor_col and type_label == "PrecursorWeapon":
+            score = max(score, 0.95)
 
-    if best_match and best_score >= 0.70:
-        return best_match
+        if score >= 0.70:
+            return uri, canonical_label, type_label, min(1.0, score)
 
     # Named entity fallback
-    slug = re.sub(r"[^\w\s-]", "", raw).strip().lower().replace(" ", "_")
     fallback_uri = str(GW2RES[f"entity/{slug}"])
     return fallback_uri, raw, "Item", 0.85
 
 
-def annotate_table(headers: List[str], rows: List[List[str]]) -> Tuple[List[ColumnAnnotation], List[CellAnnotation], List[ColumnPropertyAnnotation]]:
-    """Runs CEA, CTA, and CPA on tabular data."""
+def annotate_table(
+    headers: List[str],
+    rows: List[List[str]],
+    vector_index: Optional[VectorIndex] = None,
+    reasoner: Optional[Any] = None,
+) -> Tuple[List[ColumnAnnotation], List[CellAnnotation], List[ColumnPropertyAnnotation]]:
+    """Runs CEA, CTA, and CPA on tabular data utilizing dense VectorIndex and semantic ontology axioms."""
     cta_list: List[ColumnAnnotation] = []
     cea_list: List[CellAnnotation] = []
     cpa_list: List[ColumnPropertyAnnotation] = []
 
-    num_cols = len(headers)
+    index = vector_index if vector_index is not None else get_default_vector_index()
 
     # 1. CTA: Column Type Annotation
     col_type_map: Dict[int, str] = {}
@@ -192,7 +183,6 @@ def annotate_table(headers: List[str], rows: List[List[str]]) -> Tuple[List[Colu
             type_label = "CollectionStep"
             confidence = 0.95
         elif any(w in h_norm for w in ["precursor", "weapon", "thing", "output"]):
-            # Inspect values to determine if precursor or component
             is_precursor = any("raven" in v.lower() or "branch" in v.lower() or "staff" in v.lower() for v in sample_vals)
             if is_precursor:
                 type_uri = str(CLASS_PRECURSOR_WEAPON)
@@ -217,18 +207,26 @@ def annotate_table(headers: List[str], rows: List[List[str]]) -> Tuple[List[Colu
             type_uri = str(CLASS_DISCIPLINE_RATING)
             type_label = "DisciplineRating"
             confidence = 0.95
-        elif any(w in h_norm for w in ["vendor", "source", "npc", "who"]):
-            type_uri = str(CLASS_NPC_VENDOR)
-            type_label = "NPCVendor"
-            confidence = 0.90
         elif any(w in h_norm for w in ["zone", "loc", "place", "where"]):
             type_uri = str(CLASS_ZONE)
             type_label = "Zone"
             confidence = 0.95
+        elif any(w in h_norm for w in ["vendor", "source", "npc", "who"]):
+            type_uri = str(CLASS_NPC_VENDOR)
+            type_label = "NPCVendor"
+            confidence = 0.90
         elif any(w in h_norm for w in ["slot", "forgeslot"]):
             type_uri = str(CLASS_MYSTIC_FORGE_RECIPE)
             type_label = "MysticForgeRecipe"
             confidence = 0.95
+        else:
+            # Check vector index classes
+            class_res = index.search_classes(h_norm or header, top_k=1)
+            if class_res and class_res[0].score >= 0.75:
+                top_cls = class_res[0]
+                type_uri = top_cls.iri
+                type_label = top_cls.label
+                confidence = float(top_cls.score)
 
         col_type_map[col_idx] = type_label
         cta_list.append(ColumnAnnotation(
@@ -245,7 +243,7 @@ def annotate_table(headers: List[str], rows: List[List[str]]) -> Tuple[List[Colu
         for c_idx, cell_val in enumerate(row):
             if not cell_val.strip():
                 continue
-            matched = match_cell_entity(cell_val, headers[c_idx])
+            matched = match_cell_entity(cell_val, headers[c_idx], vector_index=index)
             if matched:
                 uri, label, type_label, conf = matched
                 cea_list.append(CellAnnotation(

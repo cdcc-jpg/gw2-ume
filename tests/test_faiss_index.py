@@ -1,9 +1,12 @@
-"""Unit tests for Dense Embedder, Vector Indexing, and Ontology Index Builder."""
-
 import os
+import sys
 import tempfile
 import unittest
 from pathlib import Path
+
+# Add src to sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+
 
 import numpy as np
 import rdflib

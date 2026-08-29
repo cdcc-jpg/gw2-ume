@@ -33,17 +33,21 @@ from gw2_ume.ontology.namespaces import (
     SLOT,
     ITEMTYPE,
     GAMEMODE,
+    ZONE,
+    VENDOR,
 )
 
 # Standard and GW2 Namespaces
 GW2 = Namespace("https://schema.gw2ume.org/core#")
 GW2LEG = Namespace("https://schema.gw2ume.org/legendary#")
+GW2RES = Namespace("https://priory.gw2/id/")
 SCHEMA = Namespace("http://schema.org/")
 
 DEFAULT_PREFIXES = {
-    **DEFAULT_PRIORY_PREFIXES,
     "gw2": GW2,
     "gw2leg": GW2LEG,
+    "gw2res": GW2RES,
+    **DEFAULT_PRIORY_PREFIXES,
     "schema": SCHEMA,
     "rdfs": RDFS,
     "owl": OWL,
@@ -74,7 +78,7 @@ class OntologyLoader:
     def _bind_default_prefixes(self) -> None:
         """Bind common namespaces to the graph for pretty serialization and query resolution."""
         for prefix, ns in DEFAULT_PREFIXES.items():
-            self._graph.bind(prefix, ns)
+            self._graph.bind(prefix, ns, override=True)
 
     @property
     def graph(self) -> Graph:
@@ -132,6 +136,38 @@ class OntologyLoader:
             self.load_file(core_file)
         if leg_file.exists():
             self.load_file(leg_file)
+
+        # 3. Dynamically populate controlled reference vocabularies
+        from gw2_ume.ontology.vocab import (
+            CONTROLLED_DISCIPLINES,
+            CONTROLLED_CURRENCIES,
+            CONTROLLED_RARITIES,
+            CONTROLLED_WEAPONS,
+            CLASS_CRAFTING_DISCIPLINE,
+            CLASS_CURRENCY,
+            CLASS_RARITY,
+            CLASS_WEAPON,
+        )
+        for disc_key, disc_uri in CONTROLLED_DISCIPLINES.items():
+            self._graph.add((disc_uri, RDF.type, CLASS_CRAFTING_DISCIPLINE))
+            self._graph.add((disc_uri, RDF.type, OWL.NamedIndividual))
+            self._graph.add((disc_uri, RDFS.label, Literal(disc_key.replace("_", " ").title(), datatype=XSD.string)))
+
+        for curr_key, curr_uri in CONTROLLED_CURRENCIES.items():
+            self._graph.add((curr_uri, RDF.type, CLASS_CURRENCY))
+            self._graph.add((curr_uri, RDF.type, OWL.NamedIndividual))
+            self._graph.add((curr_uri, RDFS.label, Literal(curr_key.replace("_", " ").title(), datatype=XSD.string)))
+
+        for rar_key, rar_uri in CONTROLLED_RARITIES.items():
+            self._graph.add((rar_uri, RDF.type, CLASS_RARITY))
+            self._graph.add((rar_uri, RDF.type, OWL.NamedIndividual))
+            self._graph.add((rar_uri, RDFS.label, Literal(rar_key.capitalize(), datatype=XSD.string)))
+
+        for wpn_key, wpn_uri in CONTROLLED_WEAPONS.items():
+            self._graph.add((wpn_uri, RDF.type, CLASS_WEAPON))
+            self._graph.add((wpn_uri, RDF.type, OWL.NamedIndividual))
+            self._graph.add((wpn_uri, RDFS.label, Literal(wpn_key.replace("_", " ").title(), datatype=XSD.string)))
+
         return self
 
     def load_file(self, file_path: Union[str, Path], format: Optional[str] = None) -> Graph:
@@ -173,7 +209,7 @@ class OntologyLoader:
         return self
 
     def resolve_iri(self, term: Union[str, URIRef, BNode]) -> Union[URIRef, BNode]:
-        """Resolves prefixed strings like 'gw2:Item' or full URI strings into URIRef."""
+        """Resolves prefixed strings like 'gw2:Item', short local names, or full URI strings into URIRef."""
         if isinstance(term, (URIRef, BNode)):
             return term
         if not isinstance(term, str):
@@ -182,11 +218,48 @@ class OntologyLoader:
         if ":" in term and not term.startswith("http://") and not term.startswith("https://") and not term.startswith("urn:"):
             prefix, local = term.split(":", 1)
             if prefix in DEFAULT_PREFIXES:
-                return DEFAULT_PREFIXES[prefix][local]
+                ns = DEFAULT_PREFIXES[prefix]
+                return URIRef(f"{ns}{local}")
             for p, ns in self._graph.namespaces():
                 if p == prefix:
                     return URIRef(f"{ns}{local}")
-        return URIRef(term)
+            return URIRef(term)
+
+        if term.startswith("http://") or term.startswith("https://") or term.startswith("urn:"):
+            return URIRef(term)
+
+        raw_uri = URIRef(term)
+        if (raw_uri, None, None) in self._graph or (None, None, raw_uri) in self._graph or (None, raw_uri, None) in self._graph:
+            return raw_uri
+
+        # Check default namespaces (gw2, gw2leg, item, recipe, etc.)
+        for prefix in ("gw2", "gw2leg", "item", "recipe", "discipline", "currency", "weapon", "armor", "vendor", "zone", "schema", "rdfs", "owl"):
+            if prefix in DEFAULT_PREFIXES:
+                ns = DEFAULT_PREFIXES[prefix]
+                cand = URIRef(f"{ns}{term}")
+                if (cand, None, None) in self._graph or (None, cand, None) in self._graph or (None, None, cand) in self._graph:
+                    return cand
+
+        # Check all registered namespaces in graph
+        for _, ns in self._graph.namespaces():
+            cand = URIRef(f"{ns}{term}")
+            if (cand, None, None) in self._graph or (None, cand, None) in self._graph or (None, None, cand) in self._graph:
+                return cand
+
+        # Fallback: search subjects and predicates ending with #{term} or /{term}
+        for s in self._graph.subjects(RDF.type, None):
+            if isinstance(s, URIRef):
+                s_str = str(s)
+                if s_str.endswith(f"#{term}") or s_str.endswith(f"/{term}"):
+                    return s
+
+        for p in self._graph.predicates(None, None):
+            if isinstance(p, URIRef):
+                p_str = str(p)
+                if p_str.endswith(f"#{term}") or p_str.endswith(f"/{term}"):
+                    return p
+
+        return raw_uri
 
     def to_prefixed_name(self, uri: Union[str, URIRef]) -> str:
         """Converts a full URI to a prefixed string (e.g. gw2:Item) if possible."""

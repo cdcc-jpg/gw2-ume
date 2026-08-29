@@ -1,0 +1,50 @@
+{
+  "dataset": "ambiguous_crafting_matrix",
+  "table_id": "bench_ambiguous_matrix",
+  "cta": {
+    "Step": "https://gw2ume.org/ontology#CollectionStep",
+    "Thing": "https://gw2ume.org/ontology#PrecursorWeapon",
+    "Mats": "https://gw2ume.org/ontology#ComponentItem",
+    "Source": "https://gw2ume.org/ontology#NPCVendor",
+    "Discipline": "https://gw2ume.org/ontology#CraftingDiscipline",
+    "Cost": "https://gw2ume.org/ontology#IngredientQuantity"
+  },
+  "cpa": [
+    {
+      "source_column": "Thing",
+      "target_column": "Mats",
+      "property": "https://gw2ume.org/ontology#requiresIngredient"
+    },
+    {
+      "source_column": "Thing",
+      "target_column": "Discipline",
+      "property": "https://gw2ume.org/ontology#craftedByDiscipline"
+    },
+    {
+      "source_column": "Thing",
+      "target_column": "Source",
+      "property": "https://gw2ume.org/ontology#obtainedFromVendor"
+    },
+    {
+      "source_column": "Thing",
+      "target_column": "Cost",
+      "property": "https://gw2ume.org/ontology#ingredientQuantity"
+    }
+  ],
+  "cea_entities": {
+    "Raven": "https://gw2ume.org/resource/item/ravenswood_branch",
+    "Spirit": "https://gw2ume.org/resource/item/ravenswood_staff",
+    "Raven Spirit": "https://gw2ume.org/resource/item/the_raven_spirit",
+    "Living Ravens": "https://gw2ume.org/resource/item/the_living_ravens",
+    "Tribute": "https://gw2ume.org/resource/item/mystic_tribute",
+    "Gift": "https://gw2ume.org/resource/item/gift_of_nevermore",
+    "Mastery": "https://gw2ume.org/resource/item/gift_of_mastery",
+    "Hobbs": "https://gw2ume.org/resource/vendor/grandmaster_craftsman_hobbs",
+    "Hylek": "https://gw2ume.org/resource/vendor/hylek_alchemist",
+    "Great Spirit": "https://gw2ume.org/resource/vendor/great_raven_spirit",
+    "Mystic Plaza": "https://gw2ume.org/resource/zone/lions_arch",
+    "Miyani": "https://gw2ume.org/resource/vendor/miyani",
+    "Artificer": "https://gw2ume.org/resource/discipline/artificer",
+    "Mystic Forge": "https://gw2ume.org/resource/discipline/mystic_forge"
+  }
+}

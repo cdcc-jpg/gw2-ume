@@ -1,5 +1,6 @@
 {
   "dataset": "legendary_nevermore_steps",
+  "table_id": "bench_nevermore_journey",
   "cta": {
     "Tier": "https://gw2ume.org/ontology#CollectionTier",
     "StepName": "https://gw2ume.org/ontology#CollectionStep",
@@ -59,7 +60,32 @@
     "Wood for the Roost": "https://gw2ume.org/resource/item/wood_for_the_roost",
     "Gift of Nevermore": "https://gw2ume.org/resource/item/gift_of_nevermore",
     "Mystic Tribute": "https://gw2ume.org/resource/item/mystic_tribute",
-    "Gift of Mastery": "https://gw2ume.org/resource/item/gift_of_mastery"
+    "Gift of Mastery": "https://gw2ume.org/resource/item/gift_of_mastery",
+    "Grandmaster Craftsman Hobbs": "https://gw2ume.org/resource/vendor/grandmaster_craftsman_hobbs",
+    "Shaman Sigurlina": "https://gw2ume.org/resource/vendor/shaman_sigurlina",
+    "Hylek Alchemist": "https://gw2ume.org/resource/vendor/hylek_alchemist",
+    "Great Raven Spirit": "https://gw2ume.org/resource/vendor/great_raven_spirit",
+    "Mist Warrior": "https://gw2ume.org/resource/vendor/mist_warrior",
+    "Owl Shaman": "https://gw2ume.org/resource/vendor/owl_shaman",
+    "Lion's Arch": "https://gw2ume.org/resource/zone/lions_arch",
+    "Wayfarer Foothills": "https://gw2ume.org/resource/zone/wayfarer_foothills",
+    "Sparkfly Fen": "https://gw2ume.org/resource/zone/sparkfly_fen",
+    "Lornar's Pass": "https://gw2ume.org/resource/zone/lornars_pass",
+    "Heart of the Mists": "https://gw2ume.org/resource/zone/heart_of_the_mists",
+    "Dredgehaunt Cliffs": "https://gw2ume.org/resource/zone/dredgehaunt_cliffs",
+    "Artificer": "https://gw2ume.org/resource/discipline/artificer",
+    "Weaponsmith": "https://gw2ume.org/resource/discipline/weaponsmith",
+    "Leatherworker": "https://gw2ume.org/resource/discipline/leatherworker",
+    "Tailor": "https://gw2ume.org/resource/discipline/tailor",
+    "Huntsman": "https://gw2ume.org/resource/discipline/huntsman",
+    "Nevermore I: Experimental Staff": "https://gw2ume.org/resource/step/nevermore_i_experimental_staff",
+    "Nevermore II: The Mnemonic Device": "https://gw2ume.org/resource/step/nevermore_ii_the_mnemonic_device",
+    "Nevermore III: The Raven Spirit": "https://gw2ume.org/resource/step/nevermore_iii_the_raven_spirit",
+    "Nevermore IV: The Living Ravens": "https://gw2ume.org/resource/step/nevermore_iv_the_living_ravens",
+    "Tier 1": "https://gw2ume.org/resource/tier/tier_1",
+    "Tier 2": "https://gw2ume.org/resource/tier/tier_2",
+    "Tier 3": "https://gw2ume.org/resource/tier/tier_3",
+    "Tier 4": "https://gw2ume.org/resource/tier/tier_4"
   },
   "constraints": {
     "discipline_types": {

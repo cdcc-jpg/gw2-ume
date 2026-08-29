@@ -10,7 +10,11 @@ from gw2_ume.matching.models import (
     TableGrid,
 )
 from gw2_ume.ontology.reasoner import SymbolicAxiomReasoner
-from gw2_ume.retrieval.vector_index import VectorIndex, _lexical_similarity
+from gw2_ume.retrieval.vector_index import (
+    VectorIndex,
+    _lexical_similarity,
+    get_default_vector_index,
+)
 
 
 class ColumnTypeAnnotator:
@@ -18,15 +22,15 @@ class ColumnTypeAnnotator:
 
     def __init__(
         self,
-        reasoner: SymbolicAxiomReasoner,
+        reasoner: SymbolicAxiomReasoner | None = None,
         vector_index: VectorIndex | None = None,
         voting_weight: float = 0.40,
         hierarchy_weight: float = 0.40,
         header_weight: float = 0.20,
     ) -> None:
         """Initialize CTA with reasoner, vector index, and weighting parameters."""
-        self.reasoner = reasoner
-        self.vector_index = vector_index
+        self.reasoner = reasoner if reasoner is not None else SymbolicAxiomReasoner()
+        self.vector_index = vector_index if vector_index is not None else get_default_vector_index()
         self.voting_weight = voting_weight
         self.hierarchy_weight = hierarchy_weight
         self.header_weight = header_weight

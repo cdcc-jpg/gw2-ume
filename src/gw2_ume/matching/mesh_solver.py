@@ -139,7 +139,21 @@ class RelationalMeshSolver:
             best_row_score = -1e9
             best_row_triples: list[MeshTriple] = []
 
-            options = [col_candidates_list[c][:4] for c in active_cols]
+            relational_cols = {ci for ci, _ in chosen_column_relations.keys()} | {cj for _, cj in chosen_column_relations.keys()}
+            options: list[list[CellCandidate]] = []
+            for c in active_cols:
+                cands = col_candidates_list[c]
+                if c in relational_cols:
+                    options.append(cands[:3])
+                else:
+                    options.append(cands[:1])
+
+            # Safety cap on total combinations per row
+            total_combos = 1
+            for opt in options:
+                total_combos *= max(1, len(opt))
+            if total_combos > 128:
+                options = [opt[:2] if c in relational_cols else opt[:1] for c, opt in zip(active_cols, options)]
 
             for combo in itertools.product(*options):
                 assignment = {c_idx: cand for c_idx, cand in zip(active_cols, combo)}

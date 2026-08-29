@@ -521,40 +521,417 @@ class LocalGemmaNormalizer(LLMNormalizer):
             return self._tokenizer.decode(outputs[0][inputs.input_ids.shape[1]:], skip_special_tokens=True)
 
 
+def _extract_json_from_response(text: str) -> Optional[Any]:
+    """Extract and parse JSON object or array from LLM textual output."""
+    if not text:
+        return None
+    cleaned = text.strip()
+    # 1. Direct JSON load
+    try:
+        return json.loads(cleaned)
+    except json.JSONDecodeError:
+        pass
+
+    # 2. Markdown code block extraction
+    code_block = re.search(r"```(?:json)?\s*([\[{].*?[\]}])\s*```", cleaned, re.DOTALL)
+    if code_block:
+        try:
+            return json.loads(code_block.group(1))
+        except json.JSONDecodeError:
+            pass
+
+    # 3. Outer JSON object
+    json_obj = re.search(r"\{.*\}", cleaned, re.DOTALL)
+    if json_obj:
+        try:
+            return json.loads(json_obj.group(0))
+        except json.JSONDecodeError:
+            pass
+
+    # 4. Outer JSON array
+    json_arr = re.search(r"\[.*\]", cleaned, re.DOTALL)
+    if json_arr:
+        try:
+            return json.loads(json_arr.group(0))
+        except json.JSONDecodeError:
+            pass
+
+    return None
+
+
 # ============================================================================
 # REMOTE API LLM NORMALIZER (GEMINI, OPENAI, ANTHROPIC)
 # ============================================================================
 
 class APILLMNormalizer(LLMNormalizer):
-    """Remote LLM normalizer utilizing Gemini, OpenAI, or Anthropic APIs if configured."""
+    """Remote LLM normalizer utilizing Gemini, OpenAI, or Anthropic APIs via urllib.request (zero extra dependencies)."""
 
     def __init__(self, provider: str = "gemini", model: Optional[str] = None) -> None:
         self.provider = provider.lower()
-        self.model = model or ("gemini-2.5-flash" if self.provider == "gemini" else "gpt-4o-mini")
+        if model is not None:
+            self.model = model
+        elif self.provider in ("gemini", "google"):
+            self.model = "gemini-2.5-flash"
+        elif self.provider == "anthropic":
+            self.model = "claude-3-5-sonnet-20241022"
+        else:
+            self.model = "gpt-4o-mini"
+
         self.fallback = HeuristicNormalizer()
+
+    def _get_api_key_env_var(self) -> str:
+        """Return the primary environment variable name for this provider's API key."""
+        if self.provider in ("gemini", "google"):
+            return "GEMINI_API_KEY"
+        elif self.provider == "anthropic":
+            return "ANTHROPIC_API_KEY"
+        elif self.provider == "openai":
+            return "OPENAI_API_KEY"
+        return "API_KEY"
+
+    def _get_api_key(self) -> Optional[str]:
+        """Retrieve API key from environment."""
+        if self.provider in ("gemini", "google"):
+            return os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+        elif self.provider == "openai":
+            return os.environ.get("OPENAI_API_KEY")
+        elif self.provider == "anthropic":
+            return os.environ.get("ANTHROPIC_API_KEY")
+        return None
 
     def _has_api_key(self) -> bool:
         """Check if required API key exists in environment."""
-        if self.provider == "gemini":
-            return bool(os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY"))
-        elif self.provider == "openai":
-            return bool(os.environ.get("OPENAI_API_KEY"))
-        elif self.provider == "anthropic":
-            return bool(os.environ.get("ANTHROPIC_API_KEY"))
-        return False
+        return bool(self._get_api_key())
+
+    def _call_llm(self, prompt: str, system_prompt: Optional[str] = None) -> Optional[str]:
+        """Execute HTTP POST request to configured LLM provider using standard urllib.request."""
+        api_key = self._get_api_key()
+        if not api_key:
+            logger.warning(
+                "No API key found in $%s for provider '%s'. Operating in heuristic fallback mode.",
+                self._get_api_key_env_var(),
+                self.provider,
+            )
+            return None
+
+        try:
+            import urllib.error
+            import urllib.request
+
+            if self.provider in ("gemini", "google"):
+                url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model}:generateContent?key={api_key}"
+                payload: Dict[str, Any] = {
+                    "contents": [
+                        {
+                            "role": "user",
+                            "parts": [{"text": prompt}],
+                        }
+                    ],
+                    "generationConfig": {
+                        "temperature": 0.1,
+                        "maxOutputTokens": 2048,
+                    },
+                }
+                if system_prompt:
+                    payload["systemInstruction"] = {
+                        "parts": [{"text": system_prompt}],
+                    }
+
+                req_data = json.dumps(payload).encode("utf-8")
+                req = urllib.request.Request(
+                    url,
+                    data=req_data,
+                    headers={"Content-Type": "application/json"},
+                    method="POST",
+                )
+                with urllib.request.urlopen(req, timeout=30) as resp:
+                    resp_data = json.loads(resp.read().decode("utf-8"))
+                    candidates = resp_data.get("candidates", [])
+                    if candidates:
+                        parts = candidates[0].get("content", {}).get("parts", [])
+                        if parts:
+                            return parts[0].get("text", "")
+                return None
+
+            elif self.provider == "openai":
+                url = "https://api.openai.com/v1/chat/completions"
+                messages = []
+                if system_prompt:
+                    messages.append({"role": "system", "content": system_prompt})
+                messages.append({"role": "user", "content": prompt})
+
+                payload = {
+                    "model": self.model,
+                    "messages": messages,
+                    "temperature": 0.1,
+                    "max_tokens": 2048,
+                }
+                req_data = json.dumps(payload).encode("utf-8")
+                req = urllib.request.Request(
+                    url,
+                    data=req_data,
+                    headers={
+                        "Content-Type": "application/json",
+                        "Authorization": f"Bearer {api_key}",
+                    },
+                    method="POST",
+                )
+                with urllib.request.urlopen(req, timeout=30) as resp:
+                    resp_data = json.loads(resp.read().decode("utf-8"))
+                    choices = resp_data.get("choices", [])
+                    if choices:
+                        return choices[0].get("message", {}).get("content", "")
+                return None
+
+            elif self.provider == "anthropic":
+                url = "https://api.anthropic.com/v1/messages"
+                payload = {
+                    "model": self.model,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "max_tokens": 2048,
+                    "temperature": 0.1,
+                }
+                if system_prompt:
+                    payload["system"] = system_prompt
+
+                req_data = json.dumps(payload).encode("utf-8")
+                req = urllib.request.Request(
+                    url,
+                    data=req_data,
+                    headers={
+                        "Content-Type": "application/json",
+                        "x-api-key": api_key,
+                        "anthropic-version": "2023-06-01",
+                    },
+                    method="POST",
+                )
+                with urllib.request.urlopen(req, timeout=30) as resp:
+                    resp_data = json.loads(resp.read().decode("utf-8"))
+                    content = resp_data.get("content", [])
+                    if content and isinstance(content, list):
+                        return content[0].get("text", "")
+                return None
+
+            else:
+                logger.warning("Unsupported LLM provider '%s'. Operating in heuristic fallback mode.", self.provider)
+                return None
+
+        except urllib.error.HTTPError as e:
+            err_body = e.read().decode("utf-8", errors="replace") if hasattr(e, "read") else str(e)
+            logger.warning(
+                "%s API HTTP error %d: %s. Operating in heuristic fallback mode.",
+                self.provider.title(),
+                e.code,
+                err_body,
+            )
+            return None
+        except urllib.error.URLError as e:
+            logger.warning(
+                "%s API connection error: %s. Operating in heuristic fallback mode.",
+                self.provider.title(),
+                e.reason,
+            )
+            return None
+        except Exception as e:
+            logger.warning(
+                "%s API call failed (%s). Operating in heuristic fallback mode.",
+                self.provider.title(),
+                e,
+            )
+            return None
 
     def normalize_text(self, text: str) -> str:
-        """Normalize text using remote API or heuristic fallback."""
+        """Normalize typos, colloquialisms, and wiki markup in text using remote LLM API or heuristic fallback."""
         if not self._has_api_key():
+            logger.warning(
+                "No API key found in $%s for provider '%s'. Operating in heuristic fallback mode.",
+                self._get_api_key_env_var(),
+                self.provider,
+            )
             return self.fallback.normalize_text(text)
+
+        prompt = (
+            f"You are an expert Guild Wars 2 knowledge base normalizer.\n"
+            f"Clean typos, colloquialisms, chat codes, and wiki markup from the following input and return the official canonical Guild Wars 2 in-game entity name:\n"
+            f"Input: \"{text}\"\n\n"
+            f"Output a JSON object: {{\"normalized_text\": \"<canonical name>\"}}\n"
+            f"Output valid JSON only."
+        )
+        resp = self._call_llm(prompt)
+        if resp:
+            parsed = _extract_json_from_response(resp)
+            if isinstance(parsed, dict) and "normalized_text" in parsed:
+                norm = str(parsed["normalized_text"]).strip()
+                if norm:
+                    return norm
+            elif isinstance(parsed, str) and parsed.strip():
+                return parsed.strip()
+            cleaned = resp.strip().strip('"\'')
+            if cleaned and not cleaned.startswith("{"):
+                return cleaned
+
         return self.fallback.normalize_text(text)
 
     def extract_entity_spans(self, text: str) -> List[EntitySpan]:
-        """Extract entity spans using heuristic or remote API."""
+        """Extract entity mentions, candidate types, and numerical quantities from text using remote LLM API or heuristic fallback."""
+        if not self._has_api_key():
+            logger.warning(
+                "No API key found in $%s for provider '%s'. Operating in heuristic fallback mode.",
+                self._get_api_key_env_var(),
+                self.provider,
+            )
+            return self.fallback.extract_entity_spans(text)
+
+        prompt = (
+            f"You are an expert Guild Wars 2 entity recognition and extraction engine.\n"
+            f"Extract all Guild Wars 2 game entities (items, materials, weapons, currencies, vendors, zones, disciplines) and associated quantities from the text below.\n\n"
+            f"Text: \"{text}\"\n\n"
+            f"Output a JSON array of objects with the following schema:\n"
+            f"[\n"
+            f"  {{\n"
+            f"    \"raw_text\": \"substring from text\",\n"
+            f"    \"normalized_text\": \"canonical in-game name\",\n"
+            f"    \"entity_type\": \"CraftingMaterial | Weapon | Armor | Item | Currency | NPCVendor | Zone | CraftingDiscipline\",\n"
+            f"    \"quantity\": 250,\n"
+            f"    \"unit\": \"count | Gold | Karma | null\",\n"
+            f"    \"start\": character_start_index,\n"
+            f"    \"end\": character_end_index,\n"
+            f"    \"confidence\": 0.95\n"
+            f"  }}\n"
+            f"]\n"
+            f"Output valid JSON only."
+        )
+        resp = self._call_llm(prompt)
+        if resp:
+            parsed = _extract_json_from_response(resp)
+            if isinstance(parsed, list):
+                spans: List[EntitySpan] = []
+                for item in parsed:
+                    if isinstance(item, dict) and "raw_text" in item and "normalized_text" in item:
+                        raw = str(item["raw_text"])
+                        norm = str(item["normalized_text"])
+                        etype = str(item.get("entity_type", "Item"))
+                        qty = item.get("quantity")
+                        if qty is not None:
+                            try:
+                                qty = int(qty) if isinstance(qty, (int, float)) and int(qty) == qty else float(qty)
+                            except Exception:
+                                qty = None
+                        unit = item.get("unit")
+                        start = int(item.get("start", text.find(raw) if raw in text else 0))
+                        end = int(item.get("end", start + len(raw)))
+                        conf = float(item.get("confidence", 0.95))
+                        spans.append(
+                            EntitySpan(
+                                text=raw,
+                                normalized_text=norm,
+                                candidate_types=[etype],
+                                quantity=qty,
+                                unit=unit,
+                                start_char=start,
+                                end_char=end,
+                                confidence=conf,
+                            )
+                        )
+                if spans:
+                    return spans
+
         return self.fallback.extract_entity_spans(text)
 
     def extract_table_mentions(self, table: TableGrid) -> CandidateTableInterpretation:
-        """Extract table interpretation via remote API or heuristic fallback."""
+        """Extract candidate schema interpretation, column roles, and cell mentions from a table using remote LLM API or heuristic fallback."""
+        if not self._has_api_key():
+            logger.warning(
+                "No API key found in $%s for provider '%s'. Operating in heuristic fallback mode.",
+                self._get_api_key_env_var(),
+                self.provider,
+            )
+            return self.fallback.extract_table_mentions(table)
+
+        table_payload = {
+            "headers": table.headers,
+            "rows": table.rows,
+            "metadata": table.metadata,
+        }
+        prompt = (
+            f"You are an expert Guild Wars 2 semantic table interpretation engine.\n"
+            f"Analyze this structured table and output a complete candidate schema interpretation JSON.\n\n"
+            f"Table Data:\n{json.dumps(table_payload, indent=2)}\n\n"
+            f"Output JSON with this schema:\n"
+            f"{{\n"
+            f"  \"columns\": [\n"
+            f"    {{\"column_index\": 0, \"column_name\": \"...\", \"predicted_type\": \"CraftingMaterial|Weapon|Armor|Item|Currency|Quantity|CraftingDiscipline|NPCVendor|Zone\", \"role\": \"subject|ingredient|quantity|cost|discipline|reward\", \"confidence\": 0.9}}\n"
+            f"  ],\n"
+            f"  \"table_type\": \"CraftingRecipe|MysticForgeRecipe|ItemCollection\",\n"
+            f"  \"subject_entity\": \"<name of target weapon/recipe or null>\",\n"
+            f"  \"subject_column_idx\": null,\n"
+            f"  \"row_relations\": [\n"
+            f"    {{\"row_idx\": 0, \"subject\": \"...\", \"predicate\": \"requiresMaterial|hasIngredient|costsCurrency|requiresDiscipline\", \"object\": \"...\", \"quantity\": 250, \"unit\": \"count\", \"confidence\": 0.9}}\n"
+            f"  ],\n"
+            f"  \"cell_mentions\": [\n"
+            f"    {{\"row_idx\": 0, \"col_idx\": 0, \"raw_text\": \"...\", \"normalized_text\": \"...\", \"entity_type\": \"...\", \"quantity\": 250, \"unit\": \"count\", \"confidence\": 0.9}}\n"
+            f"  ],\n"
+            f"  \"confidence\": 0.95,\n"
+            f"  \"reasoning\": \"...\"\n"
+            f"}}\n"
+            f"Output valid JSON only."
+        )
+        resp = self._call_llm(prompt)
+        if resp:
+            parsed = _extract_json_from_response(resp)
+            if isinstance(parsed, dict) and "columns" in parsed:
+                try:
+                    cols: List[TableColumnInterpretation] = []
+                    for c in parsed["columns"]:
+                        cols.append(
+                            TableColumnInterpretation(
+                                column_index=int(c.get("column_index", len(cols))),
+                                column_name=str(c.get("column_name", f"Col_{len(cols)}")),
+                                predicted_type=str(c.get("predicted_type", "Item")),
+                                role=str(c.get("role", "ingredient")),
+                                confidence=float(c.get("confidence", 0.9)),
+                            )
+                        )
+                    cell_mentions: List[CellMention] = []
+                    for m in parsed.get("cell_mentions", []):
+                        cell_mentions.append(
+                            CellMention(
+                                row_idx=int(m.get("row_idx", 0)),
+                                col_idx=int(m.get("col_idx", 0)),
+                                raw_text=str(m.get("raw_text", "")),
+                                normalized_text=str(m.get("normalized_text", "")),
+                                entity_type=str(m.get("entity_type", "Item")),
+                                quantity=m.get("quantity"),
+                                unit=m.get("unit"),
+                                confidence=float(m.get("confidence", 0.9)),
+                            )
+                        )
+                    row_rels: List[RowRelation] = []
+                    for r in parsed.get("row_relations", []):
+                        row_rels.append(
+                            RowRelation(
+                                row_idx=int(r.get("row_idx", 0)),
+                                subject=str(r.get("subject", parsed.get("subject_entity", "Target"))),
+                                predicate=str(r.get("predicate", "hasIngredient")),
+                                object=str(r.get("object", "")),
+                                quantity=r.get("quantity"),
+                                unit=r.get("unit"),
+                                confidence=float(r.get("confidence", 0.9)),
+                            )
+                        )
+                    return CandidateTableInterpretation(
+                        columns=cols,
+                        table_type=str(parsed.get("table_type", "CraftingRecipe")),
+                        subject_entity=parsed.get("subject_entity"),
+                        subject_column_idx=parsed.get("subject_column_idx"),
+                        row_relations=row_rels,
+                        cell_mentions=cell_mentions,
+                        confidence=float(parsed.get("confidence", 0.9)),
+                        reasoning=str(parsed.get("reasoning", "Extracted via LLM API interpretation.")),
+                    )
+                except Exception as e:
+                    logger.debug("Failed building CandidateTableInterpretation from LLM output (%s), using fallback.", e)
+
         return self.fallback.extract_table_mentions(table)
 
     def resolve_ambiguity(
@@ -562,7 +939,76 @@ class APILLMNormalizer(LLMNormalizer):
         proposal: CandidateTableInterpretation,
         feedback: List[DiagnosticConflict],
     ) -> RefinedProposal:
-        """Refine proposal based on symbolic feedback."""
+        """Refine and adjust an interpretation proposal based on symbolic feedback using remote LLM API or heuristic fallback."""
+        if not self._has_api_key():
+            logger.warning(
+                "No API key found in $%s for provider '%s'. Operating in heuristic fallback mode.",
+                self._get_api_key_env_var(),
+                self.provider,
+            )
+            return self.fallback.resolve_ambiguity(proposal, feedback)
+
+        conflicts_data = [c.to_dict() for c in feedback]
+        proposal_data = proposal.to_dict()
+        prompt = (
+            f"You are a Neuro-Symbolic knowledge graph reasoning agent for Guild Wars 2.\n"
+            f"The candidate table interpretation below produced formal symbolic constraint violations.\n"
+            f"Adjust the column types, roles, table type, or relations to resolve all conflicts.\n\n"
+            f"Candidate Proposal:\n{json.dumps(proposal_data, indent=2)}\n\n"
+            f"Symbolic Conflicts to Fix:\n{json.dumps(conflicts_data, indent=2)}\n\n"
+            f"Output JSON with this schema:\n"
+            f"{{\n"
+            f"  \"adjustments_made\": [\"description of change 1\", \"description of change 2\"],\n"
+            f"  \"rationale\": \"summary of reasoning\",\n"
+            f"  \"refined_table_type\": \"CraftingRecipe | MysticForgeRecipe | ItemCollection\",\n"
+            f"  \"columns\": [\n"
+            f"    {{\"column_index\": 0, \"column_name\": \"...\", \"predicted_type\": \"...\", \"role\": \"...\", \"confidence\": 0.95}}\n"
+            f"  ]\n"
+            f"}}\n"
+            f"Output valid JSON only."
+        )
+        resp = self._call_llm(prompt)
+        if resp:
+            parsed = _extract_json_from_response(resp)
+            if isinstance(parsed, dict):
+                try:
+                    refined_cols = [TableColumnInterpretation(**c.to_dict()) for c in proposal.columns]
+                    if "columns" in parsed and isinstance(parsed["columns"], list):
+                        for col_update in parsed["columns"]:
+                            idx = col_update.get("column_index")
+                            if idx is not None and 0 <= idx < len(refined_cols):
+                                if "predicted_type" in col_update:
+                                    refined_cols[idx].predicted_type = col_update["predicted_type"]
+                                if "role" in col_update:
+                                    refined_cols[idx].role = col_update["role"]
+                                if "confidence" in col_update:
+                                    refined_cols[idx].confidence = float(col_update["confidence"])
+
+                    refined_table_type = parsed.get("refined_table_type", proposal.table_type)
+                    adjustments = parsed.get("adjustments_made", ["Refined via LLM API."])
+                    rationale = parsed.get("rationale", "Resolved symbolic conflicts via LLM.")
+
+                    new_relations = self.fallback._build_row_relations(
+                        None, refined_cols, proposal.cell_mentions, refined_table_type, proposal.subject_entity, proposal.subject_column_idx
+                    )
+                    refined_interp = CandidateTableInterpretation(
+                        columns=refined_cols,
+                        table_type=refined_table_type,
+                        subject_entity=proposal.subject_entity,
+                        subject_column_idx=proposal.subject_column_idx,
+                        row_relations=new_relations,
+                        cell_mentions=proposal.cell_mentions,
+                        confidence=0.98,
+                        reasoning=rationale,
+                    )
+                    return RefinedProposal(
+                        interpretation=refined_interp,
+                        adjustments_made=adjustments,
+                        rationale=rationale,
+                    )
+                except Exception as e:
+                    logger.debug("Failed building RefinedProposal from LLM response (%s), using fallback.", e)
+
         return self.fallback.resolve_ambiguity(proposal, feedback)
 
 

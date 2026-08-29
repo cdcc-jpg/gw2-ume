@@ -1,0 +1,72 @@
+{
+  "dataset": "crafting_discipline_materials",
+  "table_id": "bench_crafting_discipline_materials",
+  "cta": {
+    "Discipline": "https://gw2ume.org/ontology#CraftingDiscipline",
+    "Rating": "https://gw2ume.org/ontology#DisciplineRating",
+    "OutputItem": "https://gw2ume.org/ontology#ComponentItem",
+    "ItemType": "https://gw2ume.org/ontology#ComponentItem",
+    "MaterialName": "https://gw2ume.org/ontology#ComponentItem",
+    "MaterialQuantity": "https://gw2ume.org/ontology#IngredientQuantity",
+    "Tier": "https://gw2ume.org/ontology#CollectionTier"
+  },
+  "cpa": [
+    {
+      "source_column": "OutputItem",
+      "target_column": "MaterialName",
+      "property": "https://gw2ume.org/ontology#requiresIngredient"
+    },
+    {
+      "source_column": "OutputItem",
+      "target_column": "Discipline",
+      "property": "https://gw2ume.org/ontology#craftedByDiscipline"
+    },
+    {
+      "source_column": "OutputItem",
+      "target_column": "Rating",
+      "property": "https://gw2ume.org/ontology#requiresDisciplineRating"
+    },
+    {
+      "source_column": "OutputItem",
+      "target_column": "Tier",
+      "property": "https://gw2ume.org/ontology#tierNumber"
+    },
+    {
+      "source_column": "MaterialName",
+      "target_column": "MaterialQuantity",
+      "property": "https://gw2ume.org/ontology#ingredientQuantity"
+    }
+  ],
+  "cea_entities": {
+    "Artificer": "https://gw2ume.org/resource/discipline/artificer",
+    "Weaponsmith": "https://gw2ume.org/resource/discipline/weaponsmith",
+    "Huntsman": "https://gw2ume.org/resource/discipline/huntsman",
+    "Spiritwood Staff Shaft": "https://gw2ume.org/resource/item/spiritwood_staff_shaft",
+    "Glob of Ectoplasm": "https://gw2ume.org/resource/item/glob_of_ectoplasm",
+    "Spiritwood Dowel": "https://gw2ume.org/resource/item/spiritwood_dowel",
+    "Spiritwood Plank": "https://gw2ume.org/resource/item/spiritwood_plank",
+    "Pile of Lucent Crystal": "https://gw2ume.org/resource/item/pile_of_lucent_crystal",
+    "Gift of the Raven": "https://gw2ume.org/resource/item/gift_of_the_raven",
+    "Essence of the Raven": "https://gw2ume.org/resource/item/essence_of_the_raven",
+    "Raven Statue": "https://gw2ume.org/resource/item/raven_statue",
+    "Amalgamated Gemstone": "https://gw2ume.org/resource/item/amalgamated_gemstone",
+    "Deldrimor Steel Ingot": "https://gw2ume.org/resource/item/deldrimor_steel_ingot",
+    "Iron Ingot": "https://gw2ume.org/resource/item/iron_ingot",
+    "Steel Ingot": "https://gw2ume.org/resource/item/steel_ingot",
+    "Darksteel Ingot": "https://gw2ume.org/resource/item/darksteel_ingot",
+    "Mithril Ingot": "https://gw2ume.org/resource/item/mithril_ingot",
+    "Lump of Mithrillium": "https://gw2ume.org/resource/item/lump_of_mithrillium",
+    "Wood Ingot": "https://gw2ume.org/resource/item/wood_ingot",
+    "Elder Wood Plank": "https://gw2ume.org/resource/item/elder_wood_plank",
+    "Ancient Wood Plank": "https://gw2ume.org/resource/item/ancient_wood_plank",
+    "Glob of Elder Spirit Residue": "https://gw2ume.org/resource/item/glob_of_elder_spirit_residue",
+    "Crafting Component": "https://gw2ume.org/resource/item/crafting_component",
+    "Gift Component": "https://gw2ume.org/resource/item/gift_component",
+    "Refined Material": "https://gw2ume.org/resource/item/refined_material",
+    "Tier 7": "https://gw2ume.org/resource/tier/tier_7",
+    "Tier 6": "https://gw2ume.org/resource/tier/tier_6",
+    "Tier 5": "https://gw2ume.org/resource/tier/tier_5",
+    "Tier 4": "https://gw2ume.org/resource/tier/tier_4",
+    "Tier 3": "https://gw2ume.org/resource/tier/tier_3"
+  }
+}

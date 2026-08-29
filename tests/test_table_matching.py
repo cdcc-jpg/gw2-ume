@@ -1,6 +1,10 @@
-"""Unit tests for Cell Entity Annotation (CEA), Column Type Annotation (CTA), and Column Property Annotation (CPA)."""
-
+import sys
+from pathlib import Path
 import unittest
+
+# Add src to sys.path
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+
 from gw2_ume.ontology.namespaces import (
     GW2,
     CLASS_THING,

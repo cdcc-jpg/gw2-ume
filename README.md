@@ -1,32 +1,33 @@
-# GW2-UME: Universal Matrix Extraction & Neuro-Symbolic Graph Layer for Guild Wars 2
+# GW2-UME: Universal Matrix Extraction & Neuro-Symbolic Semantic Layer for Guild Wars 2
 
 [![Python Version](https://img.shields.io/badge/python-3.9%20%7C%203.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-blue.svg)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![RDFLib](https://img.shields.io/badge/RDFLib-7.x-orange.svg)](https://rdflib.readthedocs.io/)
 [![SHACL](https://img.shields.io/badge/W3C-SHACL%20Validated-brightgreen.svg)](https://www.w3.org/TR/shacl/)
 
-**GW2-UME** is a neuro-symbolic semantic extraction framework and relational mesh engine designed for complex domain matrices in Guild Wars 2. It bridges unstructured guide text, semi-structured tables, and messy scraped data into formal W3C RDF knowledge graphs validated with SHACL rules and OWL ontologies.
+**GW2-UME** is a neuro-symbolic semantic extraction framework and relational mesh engine designed for complex domain matrices in Guild Wars 2. It integrates **Hybrid Dense Retrieval + Ontological Constraint Checking** to transform guide text, semi-structured tables, and scraped game matrices into formal W3C RDF knowledge graphs validated with OWL 2 ontologies and SHACL shape rules.
+
+*Validated on curated GW2 domain crafting tables and semi-structured matrices.*
 
 ---
 
 ## 🌟 Core Features
 
-- **Tabular Semantic Annotation**:
-  - **CEA (Cell Entity Annotation)**: Links raw cell mentions to canonical ontology entities with fuzzy matching and contextual polysemy disambiguation.
-  - **CTA (Column Type Annotation)**: Infers ontology class types for tabular columns (`PrecursorWeapon`, `ComponentItem`, `CraftingDiscipline`, `DisciplineRating`, `NPCVendor`, `Zone`, `IngredientQuantity`).
-  - **CPA (Column Property Annotation)**: Predicts directed relational predicates between columns based on ontological domain/range compatibility.
+- **Tabular Semantic Annotation (STI)**:
+  - **CEA (Cell Entity Annotation)**: Links raw cell mentions to canonical ontology entities using dense embedding retrieval and lexical matching.
+  - **CTA (Column Type Annotation)**: Infers ontology class types for tabular columns (`PrecursorWeapon`, `CraftingMaterial`, `CraftingDiscipline`, `Vendor`, `MapZone`, `IngredientQuantity`) via Least Common Subsumer (LCS) hierarchy analysis.
+  - **CPA (Column Property Annotation)**: Predicts directed relational predicates between columns based on dynamic ontological domain/range compatibility.
 - **Relational Mesh Construction**:
-  - Constructs multi-tier directed graphs linking collection steps, components, vendors, disciplines, and geographic zones.
-  - Transitive precursor chain modeling (Tier 1 $\rightarrow$ Tier 2 $\rightarrow$ Tier 3 $\rightarrow$ Tier 4).
+  - Constructs multi-tier directed graphs linking collection steps, components, vendors, disciplines, and map zones.
+  - Models sequential precursor progression chains (Tier 1 $\rightarrow$ Tier 2 $\rightarrow$ Tier 3 $\rightarrow$ Tier 4).
   - Serializes to W3C **RDF Turtle** and **JSON-LD**.
+- **Dynamic Ontology Signature Extraction**:
+  - Automatically extracts disjoint types (`owl:disjointWith`, `owl:AllDisjointClasses`) and predicate domain/range signatures (`rdfs:domain`, `rdfs:range`) directly from loaded RDF/OWL ontology graphs.
 - **Neuro-Symbolic Ping-Pong Engine**:
-  - Interactive multi-turn dialogue between **Neural Proposer** (statistical hypothesis) and **Symbolic Validator** (SHACL & OWL constraints).
-  - Automated diagnostic repair loop resolving polysemy, OCR noise, and invalid domain assertions.
+  - Structured multi-pass feedback dialogue between a **Neural Proposer** (statistical/LLM proposal generation) and a **Symbolic Validator** (OWL 2 reasoner & SHACL shape constraints).
+  - Automated diagnostic feedback loop resolving polysemy, header mismatches, and domain/range constraint violations.
 - **Interactive HTML Visualizer**:
-  - Standalone, zero-dependency HTML dashboard with an interactive node-link graph canvas, annotated table view, ping-pong trace timeline, and Turtle / JSON-LD export.
-- **Proof-of-Value Benchmark**:
-  - Head-to-head empirical evaluation against pure unconstrained NLP baselines across clean, ambiguous, and noisy scraped tables.
-  - Demonstrates 100% semantic validity and complete elimination of SHACL violations.
+  - Standalone HTML dashboard with an interactive node-link graph canvas, annotated table view, ping-pong trace timeline, and Turtle / JSON-LD export.
 
 ---
 
@@ -45,30 +46,33 @@ gw2-ume/
 │   └── benchmarks/
 │       ├── ground_truth_nevermore.json         # Ground truth CEA/CTA/CPA & constraints
 │       └── benchmark_suite.json                # Benchmark suite configuration
+├── ontologies/                                 # OWL 2 Turtle domain ontologies
+│   ├── gw2_core.ttl                            # Core classes, properties, disjointness axioms
+│   └── gw2_legendary.ttl                       # Legendary crafting, precursor chains, recipes
 ├── src/
 │   └── gw2_ume/
-│       ├── ontology/                           # Vocabulary, OWL schema, and SHACL shapes
-│       │   ├── vocab.py
+│       ├── ontology/                           # Ontology loader, schema introspection, & reasoner
+│       │   ├── loader.py
+│       │   ├── reasoner.py
 │       │   ├── schema.py
-│       │   └── shacl_rules.py
-│       ├── mesh/                               # CEA, CTA, CPA annotator and Relational Mesh
+│       │   └── vocab.py
+│       ├── pipeline/                           # Neuro-symbolic ping-pong & UME engine
+│       │   ├── engine.py
+│       │   ├── pingpong.py
+│       │   └── enricher.py
+│       ├── normalization/                      # LLM & heuristic normalizers, text cleaners
+│       │   ├── llm_normalizer.py
+│       │   └── text_cleaner.py
+│       ├── indexing/                           # Dense embedding, FAISS & Numpy vector indices
+│       │   ├── embedder.py
+│       │   ├── faiss_index.py
+│       │   └── builder.py
+│       ├── mesh/                               # Relational mesh models & annotators
 │       │   ├── models.py
 │       │   ├── annotator.py
 │       │   └── relational_mesh.py
-│       ├── neurosymbolic/                      # Ping-pong dialogue and Pure NLP baseline
-│       │   ├── pingpong.py
-│       │   └── baseline_nlp.py
-│       ├── benchmark/                          # Evaluation harness & metrics
-│       │   ├── metrics.py
-│       │   └── runner.py
-│       ├── text/                               # Unstructured text classifier & extractor
-│       │   └── extractor.py
-│       ├── ui/                                 # Standalone HTML dashboard visualizer
-│       │   └── visualizer.py
-│       └── cli.py                              # Rich terminal CLI interface
-├── tests/
-│   ├── test_proof_of_value_benchmark.py       # Benchmark advantage & metrics tests
-│   └── test_end_to_end.py                      # Pipeline integration tests
+│       └── cli.py                              # Terminal CLI interface
+├── tests/                                      # Full unit and integration test suite
 ├── pyproject.toml
 └── README.md
 ```
@@ -90,7 +94,7 @@ pip install -e .
 
 ## 💻 CLI Usage
 
-The `gw2-ume` CLI provides a unified Rich terminal interface:
+The `gw2-ume` CLI provides a unified terminal interface:
 
 ### 1. Match Table & Build Relational Mesh
 ```bash
@@ -121,18 +125,44 @@ gw2-ume visualize data/sample_tables/legendary_nevermore_steps.csv --output dash
 
 ## 📊 Proof-of-Value Benchmark Results
 
-| Metric | Pure NLP Baseline | GW2-UME Semantic Mesh | Advantage / Gain |
-| :--- | :---: | :---: | :---: |
-| **Avg CEA Accuracy** | 57.0% | **98.2%** | **+41.2%** |
-| **Avg CTA Accuracy** | 62.0% | **98.0%** | **+36.0%** |
-| **Avg CPA F1 Score** | 43.1% | **94.7%** | **+51.6%** |
-| **Avg Semantic Validity Rate** | 56.4% | **99.0%** | **+42.6%** |
-| **Total SHACL Violations** | 12 | **0** | **100% Elimination** |
+Evaluated across 5 curated GW2 benchmark datasets comparing an unconstrained statistical NLP baseline (TF-IDF + fuzzy matching without ontology reasoning) against the **GW2-UME Semantic Mesh** (Vector Index + Levenshtein/Jaccard + Constraint Solver + SHACL validation) against ground-truth annotations:
 
-### Why Pure NLP Fails:
-1. **Polysemy**: Terms like *"Raven"* and *"Spirit"* are confused between animals, zones, quests, and precursor staff items.
-2. **Noise & OCR Artifacts**: Scraped strings like `"Fri3nds of Owl"` and `"G1ft of Mastry"` fail naive syntactic matchers.
-3. **Ontological Disjointness**: Pure NLP assigns weaponsmithing to staves or misses required 4-ingredient Mystic Forge constraints.
+| Metric | Unconstrained Statistical Baseline | GW2-UME Semantic Mesh | Advantage / Gain |
+| :--- | :---: | :---: | :---: |
+| **Avg CEA Accuracy** | 26.3% | **58.5%** | **+32.2%** |
+| **Avg CTA Accuracy** | 0.0% | **68.0%** | **+68.0%** |
+| **Avg CPA F1 Score** | 0.0% | **31.7%** | **+31.7%** |
+| **Avg Semantic Validity Rate** | 11.3% | **100.0%** | **+88.7%** |
+| **Total SHACL Violations** | 1,377 | **0** | **100% Elimination on Curated Tables** |
+| **Hallucinated Entities** | 662 | **0** | **100% Elimination on Curated Tables** |
+
+### Why Ontological Constraints Matter:
+1. **Polysemy Disambiguation**: Resolves ambiguous mentions (e.g. *"Raven"* as companion pet vs. precursor staff vs. NPC Havroun) using column-level type hierarchies and domain/range checking.
+2. **Noise Resistance**: Rebinds OCR artifacts and colloquial slang to canonical entities in the ontology graph.
+3. **Axiomatic Consistency**: Enforces domain-specific invariants (e.g. recipe input slot limits, discipline matching, positive integer quantities).
+
+---
+
+## 🔍 Capabilities, Scope & Limitations
+
+### Current Capabilities
+- Hybrid retrieval coupling dense text embeddings (FAISS / Numpy vector indices) with fuzzy string matching.
+- Dynamic introspection of OWL 2 axioms (`owl:disjointWith`, `owl:AllDisjointClasses`, `rdfs:domain`, `rdfs:range`, `rdfs:subClassOf`) directly from RDF graphs.
+- Multi-turn neuro-symbolic ping-pong dialogue loop refining ambiguous neural proposals through structured diagnostic feedback.
+- W3C SHACL shape validation and standards-compliant RDF Turtle and JSON-LD serialization.
+
+### Limitations & Validation Scope
+- **Domain Scope**: Validated primarily on curated Guild Wars 2 crafting matrices, precursor chains, and wiki tables.
+- **Ontology Dependency**: Requires a structured OWL/RDFS schema to formulate domain constraints and validation rules.
+- **Irregular Table Layouts**: Best suited for standard tabular grids, key-value tables, and clean matrix layouts; deeply nested or merged-header tables require upstream normalization.
+
+---
+
+## 🗺️ Roadmap
+
+- **SemTab Challenge Benchmarking**: Benchmark the system against standardized Semantic Table Interpretation (SemTab) challenge datasets.
+- **Automated Multi-Domain Schema Induction**: Extend ontology loading to support arbitrary OWL/RDFS and Wikidata schemas with zero code modification.
+- **Broad Knowledge Base Grounding**: Expand entity linking integration to general-domain knowledge graphs (Wikidata, DBpedia, Schema.org).
 
 ---
 

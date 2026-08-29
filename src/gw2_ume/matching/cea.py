@@ -5,8 +5,12 @@ from __future__ import annotations
 from typing import Iterable
 from gw2_ume.matching.models import CellCandidate, CellCandidateList, TableGrid
 from gw2_ume.matching.cleaning import clean_cell_text
-from gw2_ume.retrieval.vector_index import VectorIndex, RetrievalResult
 from gw2_ume.ontology.reasoner import SymbolicAxiomReasoner
+from gw2_ume.retrieval.vector_index import (
+    RetrievalResult,
+    VectorIndex,
+    get_default_vector_index,
+)
 
 
 class CellEntityAnnotator:
@@ -14,7 +18,7 @@ class CellEntityAnnotator:
 
     def __init__(
         self,
-        vector_index: VectorIndex,
+        vector_index: VectorIndex | None = None,
         reasoner: SymbolicAxiomReasoner | None = None,
         alpha: float = 0.6,
         beta: float = 0.4,
@@ -22,12 +26,12 @@ class CellEntityAnnotator:
         """Initialize CEA with vector index, optional reasoner, and scoring weights.
 
         Args:
-            vector_index: Vector and lexical index.
+            vector_index: Optional Vector and lexical index (defaults to global VectorIndex).
             reasoner: Optional Symbolic Axiom Reasoner.
             alpha: Weight for dense cosine similarity.
             beta: Weight for lexical similarity.
         """
-        self.vector_index = vector_index
+        self.vector_index = vector_index if vector_index is not None else get_default_vector_index()
         self.reasoner = reasoner
         self.alpha = alpha
         self.beta = beta

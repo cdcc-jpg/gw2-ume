@@ -16,6 +16,7 @@ from gw2_ume.mesh.relational_mesh import build_relational_mesh
 from gw2_ume.mesh.annotator import parse_table_content
 from gw2_ume.neurosymbolic.pingpong import NeuroSymbolicPingPongEngine
 from gw2_ume.text.extractor import TextEntityRelationExtractor
+from gw2_ume.pipeline.triangulator import CrossModalTriangulator
 from gw2_ume.benchmark.runner import BenchmarkRunner
 from gw2_ume.ui.visualizer import generate_dashboard_html
 
@@ -121,7 +122,8 @@ def classify_text(text_path: str, output_file: str | None):
         trip_table.add_column("Predicate", style="bold magenta")
         trip_table.add_column("Object", style="green")
 
-        for s, p, o in result["triples"]:
+        for trip in result["triples"]:
+            s, p, o = str(trip[0]), str(trip[1]), str(trip[2])
             trip_table.add_row(s, p, o)
         console.print(trip_table)
 
@@ -249,6 +251,127 @@ def visualize(table_path: str, output_path: str, title: str):
 
     generate_dashboard_html(mesh, pingpong_result=pingpong_res, title=title, output_path=output_path)
     console.print(f"[bold green]Successfully created interactive dashboard at:[/] [white underline]{output_path}[/]")
+
+
+@main.command(name="triangulate")
+@click.argument("table_path", type=click.Path(exists=True, dir_okay=False))
+@click.argument("guide_path", type=click.Path(exists=True, dir_okay=False))
+@click.option("--format", "-f", "out_format", default="turtle", type=click.Choice(["turtle", "json-ld", "summary"]), help="Output serialization format.")
+@click.option("--output", "-o", "output_file", default=None, help="Save fused RDF graph output to file.")
+@click.option("--dashboard", "-d", "dashboard_path", default=None, help="Generate interactive HTML visualizer dashboard.")
+def triangulate(table_path: str, guide_path: str, out_format: str, output_file: str | None, dashboard_path: str | None):
+    """Triangulate tabular matrix data and unstructured guide text into a unified knowledge graph."""
+    t_path = Path(table_path)
+    g_path = Path(guide_path)
+
+    with open(t_path, "r", encoding="utf-8") as f:
+        table_content = f.read()
+    with open(g_path, "r", encoding="utf-8") as f:
+        text_content = f.read()
+
+    console.print(Panel(
+        f"[bold cyan]Cross-Modal Triangulation:[/] [white]{t_path.name}[/] [dim]+[/] [white]{g_path.name}[/]",
+        border_style="cyan"
+    ))
+
+    triangulator = CrossModalTriangulator(validate_shacl=True)
+    res = triangulator.triangulate(table_content, text_content, table_name=t_path.stem)
+
+    # 1. Bayesian Priors & Document Aboutness
+    if res.bayesian_priors:
+        prior_str = ", ".join(f"[cyan]{k}[/]: {v:.1%}" for k, v in res.bayesian_priors.items())
+        console.print(f"[bold]Document Aboutness / Bayesian Priors:[/] {prior_str}")
+
+    # 2. Corroborated Entities Table
+    ent_table = Table(title=f"Fused & Corroborated Entities ({len(res.fused_entities)} total, {res.cross_modal_links_count} cross-modal)", border_style="green")
+    ent_table.add_column("Entity", style="cyan bold")
+    ent_table.add_column("Type", style="magenta")
+    ent_table.add_column("Provenance", style="yellow")
+    ent_table.add_column("C_tab", justify="right", style="dim")
+    ent_table.add_column("C_txt", justify="right", style="dim")
+    ent_table.add_column("C_fused", justify="right", style="bold green")
+    ent_table.add_column("Fused Attributes", style="white")
+
+    for e in res.fused_entities:
+        attrs = []
+        if e.get("quantity"):
+            attrs.append(f"Qty: {e['quantity']}")
+        if e.get("discipline"):
+            attrs.append(f"Craft: {e['discipline']}")
+        if e.get("vendor"):
+            attrs.append(f"NPC: {e['vendor']}")
+        if e.get("zone"):
+            attrs.append(f"Zone: {e['zone']}")
+
+        attr_str = ", ".join(attrs) if attrs else "-"
+        prov_style = "bold green" if e["provenance"] == "cross_modal_corroborated" else "blue" if e["provenance"] == "table_only" else "yellow"
+        c_tab_str = f"{e['c_tab']:.0%}" if e['c_tab'] > 0 else "-"
+        c_txt_str = f"{e['c_txt']:.0%}" if e['c_txt'] > 0 else "-"
+
+        ent_table.add_row(
+            e["label"],
+            e["entity_type"],
+            f"[{prov_style}]{e['provenance']}[/]",
+            c_tab_str,
+            c_txt_str,
+            f"{e['c_fused']:.1%}",
+            attr_str,
+        )
+    console.print(ent_table)
+
+    # 3. Multi-Hop Fused Triples Table
+    if res.fused_triples:
+        trip_table = Table(title=f"Fused Relational Triples ({len(res.fused_triples)} triples)", border_style="cyan")
+        trip_table.add_column("Subject", style="cyan")
+        trip_table.add_column("Predicate", style="bold magenta")
+        trip_table.add_column("Object", style="green")
+
+        for s, p, o in res.fused_triples[:20]:
+            trip_table.add_row(s, p, o)
+        if len(res.fused_triples) > 20:
+            trip_table.add_row("...", f"+{len(res.fused_triples) - 20} more triples", "...")
+        console.print(trip_table)
+
+    # 4. Summary Card
+    val_style = "bold green" if res.conforms_shacl else "bold red"
+    console.print(
+        f"\n[bold]Triangulation Summary:[/] {len(res.fused_entities)} entities | {len(res.fused_triples)} triples | "
+        f"Avg Conf: [bold green]{res.confidence_summary['avg_fused_confidence']:.1%}[/] | "
+        f"Corroboration Gain: [bold yellow]+{res.confidence_summary['corroboration_gain_pct']:.1f}%[/] | "
+        f"SHACL Status: [{val_style}]{res.validation_status}[/]"
+    )
+
+    # 5. Output Serialization
+    if out_format == "turtle":
+        if output_file:
+            os.makedirs(os.path.dirname(os.path.abspath(output_file)), exist_ok=True)
+            with open(output_file, "w", encoding="utf-8") as f:
+                f.write(res.turtle)
+            console.print(f"[bold green]Saved fused Turtle graph to:[/] {output_file}")
+        else:
+            console.print("\n[bold cyan]Fused RDF Turtle Serialization:[/]")
+            console.print(Syntax(res.turtle, "turtle", theme="monokai", line_numbers=True))
+    elif out_format == "json-ld":
+        import json
+        json_str = json.dumps(res.json_ld, indent=2)
+        if output_file:
+            os.makedirs(os.path.dirname(os.path.abspath(output_file)), exist_ok=True)
+            with open(output_file, "w", encoding="utf-8") as f:
+                f.write(json_str)
+            console.print(f"[bold green]Saved fused JSON-LD graph to:[/] {output_file}")
+        else:
+            console.print("\n[bold cyan]Fused JSON-LD Serialization:[/]")
+            console.print(Syntax(json_str, "json", theme="monokai", line_numbers=True))
+
+    # 6. Dashboard Generation
+    if dashboard_path:
+        mesh = res.table_mesh
+        mesh.turtle = res.turtle
+        mesh.json_ld = res.json_ld
+        mesh.validation_status = res.validation_status
+        mesh.validation_violations = res.violations
+        generate_dashboard_html(mesh, title=f"Cross-Modal Fusion - {t_path.stem}", output_path=dashboard_path)
+        console.print(f"[bold green]Saved interactive dashboard to:[/] [white underline]{dashboard_path}[/]")
 
 
 if __name__ == "__main__":

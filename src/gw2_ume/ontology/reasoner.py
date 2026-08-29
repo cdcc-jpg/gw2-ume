@@ -386,6 +386,100 @@ class SymbolicAxiomReasoner:
         """Alias for are_disjoint."""
         return self.are_disjoint(class_a_iri, class_b_iri)
 
+    def get_disjoint_classes(
+        self,
+        class_iri: Union[str, URIRef],
+        include_inherited: bool = True,
+    ) -> Set[URIRef]:
+        """Retrieves all classes declared or inherited as disjoint with class_iri."""
+        iri = self.loader.resolve_iri(class_iri)
+        if not isinstance(iri, URIRef):
+            return set()
+
+        if not include_inherited:
+            return self.loader.get_disjoint_classes(iri)
+
+        ancestors = {iri} | self.loader.get_superclasses(iri, direct=False)
+        disjoint_ancestors: Set[URIRef] = set()
+        for a in ancestors:
+            disjoint_ancestors.update(self.loader.get_disjoint_classes(a))
+
+        all_disjoints: Set[URIRef] = set(disjoint_ancestors)
+        for d in disjoint_ancestors:
+            all_disjoints.update(self.loader.get_subclasses(d, direct=False))
+        return all_disjoints
+
+    def get_disjoint_types_map(self) -> Dict[str, Set[str]]:
+        """Dynamically extracts a mapping of class names/IRIs to disjoint class names/IRIs from loaded ontology."""
+        disjoint_map: Dict[str, Set[str]] = {}
+        all_classes = self.get_all_classes()
+
+        for c_iri in all_classes:
+            c_uri = self.loader.resolve_iri(c_iri)
+            disjoints = self.get_disjoint_classes(c_uri, include_inherited=True)
+            if not disjoints:
+                continue
+
+            disjoint_names: Set[str] = set()
+            for d in disjoints:
+                disjoint_names.add(str(d))
+                d_pref = self.loader.to_prefixed_name(d)
+                disjoint_names.add(d_pref)
+                d_local = d_pref.split(":")[-1]
+                disjoint_names.add(d_local)
+
+            c_pref = self.loader.to_prefixed_name(c_uri)
+            c_local = c_pref.split(":")[-1]
+
+            for key in (str(c_uri), c_pref, c_local):
+                disjoint_map.setdefault(key, set()).update(disjoint_names)
+
+        return disjoint_map
+
+    def get_predicate_signatures(self) -> Dict[str, Tuple[Set[str], Set[str]]]:
+        """Dynamically extracts predicate domain/range signatures (valid_domains, valid_ranges) from loaded ontology."""
+        signatures: Dict[str, Tuple[Set[str], Set[str]]] = {}
+        props = self.get_all_properties()
+
+        for p_iri in props:
+            p_uri = self.loader.resolve_iri(p_iri)
+            domains = self.get_expected_domains(p_uri)
+            ranges = self.get_expected_ranges(p_uri)
+
+            valid_domains: Set[str] = set()
+            for d in domains:
+                valid_domains.add(str(d))
+                d_pref = self.loader.to_prefixed_name(d)
+                valid_domains.add(d_pref)
+                valid_domains.add(d_pref.split(":")[-1])
+                for sub in self.loader.get_subclasses(d, direct=False):
+                    valid_domains.add(str(sub))
+                    s_pref = self.loader.to_prefixed_name(sub)
+                    valid_domains.add(s_pref)
+                    valid_domains.add(s_pref.split(":")[-1])
+
+            valid_ranges: Set[str] = set()
+            for r in ranges:
+                valid_ranges.add(str(r))
+                r_pref = self.loader.to_prefixed_name(r)
+                valid_ranges.add(r_pref)
+                valid_ranges.add(r_pref.split(":")[-1])
+                for sub in self.loader.get_subclasses(r, direct=False):
+                    valid_ranges.add(str(sub))
+                    s_pref = self.loader.to_prefixed_name(sub)
+                    valid_ranges.add(s_pref)
+                    valid_ranges.add(s_pref.split(":")[-1])
+
+            sig_tuple = (valid_domains, valid_ranges)
+            p_pref = self.loader.to_prefixed_name(p_uri)
+            p_local = p_pref.split(":")[-1]
+
+            signatures[str(p_uri)] = sig_tuple
+            signatures[p_pref] = sig_tuple
+            signatures[p_local] = sig_tuple
+
+        return signatures
+
     # -------------------------------------------------------------------------
     # Domain and Range Checks
     # -------------------------------------------------------------------------

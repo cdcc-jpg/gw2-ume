@@ -2,6 +2,8 @@
 
 This document details the complete end-to-end architecture of the **GW2 Universal Matching Engine (`gw2-ume`)**, traced step-by-step using a real-world example from our CSV datasets: [`data/sample_tables/google_sheet_hope_bifrost_tracker.csv`](https://github.com/cdcc-jpg/gw2-ume/blob/main/data/sample_tables/google_sheet_hope_bifrost_tracker.csv).
 
+For the formal research thesis on the **Minimum Viable Semantic Layer (MVSL)** and why this architecture supersedes traditional Named Entity Recognition (NER), see [Minimum Viable Semantic Layer & Post-NER Paradigm](file:///Users/clementd/Documents/GitHub/gw2-ume/docs/minimum_viable_semantic_layer.md).
+
 ---
 
 ## 1. High-Level Architecture Overview

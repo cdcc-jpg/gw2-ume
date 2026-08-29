@@ -11,7 +11,11 @@ from gw2_ume.matching.models import (
     TableGrid,
 )
 from gw2_ume.ontology.reasoner import SymbolicAxiomReasoner
-from gw2_ume.retrieval.vector_index import VectorIndex, _lexical_similarity
+from gw2_ume.retrieval.vector_index import (
+    VectorIndex,
+    _lexical_similarity,
+    get_default_vector_index,
+)
 
 
 class ColumnPropertyAnnotator:
@@ -19,15 +23,15 @@ class ColumnPropertyAnnotator:
 
     def __init__(
         self,
-        reasoner: SymbolicAxiomReasoner,
+        reasoner: SymbolicAxiomReasoner | None = None,
         vector_index: VectorIndex | None = None,
         domain_range_weight: float = 0.35,
         triple_support_weight: float = 0.45,
         header_weight: float = 0.20,
     ) -> None:
         """Initialize CPA with reasoner, vector index, and scoring weights."""
-        self.reasoner = reasoner
-        self.vector_index = vector_index
+        self.reasoner = reasoner if reasoner is not None else SymbolicAxiomReasoner()
+        self.vector_index = vector_index if vector_index is not None else get_default_vector_index()
         self.domain_range_weight = domain_range_weight
         self.triple_support_weight = triple_support_weight
         self.header_weight = header_weight
@@ -110,11 +114,6 @@ class ColumnPropertyAnnotator:
                 for ci in cell_i.candidates[:3]:
                     for cj in cell_j.candidates[:3]:
                         if self.reasoner.has_triple(ci.entity_iri, prop_iri, cj.entity_iri):
-                            has_support = True
-                            break
-                        # Check connecting paths
-                        paths = self.reasoner.find_connecting_paths(ci.entity_iri, cj.entity_iri, max_hops=2, directed=True)
-                        if any(any(step[1] == self.reasoner.loader.resolve_iri(prop_iri) for step in p) for p in paths):
                             has_support = True
                             break
                     if has_support:
