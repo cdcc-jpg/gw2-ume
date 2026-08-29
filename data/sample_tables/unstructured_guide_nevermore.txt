@@ -1,0 +1,18 @@
+Alright squad, here is the full dirty guide on crafting Nevermore (that dope legendary staff with the spectral ravens flying everywhere!).
+
+First off, go talk to Hobbs in LA (Grandmaster Craftsman Hobbs at Lion's Arch). You need Artificer 450 maxed out or you can't even touch the tier 1 collection.
+For Tier 1 (Ravenswood Branch), you gotta grab the recipe from Hobbs. You'll need 3 Spiritwood Planks (Huntsman/Artificer daily cooldown craft), 3 Deldrimor Steel Ingots from Weaponsmith, 3 Elonian Leather Squares from Leatherworker, and 3 Damask bolts. Don't forget the Essence of the Raven from Shaman Sigurlina up in Wayfarer Foothills after doing the raven event!
+
+Tier 2 is The Mnemonic Device. You take your Ravenswood Branch, add 10 Amalgamated Gemstones (farm HoT metas like Tarir or Dragon's Stand for these!), a Spiritwood Staff Shaft (made by Artificer 450 using 2 spiritwood planks and 5 ectos), and a Jar of Luminescence from Sparkfly Fen Hylek Alchemists.
+
+Tier 3 is The Raven Spirit. Hobbs will give you the collection. Go to Lornar's Pass to steal a Raven Egg from the Great Raven Spirit roost. Get the Heart of the Mists Essence from Mist Warriors in PvP lobby. Combine with 5 Spiritwood Dowels and your tier 2 staff to craft The Raven Spirit.
+
+Tier 4 is The Living Ravens! You need to raise ravens in your home instance or Roost. Complete Friends of the Owl in Dredgehaunt Cliffs and Friends of the Raven in Wayfarer Foothills. Craft Wood for the Roost with Hobbs. Once you finish this collection, you get the actual precursor weapon: The Living Ravens!
+
+Finally, throw everything into Zommoros' Mystic Forge in Mystic Plaza:
+1. The Living Ravens (Precursor)
+2. Gift of Nevermore (Gift of the Raven + Gift of the Mists + 100 Icy Runestones + Superior Sigil of Torment)
+3. Mystic Tribute (77 Clovers, 250 Mystic Coins, 2 Gift of Condensed Magic, 2 Gift of Condensed Might)
+4. Gift of Mastery (Bloodstone Shard, Gift of Battle from WvW, Gift of Exploration 100% map complete, 250 Obsidian Shards)
+
+BAM! Shiny legendary raven staff acquired!

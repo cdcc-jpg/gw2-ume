@@ -1,0 +1,79 @@
+{
+  "dataset": "legendary_nevermore_steps",
+  "cta": {
+    "Tier": "https://gw2ume.org/ontology#CollectionTier",
+    "StepName": "https://gw2ume.org/ontology#CollectionStep",
+    "PrecursorItem": "https://gw2ume.org/ontology#PrecursorWeapon",
+    "RequiredComponents": "https://gw2ume.org/ontology#ComponentItem",
+    "Quantity": "https://gw2ume.org/ontology#IngredientQuantity",
+    "Discipline": "https://gw2ume.org/ontology#CraftingDiscipline",
+    "MinRating": "https://gw2ume.org/ontology#DisciplineRating",
+    "VendorSource": "https://gw2ume.org/ontology#NPCVendor",
+    "Zone": "https://gw2ume.org/ontology#Zone"
+  },
+  "cpa": [
+    {
+      "source_column": "PrecursorItem",
+      "target_column": "RequiredComponents",
+      "property": "https://gw2ume.org/ontology#requiresIngredient"
+    },
+    {
+      "source_column": "PrecursorItem",
+      "target_column": "Discipline",
+      "property": "https://gw2ume.org/ontology#craftedByDiscipline"
+    },
+    {
+      "source_column": "PrecursorItem",
+      "target_column": "VendorSource",
+      "property": "https://gw2ume.org/ontology#obtainedFromVendor"
+    },
+    {
+      "source_column": "VendorSource",
+      "target_column": "Zone",
+      "property": "https://gw2ume.org/ontology#locatedInZone"
+    },
+    {
+      "source_column": "RequiredComponents",
+      "target_column": "Quantity",
+      "property": "https://gw2ume.org/ontology#ingredientQuantity"
+    }
+  ],
+  "cea_entities": {
+    "Ravenswood Branch": "https://gw2ume.org/resource/item/ravenswood_branch",
+    "Ravenswood Staff": "https://gw2ume.org/resource/item/ravenswood_staff",
+    "The Raven Spirit": "https://gw2ume.org/resource/item/the_raven_spirit",
+    "The Living Ravens": "https://gw2ume.org/resource/item/the_living_ravens",
+    "Spiritwood Plank": "https://gw2ume.org/resource/item/spiritwood_plank",
+    "Deldrimor Steel Ingot": "https://gw2ume.org/resource/item/deldrimor_steel_ingot",
+    "Elonian Leather Square": "https://gw2ume.org/resource/item/elonian_leather_square",
+    "Bolt of Damask": "https://gw2ume.org/resource/item/bolt_of_damask",
+    "Essence of the Raven": "https://gw2ume.org/resource/item/essence_of_the_raven",
+    "Jar of Luminescence": "https://gw2ume.org/resource/item/jar_of_luminescence",
+    "Spiritwood Staff Shaft": "https://gw2ume.org/resource/item/spiritwood_staff_shaft",
+    "Amalgamated Gemstone": "https://gw2ume.org/resource/item/amalgamated_gemstone",
+    "Raven Egg": "https://gw2ume.org/resource/item/raven_egg",
+    "Heart of the Mists Essence": "https://gw2ume.org/resource/item/heart_of_the_mists_essence",
+    "Spiritwood Dowel": "https://gw2ume.org/resource/item/spiritwood_dowel",
+    "Friends of the Owl": "https://gw2ume.org/resource/item/friends_of_the_owl",
+    "Friends of the Raven": "https://gw2ume.org/resource/item/friends_of_the_raven",
+    "Wood for the Roost": "https://gw2ume.org/resource/item/wood_for_the_roost",
+    "Gift of Nevermore": "https://gw2ume.org/resource/item/gift_of_nevermore",
+    "Mystic Tribute": "https://gw2ume.org/resource/item/mystic_tribute",
+    "Gift of Mastery": "https://gw2ume.org/resource/item/gift_of_mastery"
+  },
+  "constraints": {
+    "discipline_types": {
+      "Artificer": ["Staff", "Scepter", "Focus", "Trident", "Essence", "Jar", "Dowel", "PrecursorStaff"],
+      "Weaponsmith": ["Sword", "Greatsword", "Axe", "Dagger", "Mace", "Hammer", "Shield", "Ingot"],
+      "Leatherworker": ["Leather", "Armor"],
+      "Tailor": ["Damask", "Cloth", "Armor"],
+      "Huntsman": ["Bow", "Pistol", "Rifle", "Torch", "Warhorn", "Plank"]
+    },
+    "precursor_chain": [
+      "Ravenswood Branch",
+      "Ravenswood Staff",
+      "The Raven Spirit",
+      "The Living Ravens"
+    ]
+  }
+}

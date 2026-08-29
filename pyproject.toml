@@ -1,0 +1,60 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gw2-ume"
+version = "0.1.0"
+description = "Universal Matrix Extraction & Neuro-Symbolic Graph Layer for Guild Wars 2"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [
+    { name = "GW2-UME Semantic Engineering Team", email = "team@gw2ume.org" }
+]
+keywords = [
+    "guild-wars-2",
+    "neurosymbolic",
+    "knowledge-graphs",
+    "shacl",
+    "rdflib",
+    "table-annotation",
+    "cea",
+    "cta",
+    "cpa",
+    "semantic-web",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "rdflib>=7.0.0",
+    "pyshacl>=0.30.0",
+    "rich>=13.0.0",
+    "click>=8.0.0",
+    "pydantic>=2.0.0",
+    "pandas>=2.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+]
+
+[project.scripts]
+gw2-ume = "gw2_ume.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["gw2_ume*"]

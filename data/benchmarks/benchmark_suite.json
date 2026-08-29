@@ -1,0 +1,54 @@
+{
+  "suite_name": "GW2-UME Semantic Mesh vs Pure NLP Benchmark",
+  "version": "1.0.0",
+  "description": "Proof-of-value benchmark comparing Pure NLP baseline against GW2-UME Neuro-Symbolic Relational Mesh across clean, ambiguous, and noisy game domain tables.",
+  "benchmarks": [
+    {
+      "id": "bench_nevermore_steps",
+      "name": "Nevermore 4-Tier Steps (Clean Wiki Table)",
+      "table_path": "data/sample_tables/legendary_nevermore_steps.csv",
+      "type": "clean",
+      "expected_cea_count": 17,
+      "expected_cta_count": 9,
+      "expected_cpa_count": 5
+    },
+    {
+      "id": "bench_mystic_forge_tribute",
+      "name": "Mystic Forge Tribute Matrix (Multi-ingredient Combination)",
+      "table_path": "data/sample_tables/mystic_forge_tribute_matrix.csv",
+      "type": "clean_nested",
+      "expected_cea_count": 4,
+      "expected_cta_count": 7,
+      "expected_cpa_count": 4
+    },
+    {
+      "id": "bench_crafting_discipline_materials",
+      "name": "Crafting Discipline Materials (Discipline & Tier Relations)",
+      "table_path": "data/sample_tables/crafting_discipline_materials.csv",
+      "type": "clean_multi_tier",
+      "expected_cea_count": 17,
+      "expected_cta_count": 7,
+      "expected_cpa_count": 4
+    },
+    {
+      "id": "bench_ambiguous_matrix",
+      "name": "Ambiguous Crafting Matrix (Polysemy & Vague Headers)",
+      "table_path": "data/sample_tables/ambiguous_crafting_matrix.csv",
+      "type": "ambiguous",
+      "challenges": ["polysemous_terms", "vague_headers", "untyped_numbers"],
+      "expected_cea_count": 7,
+      "expected_cta_count": 6,
+      "expected_cpa_count": 3
+    },
+    {
+      "id": "bench_noisy_scraped_tribute",
+      "name": "Noisy Scraped Tribute (Typos, OCR Errors, Missing Cells)",
+      "table_path": "data/sample_tables/noisy_scraped_tribute.csv",
+      "type": "noisy",
+      "challenges": ["ocr_noise", "leetspeak_typos", "null_cells"],
+      "expected_cea_count": 6,
+      "expected_cta_count": 7,
+      "expected_cpa_count": 3
+    }
+  ]
+}

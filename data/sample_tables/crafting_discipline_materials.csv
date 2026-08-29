@@ -1,0 +1,18 @@
+Discipline,Rating,OutputItem,ItemType,MaterialName,MaterialQuantity,Tier
+Artificer,450,Spiritwood Staff Shaft,Crafting Component,Spiritwood Plank,2,Tier 7
+Artificer,450,Spiritwood Staff Shaft,Crafting Component,Glob of Ectoplasm,5,Tier 6
+Artificer,450,Spiritwood Dowel,Crafting Component,Spiritwood Plank,1,Tier 7
+Artificer,450,Spiritwood Dowel,Crafting Component,Pile of Lucent Crystal,10,Tier 5
+Artificer,400,Gift of the Raven,Gift Component,Essence of the Raven,1,Tier 6
+Artificer,400,Gift of the Raven,Gift Component,Raven Statue,1,Tier 6
+Artificer,400,Gift of the Raven,Gift Component,Spiritwood Dowel,1,Tier 7
+Artificer,400,Gift of the Raven,Gift Component,Amalgamated Gemstone,100,Tier 6
+Weaponsmith,450,Deldrimor Steel Ingot,Refined Material,Iron Ingot,20,Tier 3
+Weaponsmith,450,Deldrimor Steel Ingot,Refined Material,Steel Ingot,10,Tier 4
+Weaponsmith,450,Deldrimor Steel Ingot,Refined Material,Darksteel Ingot,10,Tier 5
+Weaponsmith,450,Deldrimor Steel Ingot,Refined Material,Mithril Ingot,20,Tier 5
+Weaponsmith,450,Deldrimor Steel Ingot,Refined Material,Lump of Mithrillium,1,Tier 7
+Huntsman,450,Spiritwood Plank,Refined Material,Wood Ingot,20,Tier 3
+Huntsman,450,Spiritwood Plank,Refined Material,Elder Wood Plank,20,Tier 5
+Huntsman,450,Spiritwood Plank,Refined Material,Ancient Wood Plank,20,Tier 6
+Huntsman,450,Spiritwood Plank,Refined Material,Glob of Elder Spirit Residue,1,Tier 7

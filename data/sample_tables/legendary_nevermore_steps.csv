@@ -1,0 +1,18 @@
+Tier,StepName,PrecursorItem,RequiredComponents,Quantity,Discipline,MinRating,VendorSource,Zone
+Tier 1,Nevermore I: Experimental Staff,Ravenswood Branch,Spiritwood Plank,3,Artificer,450,Grandmaster Craftsman Hobbs,Lion's Arch
+Tier 1,Nevermore I: Experimental Staff,Ravenswood Branch,Deldrimor Steel Ingot,3,Weaponsmith,450,Grandmaster Craftsman Hobbs,Lion's Arch
+Tier 1,Nevermore I: Experimental Staff,Ravenswood Branch,Elonian Leather Square,3,Leatherworker,450,Grandmaster Craftsman Hobbs,Lion's Arch
+Tier 1,Nevermore I: Experimental Staff,Ravenswood Branch,Bolt of Damask,3,Tailor,450,Grandmaster Craftsman Hobbs,Lion's Arch
+Tier 1,Nevermore I: Experimental Staff,Ravenswood Branch,Essence of the Raven,1,Artificer,450,Shaman Sigurlina,Wayfarer Foothills
+Tier 2,Nevermore II: The Mnemonic Device,Ravenswood Staff,Ravenswood Branch,1,Artificer,450,Grandmaster Craftsman Hobbs,Lion's Arch
+Tier 2,Nevermore II: The Mnemonic Device,Ravenswood Staff,Jar of Luminescence,1,Artificer,450,Hylek Alchemist,Sparkfly Fen
+Tier 2,Nevermore II: The Mnemonic Device,Ravenswood Staff,Spiritwood Staff Shaft,1,Artificer,450,Grandmaster Craftsman Hobbs,Lion's Arch
+Tier 2,Nevermore II: The Mnemonic Device,Ravenswood Staff,Amalgamated Gemstone,10,Artificer,450,Grandmaster Craftsman Hobbs,Lion's Arch
+Tier 3,Nevermore III: The Raven Spirit,The Raven Spirit,Ravenswood Staff,1,Artificer,450,Grandmaster Craftsman Hobbs,Lion's Arch
+Tier 3,Nevermore III: The Raven Spirit,The Raven Spirit,Raven Egg,1,Artificer,450,Great Raven Spirit,Lornar's Pass
+Tier 3,Nevermore III: The Raven Spirit,The Raven Spirit,Heart of the Mists Essence,1,Artificer,450,Mist Warrior,Heart of the Mists
+Tier 3,Nevermore III: The Raven Spirit,The Raven Spirit,Spiritwood Dowel,5,Artificer,450,Grandmaster Craftsman Hobbs,Lion's Arch
+Tier 4,Nevermore IV: The Living Ravens,The Living Ravens,The Raven Spirit,1,Artificer,450,Grandmaster Craftsman Hobbs,Lion's Arch
+Tier 4,Nevermore IV: The Living Ravens,The Living Ravens,Friends of the Owl,1,Artificer,450,Owl Shaman,Dredgehaunt Cliffs
+Tier 4,Nevermore IV: The Living Ravens,The Living Ravens,Friends of the Raven,1,Artificer,450,Shaman Sigurlina,Wayfarer Foothills
+Tier 4,Nevermore IV: The Living Ravens,The Living Ravens,Wood for the Roost,1,Artificer,450,Grandmaster Craftsman Hobbs,Lion's Arch

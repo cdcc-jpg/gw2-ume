@@ -1,0 +1,546 @@
+@prefix : <https://schema.gw2ume.org/core#> .
+@prefix gw2: <https://schema.gw2ume.org/core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+
+<https://schema.gw2ume.org/core> rdf:type owl:Ontology ;
+    rdfs:label "Guild Wars 2 Core Ontology"@en ;
+    rdfs:comment "Comprehensive OWL 2 ontology representing core Guild Wars 2 domain concepts including items, crafting, recipes, currencies, vendors, and achievements."@en ;
+    owl:versionInfo "1.0.0" .
+
+#################################################################
+#    Classes
+#################################################################
+
+###  https://schema.gw2ume.org/core#Item
+gw2:Item rdf:type owl:Class ;
+    rdfs:label "Item"@en ;
+    skos:prefLabel "Item"@en ;
+    rdfs:comment "A distinct entity in Guild Wars 2 that can be acquired, stored in inventory, crafted, traded, or consumed."@en .
+
+###  https://schema.gw2ume.org/core#Weapon
+gw2:Weapon rdf:type owl:Class ;
+    rdfs:subClassOf gw2:Item ;
+    rdfs:label "Weapon"@en ;
+    skos:prefLabel "Weapon"@en ;
+    rdfs:comment "An equippable item designed for offense or skill execution (e.g. Greatsword, Staff, Pistol, Dagger)."@en .
+
+###  https://schema.gw2ume.org/core#Armor
+gw2:Armor rdf:type owl:Class ;
+    rdfs:subClassOf gw2:Item ;
+    rdfs:label "Armor"@en ;
+    skos:prefLabel "Armor"@en ;
+    rdfs:comment "An equippable piece of defensive equipment (Helm, Shoulders, Coat, Gloves, Leggings, Boots)."@en .
+
+###  https://schema.gw2ume.org/core#Trinket
+gw2:Trinket rdf:type owl:Class ;
+    rdfs:subClassOf gw2:Item ;
+    rdfs:label "Trinket"@en ;
+    skos:prefLabel "Trinket"@en ;
+    rdfs:comment "An accessory, ring, amulet, or back item that provides attribute bonuses."@en .
+
+###  https://schema.gw2ume.org/core#CraftingMaterial
+gw2:CraftingMaterial rdf:type owl:Class ;
+    rdfs:subClassOf gw2:Item ;
+    rdfs:label "Crafting Material"@en ;
+    skos:prefLabel "Crafting Material"@en ;
+    skos:altLabel "Material"@en , "Mat"@en , "Mats"@en ;
+    rdfs:comment "An item primarily used as an ingredient in crafting recipes or Mystic Forge conversions."@en .
+
+###  https://schema.gw2ume.org/core#LegendaryWeapon
+gw2:LegendaryWeapon rdf:type owl:Class ;
+    rdfs:subClassOf gw2:Weapon ;
+    rdfs:label "Legendary Weapon"@en ;
+    skos:prefLabel "Legendary Weapon"@en ;
+    skos:altLabel "Legendary"@en ;
+    rdfs:comment "Top-tier weapon offering stat-swapping, unique footfalls, draw animations, projectile effects, and Legendary Armory integration."@en .
+
+###  https://schema.gw2ume.org/core#PrecursorWeapon
+gw2:PrecursorWeapon rdf:type owl:Class ;
+    rdfs:subClassOf gw2:Weapon ;
+    rdfs:label "Precursor Weapon"@en ;
+    skos:prefLabel "Precursor Weapon"@en ;
+    skos:altLabel "Precursor"@en ;
+    rdfs:comment "An exotic or ascended weapon that serves as a required base or stepping-stone component for crafting a Legendary Weapon."@en .
+
+###  https://schema.gw2ume.org/core#AscendedWeapon
+gw2:AscendedWeapon rdf:type owl:Class ;
+    rdfs:subClassOf gw2:Weapon ;
+    rdfs:label "Ascended Weapon"@en ;
+    skos:prefLabel "Ascended Weapon"@en ;
+    rdfs:comment "Weapon of Ascended rarity possessing maximum weapon strength and attribute stats with infusion slots."@en .
+
+###  https://schema.gw2ume.org/core#ExoticWeapon
+gw2:ExoticWeapon rdf:type owl:Class ;
+    rdfs:subClassOf gw2:Weapon ;
+    rdfs:label "Exotic Weapon"@en ;
+    skos:prefLabel "Exotic Weapon"@en ;
+    rdfs:comment "Weapon of Exotic rarity."@en .
+
+###  https://schema.gw2ume.org/core#LegendaryArmor
+gw2:LegendaryArmor rdf:type owl:Class ;
+    rdfs:subClassOf gw2:Armor ;
+    rdfs:label "Legendary Armor"@en ;
+    skos:prefLabel "Legendary Armor"@en ;
+    rdfs:comment "Top-tier armor offering selectable stats and skin swapping via the Legendary Armory."@en .
+
+###  https://schema.gw2ume.org/core#AscendedArmor
+gw2:AscendedArmor rdf:type owl:Class ;
+    rdfs:subClassOf gw2:Armor ;
+    rdfs:label "Ascended Armor"@en ;
+    skos:prefLabel "Ascended Armor"@en ;
+    rdfs:comment "Armor piece of Ascended rarity."@en .
+
+###  https://schema.gw2ume.org/core#LegendaryTrinket
+gw2:LegendaryTrinket rdf:type owl:Class ;
+    rdfs:subClassOf gw2:Trinket ;
+    rdfs:label "Legendary Trinket"@en ;
+    skos:prefLabel "Legendary Trinket"@en ;
+    rdfs:comment "Legendary accessory, ring, or amulet offering selectable stats and visual auras."@en .
+
+###  https://schema.gw2ume.org/core#AscendedTrinket
+gw2:AscendedTrinket rdf:type owl:Class ;
+    rdfs:subClassOf gw2:Trinket ;
+    rdfs:label "Ascended Trinket"@en ;
+    skos:prefLabel "Ascended Trinket"@en ;
+    rdfs:comment "Trinket of Ascended rarity with infusion slots."@en .
+
+###  https://schema.gw2ume.org/core#AscendedMaterial
+gw2:AscendedMaterial rdf:type owl:Class ;
+    rdfs:subClassOf gw2:CraftingMaterial ;
+    rdfs:label "Ascended Material"@en ;
+    skos:prefLabel "Ascended Material"@en ;
+    skos:altLabel "Ascended Mat"@en , "Timegated Material"@en ;
+    rdfs:comment "High-tier, often time-gated crafting material (such as Spiritwood Plank, Deldrimor Steel Ingot, Damask, Elonian Leather) used for ascended and legendary equipment."@en .
+
+###  https://schema.gw2ume.org/core#RefinedMaterial
+gw2:RefinedMaterial rdf:type owl:Class ;
+    rdfs:subClassOf gw2:CraftingMaterial ;
+    rdfs:label "Refined Material"@en ;
+    skos:prefLabel "Refined Material"@en ;
+    skos:altLabel "Refined Mat"@en ;
+    rdfs:comment "A processed intermediate crafting material produced from raw materials (e.g. Elder Wood Plank, Mithril Ingot, Gossamer Bolt)."@en .
+
+###  https://schema.gw2ume.org/core#RawMaterial
+gw2:RawMaterial rdf:type owl:Class ;
+    rdfs:subClassOf gw2:CraftingMaterial ;
+    rdfs:label "Raw Material"@en ;
+    skos:prefLabel "Raw Material"@en ;
+    skos:altLabel "Raw Mat"@en , "Ore"@en , "Wood Log"@en ;
+    rdfs:comment "An unrefined raw resource obtained from harvesting nodes, salvaging, or creature drops (e.g. Elder Wood Log, Mithril Ore, Gossamer Scrap)."@en .
+
+###  https://schema.gw2ume.org/core#MysticComponent
+gw2:MysticComponent rdf:type owl:Class ;
+    rdfs:subClassOf gw2:CraftingMaterial ;
+    rdfs:label "Mystic Component"@en ;
+    skos:prefLabel "Mystic Component"@en ;
+    skos:altLabel "Mystic Ingredient"@en ;
+    rdfs:comment "Specialized ingredients dedicated to Mystic Forge recipes (e.g. Mystic Clover, Mystic Coin, Bloodstone Shard, Icy Runestone, Eldritch Scroll)."@en .
+
+###  https://schema.gw2ume.org/core#LegendaryTribute
+gw2:LegendaryTribute rdf:type owl:Class ;
+    rdfs:subClassOf gw2:CraftingMaterial ;
+    rdfs:label "Legendary Tribute"@en ;
+    skos:prefLabel "Legendary Tribute"@en ;
+    rdfs:comment "A composite gift or tribute specifically assembled for legendary weapon generation."@en .
+
+###  https://schema.gw2ume.org/core#GiftComponent
+gw2:GiftComponent rdf:type owl:Class ;
+    rdfs:subClassOf gw2:CraftingMaterial ;
+    rdfs:label "Gift Component"@en ;
+    skos:prefLabel "Gift Component"@en ;
+    skos:altLabel "Legendary Gift"@en ;
+    rdfs:comment "A gift item crafted or purchased to serve as one of the major 4 components in a Legendary Mystic Forge recipe."@en .
+
+###  https://schema.gw2ume.org/core#Currency
+gw2:Currency rdf:type owl:Class ;
+    rdfs:label "Currency"@en ;
+    skos:prefLabel "Currency"@en ;
+    rdfs:comment "A fungible token or account wallet value used to purchase goods, unlock rewards, or fulfill recipe requirements."@en .
+
+###  https://schema.gw2ume.org/core#CraftingDiscipline
+gw2:CraftingDiscipline rdf:type owl:Class ;
+    rdfs:label "Crafting Discipline"@en ;
+    skos:prefLabel "Crafting Discipline"@en ;
+    skos:altLabel "Crafting Profession"@en , "Discipline"@en ;
+    rdfs:comment "A crafting profession that a player character can learn and level up to craft items (e.g. Weaponsmith, Artificer, Huntsman)."@en .
+
+###  https://schema.gw2ume.org/core#CraftingRecipe
+gw2:CraftingRecipe rdf:type owl:Class ;
+    rdfs:label "Crafting Recipe"@en ;
+    skos:prefLabel "Crafting Recipe"@en ;
+    skos:altLabel "Recipe"@en ;
+    rdfs:comment "A formal formula detailing required materials, quantities, discipline requirements, and resulting items."@en .
+
+###  https://schema.gw2ume.org/core#MysticForgeRecipe
+gw2:MysticForgeRecipe rdf:type owl:Class ;
+    rdfs:subClassOf gw2:CraftingRecipe ;
+    rdfs:label "Mystic Forge Recipe"@en ;
+    skos:prefLabel "Mystic Forge Recipe"@en ;
+    skos:altLabel "Forge Recipe"@en , "Zommoros Recipe"@en ;
+    rdfs:comment "A 4-ingredient combination tossed into the Mystic Forge in Lion's Arch or the Mistlock Sanctuary to forge a new item."@en .
+
+###  https://schema.gw2ume.org/core#DisciplineRecipe
+gw2:DisciplineRecipe rdf:type owl:Class ;
+    rdfs:subClassOf gw2:CraftingRecipe ;
+    rdfs:label "Discipline Recipe"@en ;
+    skos:prefLabel "Discipline Recipe"@en ;
+    rdfs:comment "A recipe executed at a crafting station by a specific crafting discipline with a rating requirement."@en .
+
+###  https://schema.gw2ume.org/core#Vendor
+gw2:Vendor rdf:type owl:Class ;
+    rdfs:label "Vendor"@en ;
+    skos:prefLabel "Vendor"@en ;
+    skos:altLabel "Merchant"@en , "NPC Vendor"@en ;
+    rdfs:comment "A non-player character or interactive merchant selling items or recipes in exchange for currencies or tokens."@en .
+
+###  https://schema.gw2ume.org/core#MapZone
+gw2:MapZone rdf:type owl:Class ;
+    rdfs:label "Map Zone"@en ;
+    skos:prefLabel "Map Zone"@en ;
+    skos:altLabel "Zone"@en , "Map"@en , "Region"@en ;
+    rdfs:comment "A geographic region or instance within Tyria, the Mists, or Cantha (e.g. Lion's Arch, Auric Basin, Heart of Maguuma)."@en .
+
+###  https://schema.gw2ume.org/core#Achievement
+gw2:Achievement rdf:type owl:Class ;
+    rdfs:label "Achievement"@en ;
+    skos:prefLabel "Achievement"@en ;
+    rdfs:comment "An account objective, milestone, or collection track granting achievement points, titles, or items upon completion."@en .
+
+###  https://schema.gw2ume.org/core#CollectionAchievement
+gw2:CollectionAchievement rdf:type owl:Class ;
+    rdfs:subClassOf gw2:Achievement ;
+    rdfs:label "Collection Achievement"@en ;
+    skos:prefLabel "Collection Achievement"@en ;
+    skos:altLabel "Legendary Collection"@en , "Collection"@en ;
+    rdfs:comment "A specialized multi-step scavenger hunt or achievement track required to unlock crafting recipes or precursor tiers."@en .
+
+
+#################################################################
+#    Disjointness Axioms
+#################################################################
+
+[] rdf:type owl:AllDisjointClasses ;
+    owl:members (
+        gw2:Item
+        gw2:Currency
+        gw2:CraftingDiscipline
+        gw2:CraftingRecipe
+        gw2:Vendor
+        gw2:MapZone
+        gw2:Achievement
+    ) .
+
+[] rdf:type owl:AllDisjointClasses ;
+    owl:members (
+        gw2:Weapon
+        gw2:Armor
+        gw2:Trinket
+        gw2:CraftingMaterial
+    ) .
+
+gw2:CraftingMaterial owl:disjointWith gw2:Currency .
+gw2:Weapon owl:disjointWith gw2:Armor .
+gw2:Weapon owl:disjointWith gw2:Trinket .
+gw2:Armor owl:disjointWith gw2:Trinket .
+
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  https://schema.gw2ume.org/core#requiresMaterial
+gw2:requiresMaterial rdf:type owl:ObjectProperty ;
+    rdfs:label "requires material"@en ;
+    skos:prefLabel "requires material"@en ;
+    rdfs:comment "Specifies an item or material required as an input ingredient by a recipe."@en ;
+    rdfs:domain gw2:CraftingRecipe ;
+    rdfs:range gw2:Item ;
+    owl:inverseOf gw2:isMaterialFor .
+
+###  https://schema.gw2ume.org/core#isMaterialFor
+gw2:isMaterialFor rdf:type owl:ObjectProperty ;
+    rdfs:label "is material for"@en ;
+    skos:prefLabel "is material for"@en ;
+    rdfs:comment "Inverse of requiresMaterial; denotes which recipes use this item as an ingredient."@en ;
+    rdfs:domain gw2:Item ;
+    rdfs:range gw2:CraftingRecipe ;
+    owl:inverseOf gw2:requiresMaterial .
+
+###  https://schema.gw2ume.org/core#hasMysticForgeIngredient
+gw2:hasMysticForgeIngredient rdf:type owl:ObjectProperty ;
+    rdfs:subPropertyOf gw2:requiresMaterial ;
+    rdfs:label "has Mystic Forge ingredient"@en ;
+    skos:prefLabel "has Mystic Forge ingredient"@en ;
+    rdfs:comment "Specifies an input ingredient used specifically in a 4-ingredient Mystic Forge recipe."@en ;
+    rdfs:domain gw2:MysticForgeRecipe ;
+    rdfs:range gw2:Item .
+
+###  https://schema.gw2ume.org/core#craftedWithRecipe
+gw2:craftedWithRecipe rdf:type owl:ObjectProperty ;
+    rdfs:label "crafted with recipe"@en ;
+    skos:prefLabel "crafted with recipe"@en ;
+    rdfs:comment "Relates an item to the recipe that produces it."@en ;
+    rdfs:domain gw2:Item ;
+    rdfs:range gw2:CraftingRecipe ;
+    owl:inverseOf gw2:producesItem .
+
+###  https://schema.gw2ume.org/core#producesItem
+gw2:producesItem rdf:type owl:ObjectProperty ;
+    rdfs:label "produces item"@en ;
+    skos:prefLabel "produces item"@en ;
+    rdfs:comment "Relates a crafting recipe to the output item it creates."@en ;
+    rdfs:domain gw2:CraftingRecipe ;
+    rdfs:range gw2:Item ;
+    owl:inverseOf gw2:craftedWithRecipe .
+
+###  https://schema.gw2ume.org/core#costsCurrency
+gw2:costsCurrency rdf:type owl:ObjectProperty ;
+    rdfs:label "costs currency"@en ;
+    skos:prefLabel "costs currency"@en ;
+    rdfs:comment "Specifies a currency required to purchase or acquire an item."@en ;
+    rdfs:domain gw2:Item ;
+    rdfs:range gw2:Currency .
+
+###  https://schema.gw2ume.org/core#hasDiscipline
+gw2:hasDiscipline rdf:type owl:ObjectProperty ;
+    rdfs:label "has discipline"@en ;
+    skos:prefLabel "has discipline"@en ;
+    rdfs:comment "Relates a crafting recipe to the discipline authorized to craft it."@en ;
+    rdfs:domain gw2:CraftingRecipe ;
+    rdfs:range gw2:CraftingDiscipline .
+
+###  https://schema.gw2ume.org/core#rewardForAchievement
+gw2:rewardForAchievement rdf:type owl:ObjectProperty ;
+    rdfs:label "reward for achievement"@en ;
+    skos:prefLabel "reward for achievement"@en ;
+    rdfs:comment "Specifies the achievement or collection milestone that yields this item."@en ;
+    rdfs:domain gw2:Item ;
+    rdfs:range gw2:Achievement ;
+    owl:inverseOf gw2:rewardsItem .
+
+###  https://schema.gw2ume.org/core#rewardsItem
+gw2:rewardsItem rdf:type owl:ObjectProperty ;
+    rdfs:label "rewards item"@en ;
+    skos:prefLabel "rewards item"@en ;
+    rdfs:comment "Specifies an item granted upon completing an achievement."@en ;
+    rdfs:domain gw2:Achievement ;
+    rdfs:range gw2:Item ;
+    owl:inverseOf gw2:rewardForAchievement .
+
+###  https://schema.gw2ume.org/core#purchasedFrom
+gw2:purchasedFrom rdf:type owl:ObjectProperty ;
+    rdfs:label "purchased from"@en ;
+    skos:prefLabel "purchased from"@en ;
+    rdfs:comment "Relates an item to the vendor NPC that sells it."@en ;
+    rdfs:domain gw2:Item ;
+    rdfs:range gw2:Vendor ;
+    owl:inverseOf gw2:sellsItem .
+
+###  https://schema.gw2ume.org/core#sellsItem
+gw2:sellsItem rdf:type owl:ObjectProperty ;
+    rdfs:label "sells item"@en ;
+    skos:prefLabel "sells item"@en ;
+    rdfs:comment "Relates a vendor to an item available in their merchant inventory."@en ;
+    rdfs:domain gw2:Vendor ;
+    rdfs:range gw2:Item ;
+    owl:inverseOf gw2:purchasedFrom .
+
+###  https://schema.gw2ume.org/core#locatedIn
+gw2:locatedIn rdf:type owl:ObjectProperty ;
+    rdfs:label "located in"@en ;
+    skos:prefLabel "located in"@en ;
+    rdfs:comment "Relates a vendor, landmark, or event to its map zone."@en ;
+    rdfs:domain gw2:Vendor ;
+    rdfs:range gw2:MapZone .
+
+###  https://schema.gw2ume.org/core#partOfCollection
+gw2:partOfCollection rdf:type owl:ObjectProperty ;
+    rdfs:label "part of collection"@en ;
+    skos:prefLabel "part of collection"@en ;
+    rdfs:comment "Relates an item or sub-step achievement to a parent collection achievement."@en ;
+    rdfs:domain gw2:Item ;
+    rdfs:range gw2:Achievement .
+
+###  https://schema.gw2ume.org/core#hasPrecursor
+gw2:hasPrecursor rdf:type owl:ObjectProperty ;
+    rdfs:label "has precursor"@en ;
+    skos:prefLabel "has precursor"@en ;
+    rdfs:comment "Relates a legendary weapon to its direct precursor weapon."@en ;
+    rdfs:domain gw2:LegendaryWeapon ;
+    rdfs:range gw2:PrecursorWeapon ;
+    owl:inverseOf gw2:isPrecursorOf .
+
+###  https://schema.gw2ume.org/core#isPrecursorOf
+gw2:isPrecursorOf rdf:type owl:ObjectProperty ;
+    rdfs:label "is precursor of"@en ;
+    skos:prefLabel "is precursor of"@en ;
+    rdfs:comment "Inverse of hasPrecursor; indicates which legendary weapon this precursor culminates in."@en ;
+    rdfs:domain gw2:PrecursorWeapon ;
+    rdfs:range gw2:LegendaryWeapon ;
+    owl:inverseOf gw2:hasPrecursor .
+
+###  https://schema.gw2ume.org/core#upgradesTo
+gw2:upgradesTo rdf:type owl:ObjectProperty , owl:TransitiveProperty ;
+    rdfs:label "upgrades to"@en ;
+    skos:prefLabel "upgrades to"@en ;
+    rdfs:comment "Relates a precursor tier to the subsequent tier in the multi-step crafting progression."@en ;
+    rdfs:domain gw2:PrecursorWeapon ;
+    rdfs:range gw2:PrecursorWeapon .
+
+
+#################################################################
+#    Datatype Properties
+#################################################################
+
+###  https://schema.gw2ume.org/core#vendorCost
+gw2:vendorCost rdf:type owl:DatatypeProperty ;
+    rdfs:label "vendor cost"@en ;
+    skos:prefLabel "vendor cost"@en ;
+    rdfs:comment "Numerical cost to buy an item from a vendor in base units of copper or tokens."@en ;
+    rdfs:domain gw2:Item ;
+    rdfs:range xsd:integer .
+
+###  https://schema.gw2ume.org/core#requiredLevel
+gw2:requiredLevel rdf:type owl:DatatypeProperty ;
+    rdfs:label "required level"@en ;
+    skos:prefLabel "required level"@en ;
+    rdfs:comment "Minimum character level required to equip or use this item (e.g. 80)."@en ;
+    rdfs:domain gw2:Item ;
+    rdfs:range xsd:integer .
+
+###  https://schema.gw2ume.org/core#itemRarity
+gw2:itemRarity rdf:type owl:DatatypeProperty ;
+    rdfs:label "item rarity"@en ;
+    skos:prefLabel "item rarity"@en ;
+    rdfs:comment "Rarity tier of the item: Junk, Basic, Fine, Masterwork, Rare, Exotic, Ascended, Legendary."@en ;
+    rdfs:domain gw2:Item ;
+    rdfs:range xsd:string .
+
+###  https://schema.gw2ume.org/core#ingredientCount
+gw2:ingredientCount rdf:type owl:DatatypeProperty ;
+    rdfs:label "ingredient count"@en ;
+    skos:prefLabel "ingredient count"@en ;
+    rdfs:comment "Quantity of the specified ingredient required."@en ;
+    rdfs:range xsd:integer .
+
+###  https://schema.gw2ume.org/core#recipeOutputCount
+gw2:recipeOutputCount rdf:type owl:DatatypeProperty ;
+    rdfs:label "recipe output count"@en ;
+    skos:prefLabel "recipe output count"@en ;
+    rdfs:comment "Quantity of items produced upon completing a recipe."@en ;
+    rdfs:domain gw2:CraftingRecipe ;
+    rdfs:range xsd:integer .
+
+###  https://schema.gw2ume.org/core#generationNumber
+gw2:generationNumber rdf:type owl:DatatypeProperty ;
+    rdfs:label "generation number"@en ;
+    skos:prefLabel "generation number"@en ;
+    rdfs:comment "Legendary release generation (1 = Core GW2, 2 = Heart of Thorns / Living World Season 3 & 4, 3 = End of Dragons)."@en ;
+    rdfs:domain gw2:LegendaryWeapon ;
+    rdfs:range xsd:integer .
+
+###  https://schema.gw2ume.org/core#disciplineMinRating
+gw2:disciplineMinRating rdf:type owl:DatatypeProperty ;
+    rdfs:label "discipline minimum rating"@en ;
+    skos:prefLabel "discipline minimum rating"@en ;
+    rdfs:comment "Skill level required in the crafting discipline (e.g. 400, 450, 500)."@en ;
+    rdfs:domain gw2:CraftingRecipe ;
+    rdfs:range xsd:integer .
+
+
+#################################################################
+#    Core Individuals
+#################################################################
+
+### Disciplines
+gw2:Artificer rdf:type owl:NamedIndividual , gw2:CraftingDiscipline ;
+    rdfs:label "Artificer"@en ;
+    skos:prefLabel "Artificer"@en ;
+    rdfs:comment "Crafts staves, scepters, foci, tridents, potions, and tuning crystals."@en .
+
+gw2:Weaponsmith rdf:type owl:NamedIndividual , gw2:CraftingDiscipline ;
+    rdfs:label "Weaponsmith"@en ;
+    skos:prefLabel "Weaponsmith"@en ;
+    rdfs:comment "Crafts swords, greatswords, axes, daggers, maces, hammers, shields, and spearguns."@en .
+
+gw2:Huntsman rdf:type owl:NamedIndividual , gw2:CraftingDiscipline ;
+    rdfs:label "Huntsman"@en ;
+    skos:prefLabel "Huntsman"@en ;
+    rdfs:comment "Crafts bows, pistols, rifles, torches, warhorns, and maintenance oils."@en .
+
+gw2:Armorsmith rdf:type owl:NamedIndividual , gw2:CraftingDiscipline ;
+    rdfs:label "Armorsmith"@en ;
+    skos:prefLabel "Armorsmith"@en ;
+    rdfs:comment "Crafts heavy armor and metal storage boxes."@en .
+
+gw2:Leatherworker rdf:type owl:NamedIndividual , gw2:CraftingDiscipline ;
+    rdfs:label "Leatherworker"@en ;
+    skos:prefLabel "Leatherworker"@en ;
+    rdfs:comment "Crafts medium armor and leather bags."@en .
+
+gw2:Tailor rdf:type owl:NamedIndividual , gw2:CraftingDiscipline ;
+    rdfs:label "Tailor"@en ;
+    skos:prefLabel "Tailor"@en ;
+    rdfs:comment "Crafts light armor and cloth bags."@en .
+
+gw2:Jeweler rdf:type owl:NamedIndividual , gw2:CraftingDiscipline ;
+    rdfs:label "Jeweler"@en ;
+    skos:prefLabel "Jeweler"@en ;
+    rdfs:comment "Crafts rings, accessories, and amulets."@en .
+
+gw2:Chef rdf:type owl:NamedIndividual , gw2:CraftingDiscipline ;
+    rdfs:label "Chef"@en ;
+    skos:prefLabel "Chef"@en ;
+    rdfs:comment "Crafts food consumables and feast platters."@en .
+
+gw2:Scribe rdf:type owl:NamedIndividual , gw2:CraftingDiscipline ;
+    rdfs:label "Scribe"@en ;
+    skos:prefLabel "Scribe"@en ;
+    rdfs:comment "Crafts guild hall decorations, schematics, and paper goods."@en .
+
+### Currencies
+gw2:Coin rdf:type owl:NamedIndividual , gw2:Currency ;
+    rdfs:label "Coin"@en ;
+    skos:prefLabel "Coin"@en ;
+    skos:altLabel "Gold"@en , "Silver"@en , "Copper"@en , "Gold Coin"@en ;
+    rdfs:comment "The primary transactional currency in Guild Wars 2."@en .
+
+gw2:Karma rdf:type owl:NamedIndividual , gw2:Currency ;
+    rdfs:label "Karma"@en ;
+    skos:prefLabel "Karma"@en ;
+    rdfs:comment "Earned through events, hearts, and consumables; used with Karma merchants and for Obsidian Shards."@en .
+
+gw2:SpiritShard rdf:type owl:NamedIndividual , gw2:Currency ;
+    rdfs:label "Spirit Shard"@en ;
+    skos:prefLabel "Spirit Shard"@en ;
+    skos:altLabel "Spirit Shards"@en , "Shards"@en ;
+    rdfs:comment "Currency earned after level 80 used to purchase Mystic Forge materials from Miyani."@en .
+
+gw2:AirshipPart rdf:type owl:NamedIndividual , gw2:Currency ;
+    rdfs:label "Airship Part"@en ;
+    skos:prefLabel "Airship Part"@en ;
+    skos:altLabel "Airship Parts"@en ;
+    rdfs:comment "Verdant Brink map currency."@en .
+
+gw2:LumpOfAurillium rdf:type owl:NamedIndividual , gw2:Currency ;
+    rdfs:label "Lump of Aurillium"@en ;
+    skos:prefLabel "Lump of Aurillium"@en ;
+    skos:altLabel "Aurillium"@en ;
+    rdfs:comment "Auric Basin map currency."@en .
+
+gw2:LeyLineSpark rdf:type owl:NamedIndividual , gw2:Currency ;
+    rdfs:label "Ley Line Spark"@en ;
+    skos:prefLabel "Ley Line Spark"@en ;
+    skos:altLabel "Sparks"@en , "Ley Sparks"@en ;
+    rdfs:comment "Tangled Depths map currency and crafting component."@en .
+
+gw2:CrystallineOre rdf:type owl:NamedIndividual , gw2:Currency ;
+    rdfs:label "Crystalline Ore"@en ;
+    skos:prefLabel "Crystalline Ore"@en ;
+    skos:altLabel "Ore"@en ;
+    rdfs:comment "Dragon's Stand map currency harvested from Noxious Pods."@en .

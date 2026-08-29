@@ -1,0 +1,531 @@
+@prefix : <https://schema.gw2ume.org/legendary#> .
+@prefix gw2leg: <https://schema.gw2ume.org/legendary#> .
+@prefix gw2: <https://schema.gw2ume.org/core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix schema: <http://schema.org/> .
+
+<https://schema.gw2ume.org/legendary> rdf:type owl:Ontology ;
+    owl:imports <https://schema.gw2ume.org/core> ;
+    rdfs:label "Guild Wars 2 Legendary Crafting Ontology"@en ;
+    rdfs:comment "Comprehensive domain ontology representing Generation 1 and Generation 2 Legendary Weapons, Precursor progression chains, Mystic Forge recipes, and crafting requirements in Guild Wars 2."@en ;
+    owl:versionInfo "1.0.0" .
+
+#################################################################
+#    Map Zones
+#################################################################
+
+gw2leg:LionsArch rdf:type owl:NamedIndividual , gw2:MapZone ;
+    rdfs:label "Lion's Arch"@en ;
+    skos:prefLabel "Lion's Arch"@en ;
+    skos:altLabel "LA"@en ;
+    rdfs:comment "The central trading hub city containing the Mystic Forge, Grandmaster Craftsman Hobbs, and Miyani."@en .
+
+gw2leg:FrostgorgeSound rdf:type owl:NamedIndividual , gw2:MapZone ;
+    rdfs:label "Frostgorge Sound"@en ;
+    skos:prefLabel "Frostgorge Sound"@en ;
+    skos:altLabel "FGS"@en ;
+    rdfs:comment "Shiverpeaks zone home to Master Craftsman and vendor of Icy Runestones."@en .
+
+gw2leg:VerdantBrink rdf:type owl:NamedIndividual , gw2:MapZone ;
+    rdfs:label "Verdant Brink"@en ;
+    skos:prefLabel "Verdant Brink"@en ;
+    skos:altLabel "VB"@en ;
+    rdfs:comment "Heart of Maguuma zone rewarding Airship Parts and Bladed Armor."@en .
+
+gw2leg:AuricBasin rdf:type owl:NamedIndividual , gw2:MapZone ;
+    rdfs:label "Auric Basin"@en ;
+    skos:prefLabel "Auric Basin"@en ;
+    skos:altLabel "AB"@en ;
+    rdfs:comment "Heart of Maguuma zone containing Tarir, The Forgotten City and Aurillium."@en .
+
+gw2leg:TangledDepths rdf:type owl:NamedIndividual , gw2:MapZone ;
+    rdfs:label "Tangled Depths"@en ;
+    skos:prefLabel "Tangled Depths"@en ;
+    skos:altLabel "TD"@en ;
+    rdfs:comment "Heart of Maguuma cavern zone yielding Ley Line Sparks and Chak Gerent rewards."@en .
+
+gw2leg:DragonsStand rdf:type owl:NamedIndividual , gw2:MapZone ;
+    rdfs:label "Dragon's Stand"@en ;
+    skos:prefLabel "Dragon's Stand"@en ;
+    skos:altLabel "DS"@en ;
+    rdfs:comment "Heart of Maguuma zone hosting the Mouth of Mordremoth meta event and Crystalline Ore pods."@en .
+
+
+#################################################################
+#    Vendors
+#################################################################
+
+gw2leg:Miyani rdf:type owl:NamedIndividual , gw2:Vendor ;
+    rdfs:label "Miyani"@en ;
+    skos:prefLabel "Miyani"@en ;
+    skos:altLabel "Mystic Forge Attendant"@en ;
+    rdfs:comment "Mystic Forge attendant in Lion's Arch who sells Eldritch Scrolls, Bloodstone Shards, and Philosopher's Stones for Spirit Shards."@en ;
+    gw2:locatedIn gw2leg:LionsArch .
+
+gw2leg:GrandmasterHobbs rdf:type owl:NamedIndividual , gw2:Vendor ;
+    rdfs:label "Grandmaster Craftsman Hobbs"@en ;
+    skos:prefLabel "Grandmaster Craftsman Hobbs"@en ;
+    skos:altLabel "Hobbs"@en ;
+    rdfs:comment "Legendary crafting merchant in Lion's Arch who unlocks legendary precursor collection achievements and sells intermediate recipes."@en ;
+    gw2:locatedIn gw2leg:LionsArch .
+
+gw2leg:RielRunecrafter rdf:type owl:NamedIndividual , gw2:Vendor ;
+    rdfs:label "Riel Runecrafter"@en ;
+    skos:prefLabel "Riel Runecrafter"@en ;
+    skos:altLabel "Riel"@en , "Icy Runestone Vendor"@en ;
+    rdfs:comment "Merchant located in Frostgorge Sound selling Icy Runestones for 1 Gold each."@en ;
+    gw2:locatedIn gw2leg:FrostgorgeSound .
+
+
+#################################################################
+#    Core Raw & Refined Materials
+#################################################################
+
+gw2leg:SpiritwoodPlank rdf:type owl:NamedIndividual , gw2:AscendedMaterial ;
+    rdfs:label "Spiritwood Plank"@en ;
+    skos:prefLabel "Spiritwood Plank"@en ;
+    skos:altLabel "Spiritwood"@en , "Spirit Wood"@en , "Ascended Wood"@en ;
+    rdfs:comment "Time-gated Ascended crafting material refined from Glob of Elder Spirit Residue and Elder Wood Planks."@en ;
+    gw2:itemRarity "Ascended" ;
+    gw2:requiredLevel 80 .
+
+gw2leg:ElderWoodPlank rdf:type owl:NamedIndividual , gw2:RefinedMaterial ;
+    rdfs:label "Elder Wood Plank"@en ;
+    skos:prefLabel "Elder Wood Plank"@en ;
+    skos:altLabel "Elder Plank"@en , "Elder Wood"@en ;
+    rdfs:comment "Refined Tier 5 wood material processed from 3 Elder Wood Logs."@en ;
+    gw2:itemRarity "Fine" ;
+    gw2:requiredLevel 60 .
+
+gw2leg:ElderWoodLog rdf:type owl:NamedIndividual , gw2:RawMaterial ;
+    rdfs:label "Elder Wood Log"@en ;
+    skos:prefLabel "Elder Wood Log"@en ;
+    skos:altLabel "Elder Log"@en , "T5 Wood"@en ;
+    rdfs:comment "Tier 5 wood harvested from Cypress and Pine trees across level 60-80 zones."@en ;
+    gw2:itemRarity "Basic" .
+
+gw2leg:AncientWoodPlank rdf:type owl:NamedIndividual , gw2:RefinedMaterial ;
+    rdfs:label "Ancient Wood Plank"@en ;
+    skos:prefLabel "Ancient Wood Plank"@en ;
+    skos:altLabel "Ancient Plank"@en , "T6 Wood Plank"@en ;
+    rdfs:comment "Refined Tier 6 wood material processed from 3 Ancient Wood Logs."@en ;
+    gw2:itemRarity "Fine" ;
+    gw2:requiredLevel 80 .
+
+gw2leg:DeldrimorSteelIngot rdf:type owl:NamedIndividual , gw2:AscendedMaterial ;
+    rdfs:label "Deldrimor Steel Ingot"@en ;
+    skos:prefLabel "Deldrimor Steel Ingot"@en ;
+    skos:altLabel "Deldrimor"@en , "Deldrimor Steel"@en , "Ascended Metal"@en ;
+    rdfs:comment "Time-gated Ascended crafting metal refined from Lump of Mithrillium, Darksteel Ingots, Platinum Ingots, and Iron Ingots."@en ;
+    gw2:itemRarity "Ascended" ;
+    gw2:requiredLevel 80 .
+
+
+#################################################################
+#    Mystic Components & Currencies
+#################################################################
+
+gw2leg:IcyRunestone rdf:type owl:NamedIndividual , gw2:MysticComponent ;
+    rdfs:label "Icy Runestone"@en ;
+    skos:prefLabel "Icy Runestone"@en ;
+    skos:altLabel "Runestone"@en , "Runestones"@en , "Icy"@en ;
+    rdfs:comment "Vendor material purchased from Riel Runecrafter in Frostgorge Sound for 1 Gold each; 100 are needed for Gen 1 & Gen 2 legendary weapons."@en ;
+    gw2:itemRarity "Rare" ;
+    gw2:vendorCost 10000 ;
+    gw2:purchasedFrom gw2leg:RielRunecrafter .
+
+gw2leg:BloodstoneShard rdf:type owl:NamedIndividual , gw2:MysticComponent ;
+    rdfs:label "Bloodstone Shard"@en ;
+    skos:prefLabel "Bloodstone Shard"@en ;
+    skos:altLabel "Bloodstone"@en ;
+    rdfs:comment "A mystic ingredient purchased from Miyani for 200 Spirit Shards, essential for the Gift of Mastery."@en ;
+    gw2:itemRarity "Exotic" ;
+    gw2:purchasedFrom gw2leg:Miyani .
+
+gw2leg:MysticClover rdf:type owl:NamedIndividual , gw2:MysticComponent ;
+    rdfs:label "Mystic Clover"@en ;
+    skos:prefLabel "Mystic Clover"@en ;
+    skos:altLabel "Clover"@en , "Clovers"@en , "Mystic Clovers"@en ;
+    rdfs:comment "A lucky 4-leaf clover obtained from Mystic Forge recipes (using Mystic Coins, Glob of Ectoplasm, Obsidian Shards, and Philosopher's Stones) or reward tracks; 77 are needed for Mystic Tribute."@en ;
+    gw2:itemRarity "Exotic" .
+
+gw2leg:MysticCoin rdf:type owl:NamedIndividual , gw2:MysticComponent ;
+    rdfs:label "Mystic Coin"@en ;
+    skos:prefLabel "Mystic Coin"@en ;
+    skos:altLabel "Coin"@en , "Coins"@en , "MC"@en , "Mystic Coins"@en ;
+    rdfs:comment "Valuable token awarded from daily logins, Ley-Line Anomaly, and Fractals; required for Mystic Clovers and Mystic Forge recipes."@en ;
+    gw2:itemRarity "Rare" .
+
+gw2leg:AmalgamatedGemstone rdf:type owl:NamedIndividual , gw2:AscendedMaterial ;
+    rdfs:label "Amalgamated Gemstone"@en ;
+    skos:prefLabel "Amalgamated Gemstone"@en ;
+    skos:altLabel "Amalgam"@en , "Amalgams"@en , "Amalgamated Gemstones"@en , "AG"@en ;
+    rdfs:comment "A composite gemstone created by combining rare orbs/crests with Crystalline Dust in the Mystic Forge, or earned from HoT/PoF meta events; 250 are required for the Mystic Tribute."@en ;
+    gw2:itemRarity "Exotic" .
+
+gw2leg:ObsidianShard rdf:type owl:NamedIndividual , gw2:MysticComponent ;
+    rdfs:label "Obsidian Shard"@en ;
+    skos:prefLabel "Obsidian Shard"@en ;
+    skos:altLabel "Obsidian"@en , "Obsi Shards"@en ;
+    rdfs:comment "Karma-purchased component from Tactician Deathstrider in the Cathedral of Glorious Victory (Orr) or the Silverwastes."@en ;
+    gw2:itemRarity "Fine" .
+
+
+#################################################################
+#    Legendary Gifts & Tributes
+#################################################################
+
+gw2leg:GiftOfNevermore rdf:type owl:NamedIndividual , gw2:GiftComponent ;
+    rdfs:label "Gift of Nevermore"@en ;
+    skos:prefLabel "Gift of Nevermore"@en ;
+    skos:altLabel "Nevermore Gift"@en ;
+    rdfs:comment "The weapon-specific gift required to forge the legendary staff Nevermore in the Mystic Forge."@en ;
+    gw2:itemRarity "Legendary" .
+
+gw2leg:MysticTribute rdf:type owl:NamedIndividual , gw2:LegendaryTribute ;
+    rdfs:label "Mystic Tribute"@en ;
+    skos:prefLabel "Mystic Tribute"@en ;
+    skos:altLabel "Tribute"@en , "Gen 2 Tribute"@en ;
+    rdfs:comment "The universal tribute component for Generation 2 legendary weapons requiring 77 Mystic Clovers, 250 Amalgamated Gemstones, Gift of Condensed Magic, and Gift of Condensed Might."@en ;
+    gw2:itemRarity "Legendary" .
+
+gw2leg:GiftOfMastery rdf:type owl:NamedIndividual , gw2:GiftComponent ;
+    rdfs:label "Gift of Mastery"@en ;
+    skos:prefLabel "Gift of Mastery"@en ;
+    skos:altLabel "Mastery Gift"@en ;
+    rdfs:comment "A core component for Generation 1 and Generation 2 weapons combining Gift of Exploration, Gift of Battle, Bloodstone Shard, and 250 Obsidian Shards."@en ;
+    gw2:itemRarity "Legendary" .
+
+gw2leg:GiftOfMaguumaMastery rdf:type owl:NamedIndividual , gw2:GiftComponent ;
+    rdfs:label "Gift of Maguuma Mastery"@en ;
+    skos:prefLabel "Gift of Maguuma Mastery"@en ;
+    skos:altLabel "Maguuma Mastery"@en ;
+    rdfs:comment "Heart of Thorns legendary component combining Gift of the Fleet, Gift of Tarir, Gift of the Jungle, and 250 Crystalline Ore."@en ;
+    gw2:itemRarity "Legendary" .
+
+gw2leg:GiftOfWood rdf:type owl:NamedIndividual , gw2:GiftComponent ;
+    rdfs:label "Gift of Wood"@en ;
+    skos:prefLabel "Gift of Wood"@en ;
+    skos:altLabel "Wood Gift"@en ;
+    rdfs:comment "Gift crafted by Artificer/Huntsman/Weaponsmith requiring 250 Ancient Wood Planks, 250 Elder Wood Planks, 250 Hard Wood Planks, and 250 Seasoned Wood Planks."@en ;
+    gw2:itemRarity "Legendary" .
+
+gw2leg:GiftOfEnergy rdf:type owl:NamedIndividual , gw2:GiftComponent ;
+    rdfs:label "Gift of Energy"@en ;
+    skos:prefLabel "Gift of Energy"@en ;
+    skos:altLabel "Energy Gift"@en ;
+    rdfs:comment "Gift crafted by Artificer requiring 250 Piles of Crystalline Dust, 250 Piles of Incandescent Dust, 250 Piles of Luminous Dust, and 250 Piles of Radiant Dust."@en ;
+    gw2:itemRarity "Legendary" .
+
+gw2leg:GiftOfInsight rdf:type owl:NamedIndividual , gw2:GiftComponent ;
+    rdfs:label "Gift of Insight"@en ;
+    skos:prefLabel "Gift of Insight"@en ;
+    skos:altLabel "Insight Gift"@en ;
+    rdfs:comment "Gift created specifically for Nevermore combining Raven-themed collection tokens and materials."@en ;
+    gw2:itemRarity "Legendary" .
+
+gw2leg:GiftOfExploration rdf:type owl:NamedIndividual , gw2:GiftComponent ;
+    rdfs:label "Gift of Exploration"@en ;
+    skos:prefLabel "Gift of Exploration"@en ;
+    skos:altLabel "World Completion Gift"@en , "Exploration"@en ;
+    rdfs:comment "Awarded in pairs upon achieving 100% Core Tyria World Completion."@en ;
+    gw2:itemRarity "Legendary" .
+
+gw2leg:GiftOfBattle rdf:type owl:NamedIndividual , gw2:GiftComponent ;
+    rdfs:label "Gift of Battle"@en ;
+    skos:prefLabel "Gift of Battle"@en ;
+    skos:altLabel "GoB"@en , "Battle Gift"@en ;
+    rdfs:comment "Obtained by completing the Gift of Battle item reward track in World vs. World."@en ;
+    gw2:itemRarity "Legendary" .
+
+gw2leg:GiftOfCondensedMagic rdf:type owl:NamedIndividual , gw2:GiftComponent ;
+    rdfs:label "Gift of Condensed Magic"@en ;
+    skos:prefLabel "Gift of Condensed Magic"@en ;
+    skos:altLabel "Condensed Magic"@en ;
+    rdfs:comment "Component of the Mystic Tribute combining Gift of Blood, Gift of Venom, Gift of Totems, and Gift of Dust."@en ;
+    gw2:itemRarity "Legendary" .
+
+gw2leg:GiftOfCondensedMight rdf:type owl:NamedIndividual , gw2:GiftComponent ;
+    rdfs:label "Gift of Condensed Might"@en ;
+    skos:prefLabel "Gift of Condensed Might"@en ;
+    skos:altLabel "Condensed Might"@en ;
+    rdfs:comment "Component of the Mystic Tribute combining Gift of Claws, Gift of Scales, Gift of Bones, and Gift of Fangs."@en ;
+    gw2:itemRarity "Legendary" .
+
+
+#################################################################
+#    Nevermore Precursor Progression Tiers
+#################################################################
+
+gw2leg:RavenswoodBranch rdf:type owl:NamedIndividual , gw2:PrecursorWeapon ;
+    rdfs:label "Ravenswood Branch"@en ;
+    skos:prefLabel "Ravenswood Branch"@en ;
+    skos:altLabel "Tier 1 Nevermore Precursor"@en , "Ravenswood Branch (Tier 1)"@en , "T1 Nevermore"@en ;
+    rdfs:comment "Tier 1 precursor weapon for Nevermore, awarded after completing the Nevermore I: Ravenswood Branch collection achievement."@en ;
+    gw2:itemRarity "Exotic" ;
+    gw2:requiredLevel 80 ;
+    gw2:upgradesTo gw2leg:RavenswoodStaff ;
+    gw2:rewardForAchievement gw2leg:NevermoreI_RavenswoodBranch .
+
+gw2leg:RavenswoodStaff rdf:type owl:NamedIndividual , gw2:PrecursorWeapon ;
+    rdfs:label "Ravenswood Staff"@en ;
+    skos:prefLabel "Ravenswood Staff"@en ;
+    skos:altLabel "Tier 2 Nevermore Precursor"@en , "Ravenswood Staff (Tier 2)"@en , "T2 Nevermore"@en ;
+    rdfs:comment "Tier 2 precursor weapon for Nevermore, crafted using the Ravenswood Branch and materials from Nevermore II collection."@en ;
+    gw2:itemRarity "Exotic" ;
+    gw2:requiredLevel 80 ;
+    gw2:upgradesTo gw2leg:TheRavenSpirit ;
+    gw2:rewardForAchievement gw2leg:NevermoreII_RavenswoodStaff .
+
+gw2leg:TheRavenSpirit rdf:type owl:NamedIndividual , gw2:PrecursorWeapon ;
+    rdfs:label "The Raven Spirit"@en ;
+    skos:prefLabel "The Raven Spirit"@en ;
+    skos:altLabel "Tier 3 Nevermore Precursor"@en , "The Raven Spirit (Tier 3)"@en , "T3 Nevermore"@en ;
+    rdfs:comment "Tier 3 precursor weapon for Nevermore, crafted after completing the Nevermore III: The Raven Spirit collection."@en ;
+    gw2:itemRarity "Exotic" ;
+    gw2:requiredLevel 80 ;
+    gw2:upgradesTo gw2leg:TheLivingRavens ;
+    gw2:rewardForAchievement gw2leg:NevermoreIII_TheRavenSpirit .
+
+gw2leg:TheLivingRavens rdf:type owl:NamedIndividual , gw2:PrecursorWeapon ;
+    rdfs:label "The Living Ravens"@en ;
+    skos:prefLabel "The Living Ravens"@en ;
+    skos:altLabel "Living Ravens"@en , "Nevermore Precursor"@en , "Tier 4 Nevermore Precursor"@en , "T4 Nevermore"@en ;
+    rdfs:comment "Tier 4 final precursor weapon for Nevermore, infused with raven souls; one of four ingredients in the Nevermore Mystic Forge recipe."@en ;
+    gw2:itemRarity "Ascended" ;
+    gw2:requiredLevel 80 ;
+    gw2:isPrecursorOf gw2leg:Nevermore ;
+    gw2:rewardForAchievement gw2leg:NevermoreIV_TheLivingRavens .
+
+
+#################################################################
+#    Nevermore Collection Achievements
+#################################################################
+
+gw2leg:NevermoreI_RavenswoodBranch rdf:type owl:NamedIndividual , gw2:CollectionAchievement ;
+    rdfs:label "Nevermore I: Ravenswood Branch"@en ;
+    skos:prefLabel "Nevermore I: Ravenswood Branch"@en ;
+    skos:altLabel "Nevermore 1"@en , "Nevermore I"@en , "Ravenswood Branch Collection"@en ;
+    rdfs:comment "First tier legendary staff collection to craft the Ravenswood Branch."@en ;
+    gw2:rewardsItem gw2leg:RavenswoodBranch .
+
+gw2leg:NevermoreII_RavenswoodStaff rdf:type owl:NamedIndividual , gw2:CollectionAchievement ;
+    rdfs:label "Nevermore II: Ravenswood Staff"@en ;
+    skos:prefLabel "Nevermore II: Ravenswood Staff"@en ;
+    skos:altLabel "Nevermore 2"@en , "Nevermore II"@en , "Ravenswood Staff Collection"@en ;
+    rdfs:comment "Second tier legendary staff collection to craft the Ravenswood Staff."@en ;
+    gw2:rewardsItem gw2leg:RavenswoodStaff .
+
+gw2leg:NevermoreIII_TheRavenSpirit rdf:type owl:NamedIndividual , gw2:CollectionAchievement ;
+    rdfs:label "Nevermore III: The Raven Spirit"@en ;
+    skos:prefLabel "Nevermore III: The Raven Spirit"@en ;
+    skos:altLabel "Nevermore 3"@en , "Nevermore III"@en , "Raven Spirit Collection"@en ;
+    rdfs:comment "Third tier legendary staff collection exploring the spiritual bond with the Raven Spirit across the Shiverpeaks."@en ;
+    gw2:rewardsItem gw2leg:TheRavenSpirit .
+
+gw2leg:NevermoreIV_TheLivingRavens rdf:type owl:NamedIndividual , gw2:CollectionAchievement ;
+    rdfs:label "Nevermore IV: The Living Ravens"@en ;
+    skos:prefLabel "Nevermore IV: The Living Ravens"@en ;
+    skos:altLabel "Nevermore 4"@en , "Nevermore IV"@en , "Living Ravens Collection"@en ;
+    rdfs:comment "Fourth and final tier legendary staff collection raising and nurturing a raven fledgeling into The Living Ravens."@en ;
+    gw2:rewardsItem gw2leg:TheLivingRavens .
+
+
+#################################################################
+#    Generation 2 Legendary Weapons
+#################################################################
+
+gw2leg:Nevermore rdf:type owl:NamedIndividual , gw2:LegendaryWeapon ;
+    rdfs:label "Nevermore"@en ;
+    skos:prefLabel "Nevermore"@en ;
+    skos:altLabel "Nevermore Staff"@en , "Raven Staff"@en , "Gen 2 Staff"@en ;
+    rdfs:comment "Generation 2 Legendary Staff themed around the Spirit of Raven, perching a living raven on the staff head and leaving feather footfalls."@en ;
+    gw2:itemRarity "Legendary" ;
+    gw2:requiredLevel 80 ;
+    gw2:generationNumber 2 ;
+    gw2:hasPrecursor gw2leg:TheLivingRavens ;
+    gw2:craftedWithRecipe gw2leg:NevermoreMysticForgeRecipe .
+
+gw2leg:Astralaria rdf:type owl:NamedIndividual , gw2:LegendaryWeapon ;
+    rdfs:label "Astralaria"@en ;
+    skos:prefLabel "Astralaria"@en ;
+    skos:altLabel "Astralaria Axe"@en , "Gen 2 Axe"@en , "Cosmic Axe"@en ;
+    rdfs:comment "Generation 2 Legendary Axe themed around celestial cartography, astrolabes, and the cosmos."@en ;
+    gw2:itemRarity "Legendary" ;
+    gw2:requiredLevel 80 ;
+    gw2:generationNumber 2 .
+
+gw2leg:HOPE rdf:type owl:NamedIndividual , gw2:LegendaryWeapon ;
+    rdfs:label "H.O.P.E."@en ;
+    skos:prefLabel "H.O.P.E."@en ;
+    skos:altLabel "HOPE"@en , "Hope Pistol"@en , "Gen 2 Pistol"@en ;
+    rdfs:comment "Generation 2 Legendary Pistol themed around Asuran magitech, alchemy, and laser ballistics."@en ;
+    gw2:itemRarity "Legendary" ;
+    gw2:requiredLevel 80 ;
+    gw2:generationNumber 2 .
+
+gw2leg:TheShiningBlade rdf:type owl:NamedIndividual , gw2:LegendaryWeapon ;
+    rdfs:label "The Shining Blade"@en ;
+    skos:prefLabel "The Shining Blade"@en ;
+    skos:altLabel "Shining Blade"@en , "Gen 2 Sword"@en ;
+    rdfs:comment "Generation 2 Legendary Sword carrying the legacy of the royal Krytan guard."@en ;
+    gw2:itemRarity "Legendary" ;
+    gw2:requiredLevel 80 ;
+    gw2:generationNumber 2 .
+
+gw2leg:ChukaAndChampawat rdf:type owl:NamedIndividual , gw2:LegendaryWeapon ;
+    rdfs:label "Chuka and Champawat"@en ;
+    skos:prefLabel "Chuka and Champawat"@en ;
+    skos:altLabel "Chuka"@en , "Champawat"@en , "Gen 2 Shortbow"@en , "Tiger Bow"@en ;
+    rdfs:comment "Generation 2 Legendary Shortbow firing spectral tiger arrows and accompanied by tiger cubs."@en ;
+    gw2:itemRarity "Legendary" ;
+    gw2:requiredLevel 80 ;
+    gw2:generationNumber 2 .
+
+gw2leg:Exordium rdf:type owl:NamedIndividual , gw2:LegendaryWeapon ;
+    rdfs:label "Exordium"@en ;
+    skos:prefLabel "Exordium"@en ;
+    skos:altLabel "Exordium Greatsword"@en , "Gen 2 Greatsword"@en ;
+    rdfs:comment "Generation 2 Legendary Greatsword that dynamically morphs its form depending on the skill cast."@en ;
+    gw2:itemRarity "Legendary" ;
+    gw2:requiredLevel 80 ;
+    gw2:generationNumber 2 .
+
+gw2leg:Sharur rdf:type owl:NamedIndividual , gw2:LegendaryWeapon ;
+    rdfs:label "Sharur"@en ;
+    skos:prefLabel "Sharur"@en ;
+    skos:altLabel "Sharur Hammer"@en , "Gen 2 Hammer"@en , "Orrian Hammer"@en ;
+    rdfs:comment "Generation 2 Legendary Hammer shifting between sunken Orrian corruption by night and purified luminescent stone by day."@en ;
+    gw2:itemRarity "Legendary" ;
+    gw2:requiredLevel 80 ;
+    gw2:generationNumber 2 .
+
+
+#################################################################
+#    Generation 1 Legendary Weapons
+#################################################################
+
+gw2leg:Twilight rdf:type owl:NamedIndividual , gw2:LegendaryWeapon ;
+    rdfs:label "Twilight"@en ;
+    skos:prefLabel "Twilight"@en ;
+    skos:altLabel "Twilight Greatsword"@en , "Gen 1 Greatsword"@en ;
+    rdfs:comment "Generation 1 Legendary Greatsword displaying a dark cosmic void blade."@en ;
+    gw2:itemRarity "Legendary" ;
+    gw2:requiredLevel 80 ;
+    gw2:generationNumber 1 .
+
+gw2leg:Sunrise rdf:type owl:NamedIndividual , gw2:LegendaryWeapon ;
+    rdfs:label "Sunrise"@en ;
+    skos:prefLabel "Sunrise"@en ;
+    skos:altLabel "Sunrise Greatsword"@en ;
+    rdfs:comment "Generation 1 Legendary Greatsword displaying a bright, prismatic sky blade."@en ;
+    gw2:itemRarity "Legendary" ;
+    gw2:requiredLevel 80 ;
+    gw2:generationNumber 1 .
+
+gw2leg:Eternity rdf:type owl:NamedIndividual , gw2:LegendaryWeapon ;
+    rdfs:label "Eternity"@en ;
+    skos:prefLabel "Eternity"@en ;
+    skos:altLabel "Eternity Greatsword"@en ;
+    rdfs:comment "Generation 1 Legendary Greatsword formed by merging Twilight and Sunrise in the Mystic Forge."@en ;
+    gw2:itemRarity "Legendary" ;
+    gw2:requiredLevel 80 ;
+    gw2:generationNumber 1 .
+
+
+#################################################################
+#    Mystic Forge & Crafting Recipes
+#################################################################
+
+gw2leg:NevermoreMysticForgeRecipe rdf:type owl:NamedIndividual , gw2:MysticForgeRecipe ;
+    rdfs:label "Nevermore Mystic Forge Recipe"@en ;
+    skos:prefLabel "Nevermore Mystic Forge Recipe"@en ;
+    skos:altLabel "Nevermore Forge Recipe"@en ;
+    rdfs:comment "Mystic Forge recipe combining The Living Ravens, Gift of Nevermore, Mystic Tribute, and Gift of Mastery to forge the Legendary Staff Nevermore."@en ;
+    gw2:producesItem gw2leg:Nevermore ;
+    gw2:recipeOutputCount 1 ;
+    gw2:requiresMaterial gw2leg:TheLivingRavens ;
+    gw2:requiresMaterial gw2leg:GiftOfNevermore ;
+    gw2:requiresMaterial gw2leg:MysticTribute ;
+    gw2:requiresMaterial gw2leg:GiftOfMastery ;
+    gw2:hasMysticForgeIngredient gw2leg:TheLivingRavens ;
+    gw2:hasMysticForgeIngredient gw2leg:GiftOfNevermore ;
+    gw2:hasMysticForgeIngredient gw2leg:MysticTribute ;
+    gw2:hasMysticForgeIngredient gw2leg:GiftOfMastery .
+
+gw2leg:GiftOfNevermoreRecipe rdf:type owl:NamedIndividual , gw2:MysticForgeRecipe ;
+    rdfs:label "Gift of Nevermore Recipe"@en ;
+    skos:prefLabel "Gift of Nevermore Recipe"@en ;
+    skos:altLabel "Gift of Nevermore Forge Recipe"@en ;
+    rdfs:comment "Combines Gift of Wood, Gift of Energy, Gift of Insight, and 100 Icy Runestones in the Mystic Forge to create the Gift of Nevermore."@en ;
+    gw2:producesItem gw2leg:GiftOfNevermore ;
+    gw2:recipeOutputCount 1 ;
+    gw2:requiresMaterial gw2leg:GiftOfWood ;
+    gw2:requiresMaterial gw2leg:GiftOfEnergy ;
+    gw2:requiresMaterial gw2leg:GiftOfInsight ;
+    gw2:requiresMaterial gw2leg:IcyRunestone ;
+    gw2:hasMysticForgeIngredient gw2leg:GiftOfWood ;
+    gw2:hasMysticForgeIngredient gw2leg:GiftOfEnergy ;
+    gw2:hasMysticForgeIngredient gw2leg:GiftOfInsight ;
+    gw2:hasMysticForgeIngredient gw2leg:IcyRunestone .
+
+gw2leg:MysticTributeRecipe rdf:type owl:NamedIndividual , gw2:MysticForgeRecipe ;
+    rdfs:label "Mystic Tribute Recipe"@en ;
+    skos:prefLabel "Mystic Tribute Recipe"@en ;
+    skos:altLabel "Mystic Tribute Forge Recipe"@en ;
+    rdfs:comment "Combines 77 Mystic Clovers, 250 Amalgamated Gemstones, Gift of Condensed Magic, and Gift of Condensed Might to forge the Mystic Tribute."@en ;
+    gw2:producesItem gw2leg:MysticTribute ;
+    gw2:recipeOutputCount 1 ;
+    gw2:requiresMaterial gw2leg:MysticClover ;
+    gw2:requiresMaterial gw2leg:AmalgamatedGemstone ;
+    gw2:requiresMaterial gw2leg:GiftOfCondensedMagic ;
+    gw2:requiresMaterial gw2leg:GiftOfCondensedMight ;
+    gw2:hasMysticForgeIngredient gw2leg:MysticClover ;
+    gw2:hasMysticForgeIngredient gw2leg:AmalgamatedGemstone ;
+    gw2:hasMysticForgeIngredient gw2leg:GiftOfCondensedMagic ;
+    gw2:hasMysticForgeIngredient gw2leg:GiftOfCondensedMight .
+
+gw2leg:GiftOfMasteryRecipe rdf:type owl:NamedIndividual , gw2:MysticForgeRecipe ;
+    rdfs:label "Gift of Mastery Recipe"@en ;
+    skos:prefLabel "Gift of Mastery Recipe"@en ;
+    skos:altLabel "Gift of Mastery Forge Recipe"@en ;
+    rdfs:comment "Combines Bloodstone Shard, 250 Obsidian Shards, Gift of Exploration, and Gift of Battle to forge the Gift of Mastery."@en ;
+    gw2:producesItem gw2leg:GiftOfMastery ;
+    gw2:recipeOutputCount 1 ;
+    gw2:requiresMaterial gw2leg:BloodstoneShard ;
+    gw2:requiresMaterial gw2leg:ObsidianShard ;
+    gw2:requiresMaterial gw2leg:GiftOfExploration ;
+    gw2:requiresMaterial gw2leg:GiftOfBattle ;
+    gw2:hasMysticForgeIngredient gw2leg:BloodstoneShard ;
+    gw2:hasMysticForgeIngredient gw2leg:ObsidianShard ;
+    gw2:hasMysticForgeIngredient gw2leg:GiftOfExploration ;
+    gw2:hasMysticForgeIngredient gw2leg:GiftOfBattle .
+
+gw2leg:GiftOfWoodRecipe rdf:type owl:NamedIndividual , gw2:DisciplineRecipe ;
+    rdfs:label "Gift of Wood Recipe"@en ;
+    skos:prefLabel "Gift of Wood Recipe"@en ;
+    skos:comment "Artificer / Weaponsmith / Huntsman recipe crafting the Gift of Wood from various wood planks."@en ;
+    gw2:producesItem gw2leg:GiftOfWood ;
+    gw2:recipeOutputCount 1 ;
+    gw2:hasDiscipline gw2:Artificer ;
+    gw2:hasDiscipline gw2:Huntsman ;
+    gw2:hasDiscipline gw2:Weaponsmith ;
+    gw2:disciplineMinRating 400 ;
+    gw2:requiresMaterial gw2leg:AncientWoodPlank ;
+    gw2:requiresMaterial gw2leg:ElderWoodPlank .
+
+gw2leg:SpiritwoodPlankRecipe rdf:type owl:NamedIndividual , gw2:DisciplineRecipe ;
+    rdfs:label "Spiritwood Plank Recipe"@en ;
+    skos:prefLabel "Spiritwood Plank Recipe"@en ;
+    skos:comment "Daily timegated crafting recipe producing a Spiritwood Plank."@en ;
+    gw2:producesItem gw2leg:SpiritwoodPlank ;
+    gw2:recipeOutputCount 1 ;
+    gw2:hasDiscipline gw2:Artificer ;
+    gw2:hasDiscipline gw2:Huntsman ;
+    gw2:hasDiscipline gw2:Weaponsmith ;
+    gw2:disciplineMinRating 450 ;
+    gw2:requiresMaterial gw2leg:ElderWoodPlank .

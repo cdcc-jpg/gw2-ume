@@ -1,0 +1,211 @@
+@prefix gw2: <https://gw2ume.org/ontology#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+gw2:CollectionStep a owl:Class ;
+    rdfs:label "Individual Collection Step"^^xsd:string .
+
+gw2:CollectionTier a owl:Class ;
+    rdfs:label "Precursor Collection Tier (1-4)"^^xsd:string .
+
+gw2:DisciplineRating a owl:Class ;
+    rdfs:label "Required Crafting Skill Level"^^xsd:string .
+
+gw2:IngredientQuantity a owl:Class ;
+    rdfs:label "Quantity count for recipe ingredient"^^xsd:string .
+
+gw2:TrophyItem a owl:Class ;
+    rdfs:label "Collection Trophy or Quest Item"^^xsd:string ;
+    rdfs:subClassOf gw2:Item .
+
+gw2:acquisitionMethod a owl:DatatypeProperty ;
+    rdfs:label "acquisitionMethod"^^xsd:string ;
+    rdfs:domain gw2:Item ;
+    rdfs:range xsd:string .
+
+gw2:craftedByDiscipline a owl:ObjectProperty ;
+    rdfs:label "craftedByDiscipline"^^xsd:string ;
+    rdfs:domain gw2:Item ;
+    rdfs:range gw2:CraftingDiscipline .
+
+gw2:forgeSlot a owl:DatatypeProperty ;
+    rdfs:label "forgeSlot"^^xsd:string ;
+    rdfs:domain gw2:MysticForgeRecipe ;
+    rdfs:range xsd:string .
+
+gw2:hasPrecursor a owl:ObjectProperty ;
+    rdfs:label "hasPrecursor"^^xsd:string ;
+    rdfs:domain gw2:LegendaryWeapon ;
+    rdfs:range gw2:PrecursorWeapon .
+
+gw2:ingredientQuantity a owl:DatatypeProperty ;
+    rdfs:label "ingredientQuantity"^^xsd:string ;
+    rdfs:domain gw2:Item ;
+    rdfs:range xsd:integer .
+
+gw2:locatedInZone a owl:ObjectProperty ;
+    rdfs:label "locatedInZone"^^xsd:string ;
+    rdfs:domain gw2:NPCVendor ;
+    rdfs:range gw2:Zone .
+
+gw2:obtainedFromVendor a owl:ObjectProperty ;
+    rdfs:label "obtainedFromVendor"^^xsd:string ;
+    rdfs:domain gw2:Item ;
+    rdfs:range gw2:NPCVendor .
+
+gw2:outputItem a owl:ObjectProperty ;
+    rdfs:label "outputItem"^^xsd:string ;
+    rdfs:domain gw2:CraftingRecipe ;
+    rdfs:range gw2:Item .
+
+gw2:partOfCollection a owl:ObjectProperty ;
+    rdfs:label "partOfCollection"^^xsd:string ;
+    rdfs:domain gw2:Item ;
+    rdfs:range gw2:CuratedCollection .
+
+gw2:precursorTo a owl:ObjectProperty ;
+    rdfs:label "precursorTo"^^xsd:string ;
+    rdfs:domain gw2:PrecursorWeapon ;
+    rdfs:range gw2:PrecursorWeapon .
+
+gw2:requiresDisciplineRating a owl:DatatypeProperty ;
+    rdfs:label "requiresDisciplineRating"^^xsd:string ;
+    rdfs:domain gw2:Item ;
+    rdfs:range xsd:integer .
+
+gw2:requiresIngredient a owl:ObjectProperty ;
+    rdfs:label "requiresIngredient"^^xsd:string ;
+    rdfs:domain gw2:Item ;
+    rdfs:range gw2:Item .
+
+gw2:tierNumber a owl:DatatypeProperty ;
+    rdfs:label "tierNumber"^^xsd:string ;
+    rdfs:domain gw2:Item ;
+    rdfs:range xsd:integer .
+
+<https://gw2ume.org/resource/discipline/artificer> a gw2:CraftingDiscipline ;
+    rdfs:label "Artificer"^^xsd:string .
+
+<https://gw2ume.org/resource/discipline/huntsman> a gw2:CraftingDiscipline ;
+    rdfs:label "Huntsman"^^xsd:string .
+
+<https://gw2ume.org/resource/discipline/leatherworker> a gw2:CraftingDiscipline ;
+    rdfs:label "Leatherworker"^^xsd:string .
+
+<https://gw2ume.org/resource/discipline/mystic_forge> a gw2:CraftingDiscipline ;
+    rdfs:label "Mystic Forge"^^xsd:string .
+
+<https://gw2ume.org/resource/discipline/weaponsmith> a gw2:CraftingDiscipline ;
+    rdfs:label "Weaponsmith"^^xsd:string .
+
+<https://gw2ume.org/resource/item/amalgamated_gemstone> a gw2:CraftingMaterial ;
+    rdfs:label "Amalgamated Gemstone"^^xsd:string .
+
+<https://gw2ume.org/resource/item/bloodstone_shard> a gw2:CraftingMaterial ;
+    rdfs:label "Bloodstone Shard"^^xsd:string .
+
+<https://gw2ume.org/resource/item/icy_runestone> a gw2:CraftingMaterial ;
+    rdfs:label "Icy Runestone"^^xsd:string .
+
+<https://gw2ume.org/resource/item/mystic_clover> a gw2:CraftingMaterial ;
+    rdfs:label "Mystic Clover"^^xsd:string .
+
+<https://gw2ume.org/resource/item/mystic_coin> a gw2:CraftingMaterial ;
+    rdfs:label "Mystic Coin"^^xsd:string .
+
+<https://gw2ume.org/resource/item/nevermore> a gw2:LegendaryWeapon ;
+    rdfs:label "Nevermore"^^xsd:string .
+
+<https://gw2ume.org/resource/item/ravenswood_branch> a gw2:PrecursorWeapon ;
+    rdfs:label "Ravenswood Branch"^^xsd:string ;
+    gw2:precursorTo <https://gw2ume.org/resource/item/ravenswood_staff> ;
+    gw2:requiresIngredient <https://gw2ume.org/resource/item/bolt_of_damask>,
+        <https://gw2ume.org/resource/item/deldrimor_steel_ingot>,
+        <https://gw2ume.org/resource/item/elonian_leather_square>,
+        <https://gw2ume.org/resource/item/spiritwood_plank> .
+
+<https://gw2ume.org/resource/recipe/nevermore_mystic_forge> a gw2:MysticForgeRecipe ;
+    gw2:requiresIngredient <https://gw2ume.org/resource/item/gift_of_mastery>,
+        <https://gw2ume.org/resource/item/gift_of_nevermore>,
+        <https://gw2ume.org/resource/item/mystic_tribute>,
+        <https://gw2ume.org/resource/item/the_living_ravens> .
+
+<https://gw2ume.org/resource/vendor/grandmaster_craftsman_hobbs> a gw2:NPCVendor ;
+    rdfs:label "Grandmaster Craftsman Hobbs"^^xsd:string .
+
+<https://gw2ume.org/resource/zone/dragons_stand> a gw2:Zone ;
+    rdfs:label "Dragon's Stand"^^xsd:string .
+
+<https://gw2ume.org/resource/zone/lions_arch> a gw2:Zone ;
+    rdfs:label "Lion's Arch"^^xsd:string .
+
+gw2:CraftingRecipe a owl:Class ;
+    rdfs:label "Discipline Crafting Recipe"^^xsd:string .
+
+gw2:CuratedCollection a owl:Class ;
+    rdfs:label "Legendary Precursor Journey Collection"^^xsd:string .
+
+<https://gw2ume.org/resource/item/bolt_of_damask> a gw2:CraftingMaterial ;
+    rdfs:label "Bolt of Damask"^^xsd:string .
+
+<https://gw2ume.org/resource/item/deldrimor_steel_ingot> a gw2:CraftingMaterial ;
+    rdfs:label "Deldrimor Steel Ingot"^^xsd:string .
+
+<https://gw2ume.org/resource/item/elonian_leather_square> a gw2:CraftingMaterial ;
+    rdfs:label "Elonian Leather Square"^^xsd:string .
+
+<https://gw2ume.org/resource/item/gift_of_mastery> a gw2:ComponentItem ;
+    rdfs:label "Gift of Mastery"^^xsd:string .
+
+<https://gw2ume.org/resource/item/gift_of_nevermore> a gw2:ComponentItem ;
+    rdfs:label "Gift of Nevermore"^^xsd:string .
+
+<https://gw2ume.org/resource/item/mystic_tribute> a gw2:ComponentItem ;
+    rdfs:label "Mystic Tribute"^^xsd:string .
+
+<https://gw2ume.org/resource/item/ravenswood_staff> a gw2:PrecursorWeapon ;
+    rdfs:label "Ravenswood Staff"^^xsd:string ;
+    gw2:precursorTo <https://gw2ume.org/resource/item/the_raven_spirit> .
+
+<https://gw2ume.org/resource/item/spiritwood_plank> a gw2:CraftingMaterial ;
+    rdfs:label "Spiritwood Plank"^^xsd:string .
+
+<https://gw2ume.org/resource/item/the_raven_spirit> a gw2:PrecursorWeapon ;
+    rdfs:label "The Raven Spirit"^^xsd:string ;
+    gw2:precursorTo <https://gw2ume.org/resource/item/the_living_ravens> .
+
+gw2:LegendaryWeapon a owl:Class ;
+    rdfs:label "Gen 2 Legendary Weapon"^^xsd:string ;
+    rdfs:subClassOf gw2:Item .
+
+gw2:MysticForgeRecipe a owl:Class ;
+    rdfs:label "4-Slot Mystic Forge Recipe"^^xsd:string .
+
+<https://gw2ume.org/resource/item/the_living_ravens> a gw2:PrecursorWeapon ;
+    rdfs:label "The Living Ravens"^^xsd:string .
+
+gw2:ComponentItem a owl:Class ;
+    rdfs:label "Component or Sub-Ingredient Item"^^xsd:string ;
+    rdfs:subClassOf gw2:Item .
+
+gw2:NPCVendor a owl:Class ;
+    rdfs:label "NPC Vendor or Quest Giver"^^xsd:string .
+
+gw2:Zone a owl:Class ;
+    rdfs:label "Tyria Geographic Zone"^^xsd:string .
+
+gw2:CraftingDiscipline a owl:Class ;
+    rdfs:label "Crafting Profession Discipline"^^xsd:string .
+
+gw2:PrecursorWeapon a owl:Class ;
+    rdfs:label "Precursor Weapon Tier"^^xsd:string ;
+    rdfs:subClassOf gw2:Item .
+
+gw2:CraftingMaterial a owl:Class ;
+    rdfs:label "Raw or Refined Crafting Material"^^xsd:string ;
+    rdfs:subClassOf gw2:Item .
+
+gw2:Item a owl:Class ;
+    rdfs:label "Base Item in GW2"^^xsd:string .
+
