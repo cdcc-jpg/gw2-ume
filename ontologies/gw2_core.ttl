@@ -50,6 +50,21 @@ gw2:CraftingMaterial rdf:type owl:Class ;
     skos:prefLabel "Crafting Material"@en ;
     skos:altLabel "Material"@en , "Mat"@en , "Mats"@en ;
     rdfs:comment "An item primarily used as an ingredient in crafting recipes or Mystic Forge conversions."@en .
+###  https://schema.gw2ume.org/core#ComponentItem
+gw2:ComponentItem rdf:type owl:Class ;
+    rdfs:subClassOf gw2:Item ;
+    rdfs:label "Component Item"@en ;
+    skos:prefLabel "Component Item"@en ;
+    skos:altLabel "Component"@en ;
+    rdfs:comment "An intermediate component or sub-assembly used in crafting or precursor refinement."@en .
+
+###  https://schema.gw2ume.org/core#TrophyItem
+gw2:TrophyItem rdf:type owl:Class ;
+    rdfs:subClassOf gw2:Item ;
+    rdfs:label "Trophy Item"@en ;
+    skos:prefLabel "Trophy Item"@en ;
+    skos:altLabel "Trophy"@en , "Collection Trophy"@en ;
+    rdfs:comment "A quest item, collection reward, or event trophy tied to achievements and progression."@en .
 
 ###  https://schema.gw2ume.org/core#LegendaryWeapon
 gw2:LegendaryWeapon rdf:type owl:Class ;
@@ -197,6 +212,14 @@ gw2:Vendor rdf:type owl:Class ;
     skos:prefLabel "Vendor"@en ;
     skos:altLabel "Merchant"@en , "NPC Vendor"@en ;
     rdfs:comment "A non-player character or interactive merchant selling items or recipes in exchange for currencies or tokens."@en .
+
+###  https://schema.gw2ume.org/core#NPCVendor
+gw2:NPCVendor rdf:type owl:Class ;
+    rdfs:subClassOf gw2:Vendor ;
+    rdfs:label "NPC Vendor"@en ;
+    skos:prefLabel "NPC Vendor"@en ;
+    skos:altLabel "Vendor"@en , "Merchant"@en ;
+    rdfs:comment "A non-player character merchant in Tyria."@en .
 
 ###  https://schema.gw2ume.org/core#MapZone
 gw2:MapZone rdf:type owl:Class ;

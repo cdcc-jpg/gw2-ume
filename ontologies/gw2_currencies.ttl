@@ -1,0 +1,72 @@
+@prefix priory: <https://priory.gw2/def/> .
+@prefix priory-ref: <https://priory.gw2/ref/> .
+@prefix curr: <https://priory.gw2/ref/currency/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+<https://priory.gw2/def/currencies> rdf:type owl:Ontology ;
+    rdfs:label "Guild Wars 2 Extended Currencies Ontology"@en ;
+    rdfs:comment "OWL 2 ontology representing extended game currencies in Guild Wars 2."@en ;
+    owl:versionInfo "1.0.0" .
+
+#################################################################
+#    ABox Individuals: Currencies
+#################################################################
+
+curr:unbound_magic a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Unbound Magic"^^xsd:string ;
+    skos:prefLabel "Unbound Magic"^^xsd:string ;
+    skos:altLabel "Unbound"^^xsd:string , "LWS3 Magic"^^xsd:string .
+
+curr:volatile_magic a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Volatile Magic"^^xsd:string ;
+    skos:prefLabel "Volatile Magic"^^xsd:string ;
+    skos:altLabel "Volatile"^^xsd:string , "LWS4 Magic"^^xsd:string .
+
+curr:pristine_fractal_relic a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Pristine Fractal Relic"^^xsd:string ;
+    skos:prefLabel "Pristine Fractal Relic"^^xsd:string ;
+    skos:altLabel "Pristine Relic"^^xsd:string , "PFR"^^xsd:string .
+
+curr:fractal_relic a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Fractal Relic"^^xsd:string ;
+    skos:prefLabel "Fractal Relic"^^xsd:string ;
+    skos:altLabel "Relic"^^xsd:string .
+
+curr:magnetite_shard a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Magnetite Shard"^^xsd:string ;
+    skos:prefLabel "Magnetite Shard"^^xsd:string ;
+    skos:altLabel "Magnetite"^^xsd:string , "Raid Shard"^^xsd:string .
+
+curr:eternal_ice_shard a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Eternal Ice Shard"^^xsd:string ;
+    skos:prefLabel "Eternal Ice Shard"^^xsd:string ;
+    skos:altLabel "Eternal Ice"^^xsd:string , "Ice Shards"^^xsd:string .
+
+curr:fresh_winterberry a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Fresh Winterberry"^^xsd:string ;
+    skos:prefLabel "Fresh Winterberry"^^xsd:string ;
+    skos:altLabel "Winterberry"^^xsd:string , "Winterberries"^^xsd:string .
+
+curr:badge_of_honor a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Badge of Honor"^^xsd:string ;
+    skos:prefLabel "Badge of Honor"^^xsd:string ;
+    skos:altLabel "Badges of Honor"^^xsd:string , "WvW Badges"^^xsd:string .
+
+curr:guild_commendation a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Guild Commendation"^^xsd:string ;
+    skos:prefLabel "Guild Commendation"^^xsd:string ;
+    skos:altLabel "Guild Commendations"^^xsd:string .
+
+curr:bandit_crest a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Bandit Crest"^^xsd:string ;
+    skos:prefLabel "Bandit Crest"^^xsd:string ;
+    skos:altLabel "Bandit Crests"^^xsd:string .
+
+curr:tyrian_defense_seal a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Tyrian Defense Seal"^^xsd:string ;
+    skos:prefLabel "Tyrian Defense Seal"^^xsd:string ;
+    skos:altLabel "Defense Seals"^^xsd:string .

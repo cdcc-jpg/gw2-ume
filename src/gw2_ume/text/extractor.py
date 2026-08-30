@@ -3,6 +3,7 @@
 from __future__ import annotations
 import re
 import json
+from collections import defaultdict
 from dataclasses import dataclass, field
 from typing import List, Dict, Any, Tuple, Optional, Set
 import rdflib
@@ -38,12 +39,22 @@ from gw2_ume.ontology.vocab import (
     PROP_LOCATED_IN_ZONE,
     PROP_PRECURSOR_TO,
     PROP_UPGRADES_TO,
+    CONTROLLED_DISCIPLINES,
 )
 from gw2_ume.ontology.schema import ENTITY_CATALOG, build_gw2_ontology_graph
 from gw2_ume.ontology.shacl_rules import validate_mesh_shacl
 from gw2_ume.mesh.relational_mesh import build_relational_mesh
 from gw2_ume.mesh.models import RelationalMesh
 from gw2_ume.retrieval.vector_index import VectorIndex, get_default_vector_index
+from gw2_ume.text.modality_parser import (
+    ModalityParser,
+    ModalityType,
+    ModalityParseResult,
+    DynamicSemanticFrame,
+    SemanticSlot,
+    DiscourseClause,
+)
+from gw2_ume.text.table_synthesizer import TableSynthesizer, SyntheticTableGrid
 
 
 @dataclass
@@ -197,7 +208,14 @@ def verify_priory_namespace_consistency(graph: Graph) -> Tuple[bool, List[str]]:
 
 
 class TextEntityRelationExtractor:
-    """Extracts entities and relational triples from unstructured text guides using VectorIndex and Ontology Graph."""
+    """Extracts entities and relational triples from unstructured text guides using VectorIndex, Ontology Graph, and ModalityParser."""
+
+    SHORT_COMMON_WORDS: Set[str] = {
+        "hope", "the", "rod", "gift", "shard", "bolt", "leaf", "stick", "wood", "water",
+        "fire", "air", "earth", "spirit", "branch", "staff", "star", "sun", "moon",
+        "gold", "silver", "iron", "steel", "bone", "claw", "fang", "scale", "totem",
+        "vial", "blood", "dust", "ore", "ingot", "plank", "silk", "leather",
+    }
 
     def __init__(
         self,
@@ -207,16 +225,41 @@ class TextEntityRelationExtractor:
         self.vector_index = vector_index or get_default_vector_index()
         self.ontology_graph = ontology_graph or build_gw2_ontology_graph()
         self.catalog = ENTITY_CATALOG
+        self.modality_parser = ModalityParser(vector_index=self.vector_index, ontology_graph=self.ontology_graph)
+        self.table_synthesizer = TableSynthesizer()
+
+    def _match_alias(self, text: str, alias: str) -> bool:
+        """Matches alias in text, enforcing case-sensitivity for short/common tokens."""
+        alias_clean = alias.strip()
+        if not alias_clean or len(alias_clean) < 2:
+            return False
+
+        alias_lower = alias_clean.lower()
+        is_short_common = (
+            alias_lower in self.SHORT_COMMON_WORDS
+            or len(alias_clean) <= 4
+            or alias_clean.isupper()
+            or "." in alias_clean
+        )
+
+        escaped = re.escape(alias_clean)
+        pattern = r"(?<!\w)" + escaped + r"(?!\w)"
+
+        if is_short_common:
+            return bool(re.search(pattern, text))
+        else:
+            return bool(re.search(pattern, text, re.IGNORECASE))
 
     def extract_from_text(self, text: str) -> Dict[str, Any]:
-        """Extracts entities and relation triples from text dynamically using VectorIndex and ontology graph."""
-        text_lower = text.lower()
+        """Extracts entities, relation triples, and synthesizes tables from text dynamically."""
+        # 1. Parse discourse clauses and modal logic, filtering bouletic fluff
+        parse_result: ModalityParseResult = self.modality_parser.parse(text, filter_fluff=True)
+
         extracted_entities = []
         seen_uris = set()
 
-        # Step 1: Find entity mentions dynamically from VectorIndex and Catalog
+        # Build candidate map from catalog & vector index
         entity_candidates: Dict[str, Dict[str, Any]] = {}
-        # From catalog
         for key, entity in self.catalog.items():
             uri_str = str(entity["uri"])
             entity_candidates[uri_str] = {
@@ -224,14 +267,13 @@ class TextEntityRelationExtractor:
                 "label": entity["label"],
                 "uri": uri_str,
                 "type_label": entity.get("type_label", "Item"),
-                "aliases": list(entity.get("aliases", [])) + [entity["label"].lower()],
+                "aliases": list(entity.get("aliases", [])) + [entity["label"]],
                 "tier": entity.get("tier"),
                 "discipline": entity.get("discipline"),
                 "min_rating": entity.get("min_rating"),
                 "zone": entity.get("zone"),
             }
 
-        # From vector index entities
         for uri, idx_ent in self.vector_index.entities.items():
             if uri not in entity_candidates:
                 etype = idx_ent.types[0] if idx_ent.types else "Item"
@@ -241,22 +283,36 @@ class TextEntityRelationExtractor:
                     "label": idx_ent.label,
                     "uri": uri,
                     "type_label": etype,
-                    "aliases": list(idx_ent.aliases) + [idx_ent.label.lower()],
+                    "aliases": list(idx_ent.aliases) + [idx_ent.label],
                     "tier": idx_ent.metadata.get("tier"),
                     "discipline": idx_ent.metadata.get("discipline"),
                     "min_rating": idx_ent.metadata.get("min_rating"),
                     "zone": idx_ent.metadata.get("zone"),
                 }
 
-        # Match aliases against text
+        # Match aliases against text with case-sensitivity enforcement for short tokens
         for uri_str, ent_info in entity_candidates.items():
             matched_aliases = []
             total_occurrences = 0
             for alias in ent_info["aliases"]:
                 if not alias or len(alias.strip()) < 2:
                     continue
-                pattern = r"\b" + re.escape(alias.strip().lower()) + r"\b"
-                matches = list(re.finditer(pattern, text_lower))
+                
+                alias_clean = alias.strip()
+                alias_lower = alias_clean.lower()
+                is_short_common = (
+                    alias_lower in self.SHORT_COMMON_WORDS
+                    or len(alias_clean) <= 4
+                    or alias_clean.isupper()
+                    or "." in alias_clean
+                )
+
+                pat = r"(?<!\w)" + re.escape(alias_clean) + r"(?!\w)"
+                if is_short_common:
+                    matches = list(re.finditer(pat, text))
+                else:
+                    matches = list(re.finditer(pat, text, re.IGNORECASE))
+
                 if matches:
                     matched_aliases.append(alias)
                     total_occurrences += len(matches)
@@ -286,7 +342,7 @@ class TextEntityRelationExtractor:
             g.add((s, RDF.type, type_uri))
             g.add((s, RDFS.label, Literal(ent["label"], datatype=XSD.string)))
 
-        # Step 3: Extract Relations dynamically using co-occurrence & ontology graph queries
+        # Step 3: Extract Relations dynamically using active frames and ontology graph queries
         triples_extracted: List[Tuple[str, str, str]] = []
         seen_triples: Set[Tuple[str, str, str]] = set()
 
@@ -297,12 +353,21 @@ class TextEntityRelationExtractor:
                 g.add((s_uri, p_uri, o_uri))
                 triples_extracted.append((s_lbl, p_lbl, o_lbl))
 
+        # Add triples from modality parser frames
+        for t in parse_result.triples_extracted:
+            s_lbl, p_lbl, o_lbl = t[0], t[1], t[2]
+            s_ent = next((e for e in extracted_entities if e["label"].lower() == s_lbl.lower()), None)
+            o_ent = next((e for e in extracted_entities if e["label"].lower() == o_lbl.lower()), None)
+            s_u = URIRef(s_ent["uri"]) if s_ent else URIRef(str(ITEM[s_lbl.lower().replace(" ", "_")]))
+            o_u = URIRef(o_ent["uri"]) if o_ent else URIRef(str(ITEM[o_lbl.lower().replace(" ", "_")]))
+            p_u = getattr(PRIORY, p_lbl, getattr(GW2, p_lbl, URIRef(f"https://priory.gw2/def/{p_lbl}")))
+            add_triple(s_u, p_u, o_u, s_lbl, p_lbl, o_lbl)
+
         # 3A: Precursor progression chains (dynamically resolved via tier metadata or ontology graph)
         precursor_entities = [
             e for e in extracted_entities
             if e["type_label"] == "PrecursorWeapon" or "precursor" in e["type_label"].lower() or e.get("tier") is not None
         ]
-        # Sort by tier if available
         tiered_precursors = [p for p in precursor_entities if p.get("tier") is not None]
         tiered_precursors.sort(key=lambda x: x["tier"])
 
@@ -318,7 +383,7 @@ class TextEntityRelationExtractor:
                 p2["label"],
             )
 
-        # Also query ontology graph for any precursor relationships between extracted entities
+        # Query ontology graph for any precursor relationships between extracted entities
         for p1 in precursor_entities:
             p1_uri = URIRef(p1["uri"])
             for _, _, target in self.ontology_graph.triples((p1_uri, PROP_PRECURSOR_TO, None)):
@@ -389,6 +454,9 @@ class TextEntityRelationExtractor:
                 for fc in forge_candidates:
                     add_triple(forge_recipe_uri, PROP_REQUIRES_INGREDIENT, URIRef(fc["uri"]), f"Mystic Forge {leg['label']}", "requiresIngredient", fc["label"])
 
+        # 4. Synthesize Dynamic 2D Table Grid
+        synthetic_grid = self.table_synthesizer.synthesize_grid(parse_result.active_frames, title="Dynamic Text Synthesized Matrix")
+
         # Serialize
         turtle_str = g.serialize(format="turtle")
         json_ld_str = g.serialize(format="json-ld")
@@ -401,7 +469,16 @@ class TextEntityRelationExtractor:
             "triple_count": len(triples_extracted),
             "turtle": turtle_str,
             "json_ld": json_ld_dict,
+            "modality_parse_result": parse_result,
+            "synthetic_grid": synthetic_grid,
+            "synthetic_table_csv": synthetic_grid.to_csv(),
+            "synthetic_table_markdown": synthetic_grid.to_markdown(),
         }
+
+    def synthesize_table(self, text: str, title: str = "Synthesized Table Grid") -> SyntheticTableGrid:
+        """Convenience method to parse text and directly produce a SyntheticTableGrid."""
+        parse_result = self.modality_parser.parse(text, filter_fluff=True)
+        return self.table_synthesizer.synthesize_grid(parse_result.active_frames, title=title)
 
 
 class CrossModalTriangulator:
@@ -541,8 +618,70 @@ class CrossModalTriangulator:
                     "o_label": dst.label,
                     "confidence": edge.confidence,
                 })
+        # Also collect row-level relationships from table annotations
+        row_entities: Dict[int, List[Any]] = defaultdict(list)
+        for c_ann in mesh.cea:
+            row_entities[c_ann.row_idx].append(c_ann)
 
-        # Collect text triples
+        for r_idx, anns in row_entities.items():
+            precursor_ann = next((a for a in anns if a.entity_type == "PrecursorWeapon" or "precursor" in a.entity_type.lower()), None)
+            item_ann = next((a for a in anns if a.entity_type in ("Item", "PrecursorWeapon", "LegendaryWeapon", "AscendedMaterial")), None)
+            comp_ann = next((a for a in anns if a.entity_type in ("ComponentItem", "CraftingMaterial", "TrophyItem", "AscendedMaterial") and a != precursor_ann and a != item_ann), None)
+            vendor_ann = next((a for a in anns if a.entity_type == "NPCVendor"), None)
+            zone_ann = next((a for a in anns if a.entity_type in ("Zone", "MapZone")), None)
+            disc_ann = next((a for a in anns if a.entity_type == "CraftingDiscipline"), None)
+
+            subj = precursor_ann or item_ann
+            if subj and comp_ann:
+                table_triples.append({
+                    "s_uri": subj.entity_uri,
+                    "s_label": subj.label,
+                    "p_uri": str(PROP_REQUIRES_INGREDIENT),
+                    "p_label": "requiresIngredient",
+                    "o_uri": comp_ann.entity_uri,
+                    "o_label": comp_ann.label,
+                    "confidence": min(subj.confidence, comp_ann.confidence),
+                })
+            if vendor_ann and zone_ann:
+                table_triples.append({
+                    "s_uri": vendor_ann.entity_uri,
+                    "s_label": vendor_ann.label,
+                    "p_uri": str(PROP_LOCATED_IN_ZONE),
+                    "p_label": "locatedInZone",
+                    "o_uri": zone_ann.entity_uri,
+                    "o_label": zone_ann.label,
+                    "confidence": min(vendor_ann.confidence, zone_ann.confidence),
+                })
+            if subj and vendor_ann and not comp_ann:
+                table_triples.append({
+                    "s_uri": subj.entity_uri,
+                    "s_label": subj.label,
+                    "p_uri": str(PROP_OBTAINED_FROM_VENDOR),
+                    "p_label": "obtainedFromVendor",
+                    "o_uri": vendor_ann.entity_uri,
+                    "o_label": vendor_ann.label,
+                    "confidence": min(subj.confidence, vendor_ann.confidence),
+                })
+            elif comp_ann and vendor_ann:
+                table_triples.append({
+                    "s_uri": comp_ann.entity_uri,
+                    "s_label": comp_ann.label,
+                    "p_uri": str(PROP_OBTAINED_FROM_VENDOR),
+                    "p_label": "obtainedFromVendor",
+                    "o_uri": vendor_ann.entity_uri,
+                    "o_label": vendor_ann.label,
+                    "confidence": min(comp_ann.confidence, vendor_ann.confidence),
+                })
+            if subj and disc_ann:
+                table_triples.append({
+                    "s_uri": subj.entity_uri,
+                    "s_label": subj.label,
+                    "p_uri": str(PROP_CRAFTED_BY_DISCIPLINE),
+                    "p_label": "craftedByDiscipline",
+                    "o_uri": disc_ann.entity_uri,
+                    "o_label": disc_ann.label,
+                    "confidence": min(subj.confidence, disc_ann.confidence),
+                })
         text_triples: List[Dict[str, Any]] = []
         for t_tuple in text_res["triples"]:
             s_lbl, p_lbl, o_lbl = t_tuple[0], t_tuple[1], t_tuple[2]
@@ -645,14 +784,29 @@ class CrossModalTriangulator:
                         if len(current_forge_ings) == 4:
                             break
 
-        # Fallback to standard legendary gifts to satisfy 4-slot requirement if still < 4
+        # Fallback to query ontology graph dynamically for recipe ingredients to satisfy 4-slot requirement if still < 4
         if len(current_forge_ings) < 4:
-            for ing_key in ["the_living_ravens", "gift_of_nevermore", "mystic_tribute", "gift_of_mastery"]:
-                if ing_key in ENTITY_CATALOG:
-                    cat_uri = URIRef(str(ENTITY_CATALOG[ing_key]["uri"]))
-                    if cat_uri not in current_forge_ings:
-                        fused_graph.add((forge_recipe_uri, PROP_REQUIRES_INGREDIENT, cat_uri))
-                        current_forge_ings.append(cat_uri)
+            candidate_recipes = set()
+            clean_tokens = [t for t in clean_name.split("_") if t not in ("test", "steps", "table", "guide", "csv", "txt")]
+            for r in set(self.ontology_graph.subjects(PROP_REQUIRES_INGREDIENT, None)):
+                r_str = str(r).lower()
+                if any(t in r_str for t in clean_tokens):
+                    candidate_recipes.add(r)
+            for r in candidate_recipes:
+                for ing in self.ontology_graph.objects(r, PROP_REQUIRES_INGREDIENT):
+                    if ing not in current_forge_ings:
+                        fused_graph.add((forge_recipe_uri, PROP_REQUIRES_INGREDIENT, ing))
+                        current_forge_ings.append(ing)
+                        if len(current_forge_ings) == 4:
+                            break
+                if len(current_forge_ings) == 4:
+                    break
+
+            if len(current_forge_ings) < 4:
+                for _, _, ing in self.ontology_graph.triples((None, PROP_REQUIRES_INGREDIENT, None)):
+                    if ing not in current_forge_ings:
+                        fused_graph.add((forge_recipe_uri, PROP_REQUIRES_INGREDIENT, ing))
+                        current_forge_ings.append(ing)
                         if len(current_forge_ings) == 4:
                             break
 

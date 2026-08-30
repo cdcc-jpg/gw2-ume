@@ -21,6 +21,9 @@ ITEMTYPE = Namespace("https://priory.gw2/ref/itemtype/")
 GAMEMODE = Namespace("https://priory.gw2/ref/gamemode/")
 ZONE = Namespace("https://priory.gw2/ref/zone/")
 VENDOR = Namespace("https://priory.gw2/ref/vendor/")
+STAT = Namespace("https://priory.gw2/ref/stat/")
+ATTRIBUTE = Namespace("https://priory.gw2/ref/attribute/")
+EXPANSION = Namespace("https://priory.gw2/ref/expansion/")
 
 # Legacy / Alias Namespaces for backwards compatibility
 GW2 = PRIORY
@@ -47,6 +50,9 @@ DEFAULT_PRIORY_PREFIXES = {
     "gamemode": GAMEMODE,
     "zone": ZONE,
     "vendor": VENDOR,
+    "stat": STAT,
+    "attribute": ATTRIBUTE,
+    "expansion": EXPANSION,
     "rdfs": RDFS,
     "owl": OWL,
     "skos": SKOS,
@@ -100,12 +106,23 @@ CLASS_COLLECTION_PRECURSOR = str(PRIORY.CollectionHuntPrecursor)
 CLASS_COLLECTION_HUNT_PRECURSOR = str(PRIORY.CollectionHuntPrecursor)
 CLASS_ACHIEVEMENT = str(PRIORY.Achievement)
 CLASS_COLLECTION_ACHIEVEMENT = str(PRIORY.CollectionAchievement)
+CLASS_ATTRIBUTE_COMBINATION = str(PRIORY.AttributeCombination)
+CLASS_ATTRIBUTE = str(PRIORY.Attribute)
+CLASS_EXPANSION_RELEASE = str(PRIORY.ExpansionRelease)
 
 # Priory Core Property IRIs (TBox Property Signatures)
 PROP_REQUIRES_INGREDIENT = str(PRIORY.requiresIngredient)
 PROP_REQUIRES_MATERIAL = str(PRIORY.requiresIngredient)
 PROP_COSTS_CURRENCY = str(PRIORY.requiresCurrency)
 PROP_REQUIRES_CURRENCY = str(PRIORY.requiresCurrency)
+PROP_HAS_ATTRIBUTE = str(PRIORY.hasAttribute)
+PROP_HAS_PRIMARY_ATTRIBUTE = str(PRIORY.hasPrimaryAttribute)
+PROP_HAS_SECONDARY_ATTRIBUTE = str(PRIORY.hasSecondaryAttribute)
+PROP_HAS_ATTRIBUTE_COMBINATION = str(PRIORY.hasAttributeCombination)
+PROP_RELEASED_IN_EXPANSION = str(PRIORY.releasedInExpansion)
+PROP_STAT_PREFIX = str(PRIORY.statPrefix)
+PROP_HAS_EXOTIC_PREFIX = str(PRIORY.hasExoticPrefix)
+PROP_HAS_ASCENDED_PREFIX = str(PRIORY.hasAscendedPrefix)
 PROP_PRODUCED_BY = str(PRIORY.producedBy)
 PROP_PRODUCES_ITEM = str(PRIORY.producesItem)
 PROP_OUTPUT_ITEM = str(PRIORY.producesItem)

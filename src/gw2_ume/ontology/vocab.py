@@ -17,6 +17,9 @@ from gw2_ume.ontology.namespaces import (
     GAMEMODE,
     ZONE,
     VENDOR,
+    STAT,
+    ATTRIBUTE,
+    EXPANSION,
     DEFAULT_PRIORY_PREFIXES,
     GW2 as PRIORY_GW2_ALIAS,
     GW2_ITEM,
@@ -61,6 +64,9 @@ CLASS_RARITY = PRIORY.Rarity
 CLASS_COLLECTION_HUNT_PRECURSOR = PRIORY.CollectionHuntPrecursor
 CLASS_LEGENDARY_STEP = PRIORY.CollectionHuntPrecursor
 CLASS_PET = PRIORY.Entity
+CLASS_ATTRIBUTE_COMBINATION = PRIORY.AttributeCombination
+CLASS_ATTRIBUTE = PRIORY.Attribute
+CLASS_EXPANSION_RELEASE = PRIORY.ExpansionRelease
 
 # Core TBox Properties (Property Signatures in https://priory.gw2/def/)
 PROP_REQUIRES_INGREDIENT = PRIORY.requiresIngredient
@@ -92,6 +98,14 @@ PROP_CONFIDENCE = PRIORY.confidenceScore
 PROP_CONFIDENCE_SCORE = PRIORY.confidenceScore
 PROP_COSTS_CURRENCY = PRIORY.requiresCurrency
 PROP_REQUIRES_CURRENCY = PRIORY.requiresCurrency
+PROP_HAS_ATTRIBUTE = PRIORY.hasAttribute
+PROP_HAS_PRIMARY_ATTRIBUTE = PRIORY.hasPrimaryAttribute
+PROP_HAS_SECONDARY_ATTRIBUTE = PRIORY.hasSecondaryAttribute
+PROP_HAS_ATTRIBUTE_COMBINATION = PRIORY.hasAttributeCombination
+PROP_RELEASED_IN_EXPANSION = PRIORY.releasedInExpansion
+PROP_STAT_PREFIX = PRIORY.statPrefix
+PROP_HAS_EXOTIC_PREFIX = PRIORY.hasExoticPrefix
+PROP_HAS_ASCENDED_PREFIX = PRIORY.hasAscendedPrefix
 
 # Controlled Reference Vocabularies (priory-ref: dimensions)
 CONTROLLED_DISCIPLINES = {
@@ -114,6 +128,17 @@ CONTROLLED_CURRENCIES = {
     "spirit_shard": CURRENCY.spirit_shard,
     "laurel": CURRENCY.laurel,
     "mystic_clover": CURRENCY.mystic_clover,
+    "unbound_magic": CURRENCY.unbound_magic,
+    "volatile_magic": CURRENCY.volatile_magic,
+    "pristine_fractal_relic": CURRENCY.pristine_fractal_relic,
+    "fractal_relic": CURRENCY.fractal_relic,
+    "magnetite_shard": CURRENCY.magnetite_shard,
+    "eternal_ice_shard": CURRENCY.eternal_ice_shard,
+    "fresh_winterberry": CURRENCY.fresh_winterberry,
+    "badge_of_honor": CURRENCY.badge_of_honor,
+    "guild_commendation": CURRENCY.guild_commendation,
+    "bandit_crest": CURRENCY.bandit_crest,
+    "tyrian_defense_seal": CURRENCY.tyrian_defense_seal,
 }
 
 CONTROLLED_RARITIES = {
@@ -144,6 +169,27 @@ CONTROLLED_WEAPONS = {
     "longbow": WEAPON.longbow,
     "torch": WEAPON.torch,
     "warhorn": WEAPON.warhorn,
+}
+
+CONTROLLED_ATTRIBUTES = {
+    "power": ATTRIBUTE.power,
+    "precision": ATTRIBUTE.precision,
+    "toughness": ATTRIBUTE.toughness,
+    "vitality": ATTRIBUTE.vitality,
+    "ferocity": ATTRIBUTE.ferocity,
+    "condition_damage": ATTRIBUTE.condition_damage,
+    "expertise": ATTRIBUTE.expertise,
+    "concentration": ATTRIBUTE.concentration,
+    "healing_power": ATTRIBUTE.healing_power,
+    "agony_resistance": ATTRIBUTE.agony_resistance,
+}
+
+CONTROLLED_ATTRIBUTE_COMBINATIONS = {
+    "berserker": STAT.berserker,
+    "viper": STAT.viper,
+    "harrier": STAT.harrier,
+    "marauder": STAT.marauder,
+    "diviner": STAT.diviner,
 }
 
 __all__ = [
@@ -226,11 +272,24 @@ __all__ = [
     "PROP_FORGE_SLOT",
     "PROP_ACQUISITION_METHOD",
     "PROP_CONFIDENCE",
-    "PROP_CONFIDENCE_SCORE",
-    "PROP_COSTS_CURRENCY",
-    "PROP_REQUIRES_CURRENCY",
+    "STAT",
+    "ATTRIBUTE",
+    "EXPANSION",
+    "CLASS_ATTRIBUTE_COMBINATION",
+    "CLASS_ATTRIBUTE",
+    "CLASS_EXPANSION_RELEASE",
+    "PROP_HAS_ATTRIBUTE",
+    "PROP_HAS_PRIMARY_ATTRIBUTE",
+    "PROP_HAS_SECONDARY_ATTRIBUTE",
+    "PROP_HAS_ATTRIBUTE_COMBINATION",
+    "PROP_RELEASED_IN_EXPANSION",
+    "PROP_STAT_PREFIX",
+    "PROP_HAS_EXOTIC_PREFIX",
+    "PROP_HAS_ASCENDED_PREFIX",
     "CONTROLLED_DISCIPLINES",
     "CONTROLLED_CURRENCIES",
     "CONTROLLED_RARITIES",
     "CONTROLLED_WEAPONS",
+    "CONTROLLED_ATTRIBUTES",
+    "CONTROLLED_ATTRIBUTE_COMBINATIONS",
 ]

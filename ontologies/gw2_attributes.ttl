@@ -1,0 +1,178 @@
+@prefix priory: <https://priory.gw2/def/> .
+@prefix priory-ref: <https://priory.gw2/ref/> .
+@prefix exp: <https://priory.gw2/ref/expansion/> .
+@prefix attr: <https://priory.gw2/ref/attribute/> .
+@prefix stat: <https://priory.gw2/ref/stat/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+<https://priory.gw2/def/attributes> rdf:type owl:Ontology ;
+    rdfs:label "Guild Wars 2 Attribute and Stat Combination Ontology"@en ;
+    rdfs:comment "OWL 2 ontology representing combat attributes, stat prefixes, and attribute combinations for Guild Wars 2."@en ;
+    owl:versionInfo "1.0.0" .
+
+#################################################################
+#    TBox Classes: Universal Entities, Attributes, Expansions
+#################################################################
+
+### Universal Entity Class
+priory:Entity a owl:Class ;
+    rdfs:label "Entity"@en ;
+    skos:prefLabel "Entity"@en ;
+    rdfs:comment "The root universal class for domain resources in the Priory ontology."@en .
+
+### Attribute Combinations & Combat Stats
+priory:AttributeCombination a owl:Class ;
+    rdfs:subClassOf priory:Entity ;
+    rdfs:label "Attribute Combination"@en ;
+    skos:prefLabel "Attribute Combination"@en ;
+    skos:altLabel "Stat Prefix"@en , "Stat Combination"@en , "Prefix"@en ;
+    rdfs:comment "A standardized set of combat attributes assigned to equipment in Guild Wars 2."@en .
+
+priory:Attribute a owl:Class ;
+    rdfs:subClassOf priory:Entity ;
+    rdfs:label "Combat Attribute"@en ;
+    skos:prefLabel "Combat Attribute"@en ;
+    skos:altLabel "Stat"@en , "Combat Stat"@en ;
+    rdfs:comment "A primary, secondary, or progression attribute (Power, Precision, Agony Resistance, etc.)."@en .
+
+priory:ExpansionRelease a owl:Class ;
+    rdfs:subClassOf priory:Entity ;
+    rdfs:label "Expansion Release"@en ;
+    skos:prefLabel "Expansion Release"@en ;
+    skos:altLabel "Expansion"@en , "Release Tier"@en ;
+    rdfs:comment "Game release tier or content cycle (Core, Heart of Thorns, Path of Fire, End of Dragons)."@en .
+
+#################################################################
+#    Object & Datatype Properties (Generalized Signatures)
+#################################################################
+
+### Attribute Associations
+priory:hasAttribute a owl:ObjectProperty ;
+    rdfs:label "hasAttribute"@en ;
+    rdfs:comment "Relates an item, buff, or attribute combination to an associated combat attribute."@en ;
+    rdfs:range priory:Attribute .
+
+priory:hasPrimaryAttribute a owl:ObjectProperty ;
+    rdfs:subPropertyOf priory:hasAttribute ;
+    rdfs:label "hasPrimaryAttribute"@en ;
+    skos:altLabel "major stat"@en ;
+    rdfs:comment "Specifies a major/primary combat attribute providing the highest stat allocation."@en ;
+    rdfs:range priory:Attribute .
+
+priory:hasSecondaryAttribute a owl:ObjectProperty ;
+    rdfs:subPropertyOf priory:hasAttribute ;
+    rdfs:label "hasSecondaryAttribute"@en ;
+    skos:altLabel "minor stat"@en ;
+    rdfs:comment "Specifies a minor/secondary combat attribute."@en ;
+    rdfs:range priory:Attribute .
+
+priory:hasAttributeCombination a owl:ObjectProperty ;
+    rdfs:label "hasAttributeCombination"@en ;
+    rdfs:comment "Relates an equippable item, recipe, or gear template to its assigned stat combination."@en ;
+    rdfs:range priory:AttributeCombination .
+
+### Generalized Release Metadata (Unconstrained Domain)
+priory:releasedInExpansion a owl:ObjectProperty ;
+    rdfs:label "releasedInExpansion"@en ;
+    rdfs:comment "Relates an entity (item, map zone, recipe, stat combination) to its introducing expansion."@en ;
+    rdfs:range priory:ExpansionRelease .
+
+### Generalized Prefix / Naming Hierarchy
+priory:statPrefix a owl:DatatypeProperty ;
+    rdfs:label "statPrefix"@en ;
+    rdfs:domain priory:AttributeCombination ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Generic textual prefix name associated with this attribute combination."@en .
+
+priory:hasExoticPrefix a owl:DatatypeProperty ;
+    rdfs:subPropertyOf priory:statPrefix ;
+    rdfs:label "hasExoticPrefix"@en ;
+    rdfs:comment "Standard prefix label used on Exotic-tier items (e.g. Berserker's, Viper's)."@en .
+
+priory:hasAscendedPrefix a owl:DatatypeProperty ;
+    rdfs:subPropertyOf priory:statPrefix ;
+    rdfs:label "hasAscendedPrefix"@en ;
+    rdfs:comment "Specific lore prefix label used on Ascended-tier items (e.g. Zojja's, Yassith's)."@en .
+
+#################################################################
+#    ABox Individuals: Expansions, Attributes, Stat Combinations
+#################################################################
+
+### Expansions
+exp:core a owl:NamedIndividual , priory:ExpansionRelease ;
+    rdfs:label "Core Tyria"^^xsd:string .
+
+exp:heart_of_thorns a owl:NamedIndividual , priory:ExpansionRelease ;
+    rdfs:label "Heart of Thorns"^^xsd:string ;
+    skos:altLabel "HoT"^^xsd:string .
+
+exp:path_of_fire a owl:NamedIndividual , priory:ExpansionRelease ;
+    rdfs:label "Path of Fire"^^xsd:string ;
+    skos:altLabel "PoF"^^xsd:string .
+
+### Combat Attributes
+attr:power a owl:NamedIndividual , priory:Attribute ; rdfs:label "Power"^^xsd:string .
+attr:precision a owl:NamedIndividual , priory:Attribute ; rdfs:label "Precision"^^xsd:string .
+attr:toughness a owl:NamedIndividual , priory:Attribute ; rdfs:label "Toughness"^^xsd:string .
+attr:vitality a owl:NamedIndividual , priory:Attribute ; rdfs:label "Vitality"^^xsd:string .
+attr:ferocity a owl:NamedIndividual , priory:Attribute ; rdfs:label "Ferocity"^^xsd:string .
+attr:condition_damage a owl:NamedIndividual , priory:Attribute ; rdfs:label "Condition Damage"^^xsd:string .
+attr:expertise a owl:NamedIndividual , priory:Attribute ; rdfs:label "Expertise"^^xsd:string .
+attr:concentration a owl:NamedIndividual , priory:Attribute ; rdfs:label "Concentration"^^xsd:string .
+attr:healing_power a owl:NamedIndividual , priory:Attribute ; rdfs:label "Healing Power"^^xsd:string .
+attr:agony_resistance a owl:NamedIndividual , priory:Attribute ; rdfs:label "Agony Resistance"^^xsd:string ; skos:altLabel "AR"^^xsd:string .
+
+### Attribute Combinations with Primary/Secondary Alignment
+stat:berserker a owl:NamedIndividual , priory:AttributeCombination ;
+    rdfs:label "Berserker's"^^xsd:string ;
+    skos:prefLabel "Berserker's"^^xsd:string ;
+    skos:altLabel "Berserker"^^xsd:string , "Zojja"^^xsd:string , "Zojja's"^^xsd:string ;
+    priory:hasExoticPrefix "Berserker's"^^xsd:string ;
+    priory:hasAscendedPrefix "Zojja's"^^xsd:string ;
+    priory:hasPrimaryAttribute attr:power ;
+    priory:hasSecondaryAttribute attr:precision , attr:ferocity ;
+    priory:releasedInExpansion exp:core .
+
+stat:viper a owl:NamedIndividual , priory:AttributeCombination ;
+    rdfs:label "Viper's"^^xsd:string ;
+    skos:prefLabel "Viper's"^^xsd:string ;
+    skos:altLabel "Viper"^^xsd:string , "Yassith"^^xsd:string , "Yassith's"^^xsd:string ;
+    priory:hasExoticPrefix "Viper's"^^xsd:string ;
+    priory:hasAscendedPrefix "Yassith's"^^xsd:string ;
+    priory:hasPrimaryAttribute attr:power , attr:condition_damage ;
+    priory:hasSecondaryAttribute attr:precision , attr:expertise ;
+    priory:releasedInExpansion exp:heart_of_thorns .
+
+stat:harrier a owl:NamedIndividual , priory:AttributeCombination ;
+    rdfs:label "Harrier's"^^xsd:string ;
+    skos:prefLabel "Harrier's"^^xsd:string ;
+    skos:altLabel "Harrier"^^xsd:string , "Zehtuka"^^xsd:string , "Zehtuka's"^^xsd:string ;
+    priory:hasExoticPrefix "Harrier's"^^xsd:string ;
+    priory:hasAscendedPrefix "Zehtuka's"^^xsd:string ;
+    priory:hasPrimaryAttribute attr:power ;
+    priory:hasSecondaryAttribute attr:healing_power , attr:concentration ;
+    priory:releasedInExpansion exp:path_of_fire .
+
+stat:marauder a owl:NamedIndividual , priory:AttributeCombination ;
+    rdfs:label "Marauder"^^xsd:string ;
+    skos:prefLabel "Marauder"^^xsd:string ;
+    skos:altLabel "Svaard"^^xsd:string , "Svaard's"^^xsd:string ;
+    priory:hasExoticPrefix "Marauder"^^xsd:string ;
+    priory:hasAscendedPrefix "Svaard's"^^xsd:string ;
+    priory:hasPrimaryAttribute attr:power , attr:precision ;
+    priory:hasSecondaryAttribute attr:vitality , attr:ferocity ;
+    priory:releasedInExpansion exp:heart_of_thorns .
+
+stat:diviner a owl:NamedIndividual , priory:AttributeCombination ;
+    rdfs:label "Diviner's"^^xsd:string ;
+    skos:prefLabel "Diviner's"^^xsd:string ;
+    skos:altLabel "Diviner"^^xsd:string , "Forgemaster"^^xsd:string , "Forgemaster's"^^xsd:string ;
+    priory:hasExoticPrefix "Diviner's"^^xsd:string ;
+    priory:hasAscendedPrefix "Forgemaster's"^^xsd:string ;
+    priory:hasPrimaryAttribute attr:power , attr:concentration ;
+    priory:hasSecondaryAttribute attr:precision , attr:ferocity ;
+    priory:releasedInExpansion exp:path_of_fire .

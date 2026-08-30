@@ -125,7 +125,7 @@ gw2-ume visualize data/sample_tables/legendary_nevermore_steps.csv --output dash
 
 ## 📊 Proof-of-Value Benchmark Results
 
-Evaluated across 5 curated GW2 benchmark datasets comparing an unconstrained statistical NLP baseline (TF-IDF + fuzzy matching without ontology reasoning) against the **GW2-UME Semantic Mesh** (Vector Index + Levenshtein/Jaccard + Constraint Solver + SHACL validation) against ground-truth annotations:
+Evaluated across 5 curated Guild Wars 2 benchmark datasets comparing an unconstrained statistical NLP baseline (TF-IDF + fuzzy matching without ontology reasoning) against the **GW2-UME Semantic Mesh** (Vector Index + Levenshtein/Jaccard + Constraint Solver + SHACL validation) against ground-truth annotations:
 
 | Metric | Unconstrained Statistical Baseline | GW2-UME Semantic Mesh | Advantage / Gain |
 | :--- | :---: | :---: | :---: |

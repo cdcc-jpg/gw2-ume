@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 import os
 from pathlib import Path
 from typing import Any, Dict, Generator, List, Optional, Set, Tuple, Union
@@ -10,13 +11,16 @@ import rdflib
 from rdflib import BNode, Graph, Literal, Namespace, URIRef
 from rdflib.namespace import OWL, RDF, RDFS, SKOS, XSD
 
-from gw2_ume.ontology.schema import (
-    DatatypeProperty,
-    Individual,
-    ObjectProperty,
-    OntologyClass,
-    Restriction,
-)
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from gw2_ume.ontology.schema import (
+        DatatypeProperty,
+        Individual,
+        ObjectProperty,
+        OntologyClass,
+        Restriction,
+    )
 
 # Official Priory Namespaces
 from gw2_ume.ontology.namespaces import (
@@ -35,6 +39,9 @@ from gw2_ume.ontology.namespaces import (
     GAMEMODE,
     ZONE,
     VENDOR,
+    STAT,
+    ATTRIBUTE,
+    EXPANSION,
 )
 
 # Standard and GW2 Namespaces
@@ -55,6 +62,9 @@ DEFAULT_PREFIXES = {
     "rdf": RDF,
     "xsd": XSD,
 }
+
+
+logger = logging.getLogger(__name__)
 
 
 class OntologyLoader:
@@ -112,30 +122,42 @@ class OntologyLoader:
 
         loaded_priory = False
         if priory_def_dir.exists() and priory_def_dir.is_dir():
-            for ttl in priory_def_dir.rglob("*.ttl"):
+            for ttl in sorted(priory_def_dir.rglob("*.ttl")):
                 try:
                     self.load_file(ttl)
                     loaded_priory = True
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.warning("Failed to load Priory def ontology %s: %s", ttl, e)
 
         if priory_ref_dir.exists() and priory_ref_dir.is_dir():
-            for ttl in priory_ref_dir.rglob("*.ttl"):
+            for ttl in sorted(priory_ref_dir.rglob("*.ttl")):
                 try:
                     self.load_file(ttl)
                     loaded_priory = True
-                except Exception:
-                    pass
+                except Exception as e:
+                    logger.warning("Failed to load Priory ref ontology %s: %s", ttl, e)
 
-        # 2. Also load local base ontologies
+        # 2. Also load local base ontologies dynamically: core first, then all extension .ttl files
         ont_dir = self.default_ontologies_path()
-        core_file = ont_dir / "gw2_core.ttl"
-        leg_file = ont_dir / "gw2_legendary.ttl"
+        if ont_dir.exists() and ont_dir.is_dir():
+            core_file = ont_dir / "gw2_core.ttl"
+            loaded_files: Set[Path] = set()
 
-        if core_file.exists():
-            self.load_file(core_file)
-        if leg_file.exists():
-            self.load_file(leg_file)
+            if core_file.exists():
+                try:
+                    self.load_file(core_file)
+                    loaded_files.add(core_file.resolve())
+                except Exception as e:
+                    logger.error("Failed to load core ontology %s: %s", core_file, e)
+
+            for ttl_path in sorted(ont_dir.glob("*.ttl")):
+                resolved_path = ttl_path.resolve()
+                if resolved_path not in loaded_files and ttl_path.name != "gw2_core.ttl":
+                    try:
+                        self.load_file(ttl_path)
+                        loaded_files.add(resolved_path)
+                    except Exception as e:
+                        logger.error("Failed to load extension ontology %s: %s", ttl_path, e)
 
         # 3. Dynamically populate controlled reference vocabularies
         from gw2_ume.ontology.vocab import (
@@ -143,10 +165,14 @@ class OntologyLoader:
             CONTROLLED_CURRENCIES,
             CONTROLLED_RARITIES,
             CONTROLLED_WEAPONS,
+            CONTROLLED_ATTRIBUTES,
+            CONTROLLED_ATTRIBUTE_COMBINATIONS,
             CLASS_CRAFTING_DISCIPLINE,
             CLASS_CURRENCY,
             CLASS_RARITY,
             CLASS_WEAPON,
+            CLASS_ATTRIBUTE,
+            CLASS_ATTRIBUTE_COMBINATION,
         )
         for disc_key, disc_uri in CONTROLLED_DISCIPLINES.items():
             self._graph.add((disc_uri, RDF.type, CLASS_CRAFTING_DISCIPLINE))
@@ -162,6 +188,17 @@ class OntologyLoader:
             self._graph.add((rar_uri, RDF.type, CLASS_RARITY))
             self._graph.add((rar_uri, RDF.type, OWL.NamedIndividual))
             self._graph.add((rar_uri, RDFS.label, Literal(rar_key.capitalize(), datatype=XSD.string)))
+
+        for attr_key, attr_uri in CONTROLLED_ATTRIBUTES.items():
+            self._graph.add((attr_uri, RDF.type, CLASS_ATTRIBUTE))
+            self._graph.add((attr_uri, RDF.type, OWL.NamedIndividual))
+            self._graph.add((attr_uri, RDFS.label, Literal(attr_key.replace("_", " ").title(), datatype=XSD.string)))
+
+        for stat_key, stat_uri in CONTROLLED_ATTRIBUTE_COMBINATIONS.items():
+            self._graph.add((stat_uri, RDF.type, CLASS_ATTRIBUTE_COMBINATION))
+            self._graph.add((stat_uri, RDF.type, OWL.NamedIndividual))
+            stat_lbl = stat_key.title() + ("" if stat_key.endswith("s") else "'s")
+            self._graph.add((stat_uri, RDFS.label, Literal(stat_lbl, datatype=XSD.string)))
 
         weapon_discipline_map = {
             "staff": DISCIPLINE.artificer,
@@ -191,27 +228,36 @@ class OntologyLoader:
                 from gw2_ume.ontology.vocab import PROP_CRAFTED_BY_DISCIPLINE
                 self._graph.add((wpn_uri, PROP_CRAFTED_BY_DISCIPLINE, disc_target))
 
-        from gw2_ume.ontology.schema import ENTITY_CATALOG
         from gw2_ume.ontology.vocab import (
-            CLASS_ITEM,
-            PROP_CRAFTED_BY_DISCIPLINE,
-            PROP_IS_PRECURSOR_OF,
-            PROP_HAS_PRECURSOR,
-            PROP_UPGRADES_TO,
             PROP_REQUIRES_INGREDIENT,
+            PROP_PRODUCES_ITEM,
+            PROP_CRAFTED_BY_DISCIPLINE,
+            PROP_LOCATED_IN_ZONE,
+            PROP_REQUIRES_DISCIPLINE_RATING,
+            PROP_UPGRADES_TO,
+            PROP_HAS_PRECURSOR,
+            PROP_IS_PRECURSOR_OF,
         )
-
-        for item_key, item_data in ENTITY_CATALOG.items():
-            item_uri = URIRef(str(item_data["uri"]))
-            item_type = URIRef(str(item_data.get("type", CLASS_ITEM)))
-            self._graph.add((item_uri, RDF.type, item_type))
-            self._graph.add((item_uri, RDF.type, OWL.NamedIndividual))
-            self._graph.add((item_uri, RDFS.label, Literal(item_data["label"], datatype=XSD.string)))
-            if "discipline" in item_data:
-                disc_name = item_data["discipline"].lower().replace(" ", "_")
-                disc_uri = CONTROLLED_DISCIPLINES.get(disc_name)
-                if disc_uri:
-                    self._graph.add((item_uri, PROP_CRAFTED_BY_DISCIPLINE, disc_uri))
+        from rdflib import Namespace
+        gw2_core_ns = Namespace("https://schema.gw2ume.org/core#")
+        for s, o in list(self._graph.subject_objects(gw2_core_ns.requiresMaterial)):
+            self._graph.add((s, PROP_REQUIRES_INGREDIENT, o))
+        for s, o in list(self._graph.subject_objects(gw2_core_ns.hasMysticForgeIngredient)):
+            self._graph.add((s, PROP_REQUIRES_INGREDIENT, o))
+        for s, o in list(self._graph.subject_objects(gw2_core_ns.producesItem)):
+            self._graph.add((s, PROP_PRODUCES_ITEM, o))
+        for s, o in list(self._graph.subject_objects(gw2_core_ns.hasDiscipline)):
+            self._graph.add((s, PROP_CRAFTED_BY_DISCIPLINE, o))
+        for s, o in list(self._graph.subject_objects(gw2_core_ns.locatedIn)):
+            self._graph.add((s, PROP_LOCATED_IN_ZONE, o))
+        for s, o in list(self._graph.subject_objects(gw2_core_ns.disciplineMinRating)):
+            self._graph.add((s, PROP_REQUIRES_DISCIPLINE_RATING, o))
+        for s, o in list(self._graph.subject_objects(gw2_core_ns.upgradesTo)):
+            self._graph.add((s, PROP_UPGRADES_TO, o))
+        for s, o in list(self._graph.subject_objects(gw2_core_ns.hasPrecursor)):
+            self._graph.add((s, PROP_HAS_PRECURSOR, o))
+        for s, o in list(self._graph.subject_objects(gw2_core_ns.isPrecursorOf)):
+            self._graph.add((s, PROP_IS_PRECURSOR_OF, o))
 
         return self
 
@@ -250,7 +296,10 @@ class OntologyLoader:
             raise NotADirectoryError(f"Directory not found: {directory}")
 
         for file_path in sorted(directory.glob(pattern)):
-            self.load_file(file_path)
+            try:
+                self.load_file(file_path)
+            except Exception as e:
+                logger.error("Failed to load ontology file %s: %s", file_path, e)
         return self
 
     def resolve_iri(self, term: Union[str, URIRef, BNode]) -> Union[URIRef, BNode]:
@@ -273,35 +322,40 @@ class OntologyLoader:
         if term.startswith("http://") or term.startswith("https://") or term.startswith("urn:"):
             return URIRef(term)
 
-        raw_uri = URIRef(term)
-        if (raw_uri, None, None) in self._graph or (None, None, raw_uri) in self._graph or (None, raw_uri, None) in self._graph:
-            return raw_uri
+        raw_uri = URIRef(term.strip().replace(" ", "_") if " " in term else term)
+        if " " not in term:
+            if (raw_uri, None, None) in self._graph or (None, None, raw_uri) in self._graph or (None, raw_uri, None) in self._graph:
+                return raw_uri
 
-        # Check default namespaces (gw2, gw2leg, item, recipe, etc.)
-        for prefix in ("gw2", "gw2leg", "item", "recipe", "discipline", "currency", "weapon", "armor", "vendor", "zone", "schema", "rdfs", "owl"):
+        # Check default namespaces (gw2, gw2leg, item, recipe, stat, attribute, currency, etc.)
+        slug_term = term.strip().replace(" ", "_")
+        terms_to_try = [term] if " " not in term else [slug_term]
+        for prefix in ("gw2", "gw2leg", "priory", "priory-ref", "item", "recipe", "discipline", "currency", "stat", "attribute", "expansion", "weapon", "armor", "vendor", "zone", "schema", "rdfs", "owl"):
             if prefix in DEFAULT_PREFIXES:
                 ns = DEFAULT_PREFIXES[prefix]
-                cand = URIRef(f"{ns}{term}")
-                if (cand, None, None) in self._graph or (None, cand, None) in self._graph or (None, None, cand) in self._graph:
-                    return cand
+                for t in terms_to_try:
+                    cand = URIRef(f"{ns}{t}")
+                    if (cand, None, None) in self._graph or (None, cand, None) in self._graph or (None, None, cand) in self._graph:
+                        return cand
 
         # Check all registered namespaces in graph
         for _, ns in self._graph.namespaces():
-            cand = URIRef(f"{ns}{term}")
-            if (cand, None, None) in self._graph or (None, cand, None) in self._graph or (None, None, cand) in self._graph:
-                return cand
+            for t in terms_to_try:
+                cand = URIRef(f"{ns}{t}")
+                if (cand, None, None) in self._graph or (None, cand, None) in self._graph or (None, None, cand) in self._graph:
+                    return cand
 
         # Fallback: search subjects and predicates ending with #{term} or /{term}
         for s in self._graph.subjects(RDF.type, None):
             if isinstance(s, URIRef):
                 s_str = str(s)
-                if s_str.endswith(f"#{term}") or s_str.endswith(f"/{term}"):
+                if s_str.endswith(f"#{term}") or s_str.endswith(f"/{term}") or s_str.endswith(f"#{slug_term}") or s_str.endswith(f"/{slug_term}"):
                     return s
 
         for p in self._graph.predicates(None, None):
             if isinstance(p, URIRef):
                 p_str = str(p)
-                if p_str.endswith(f"#{term}") or p_str.endswith(f"/{term}"):
+                if p_str.endswith(f"#{term}") or p_str.endswith(f"/{term}") or p_str.endswith(f"#{slug_term}") or p_str.endswith(f"/{slug_term}"):
                     return p
 
         return raw_uri
@@ -414,6 +468,8 @@ class OntologyLoader:
                             min_cardinality=int(min_card) if min_card else None,
                             max_cardinality=int(max_card) if max_card else None,
                         ))
+
+        from gw2_ume.ontology.schema import OntologyClass, Restriction
 
         return OntologyClass(
             iri=str(iri),
@@ -580,6 +636,8 @@ class OntologyLoader:
         sub_props = [str(s) for s in self._graph.subjects(RDFS.subPropertyOf, iri) if isinstance(s, URIRef)]
         super_props = [str(o) for o in self._graph.objects(iri, RDFS.subPropertyOf) if isinstance(o, URIRef)]
 
+        from gw2_ume.ontology.schema import ObjectProperty
+
         return ObjectProperty(
             iri=str(iri),
             label=label,
@@ -632,6 +690,8 @@ class OntologyLoader:
 
         sub_props = [str(s) for s in self._graph.subjects(RDFS.subPropertyOf, iri) if isinstance(s, URIRef)]
         super_props = [str(o) for o in self._graph.objects(iri, RDFS.subPropertyOf) if isinstance(o, URIRef)]
+
+        from gw2_ume.ontology.schema import DatatypeProperty
 
         return DatatypeProperty(
             iri=str(iri),
@@ -762,6 +822,8 @@ class OntologyLoader:
                 properties.setdefault(pred_str, []).append(str(obj))
             elif isinstance(obj, Literal):
                 data_properties.setdefault(pred_str, []).append(obj.toPython())
+
+        from gw2_ume.ontology.schema import Individual
 
         return Individual(
             iri=str(iri),

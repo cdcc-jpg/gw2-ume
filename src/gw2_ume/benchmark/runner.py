@@ -78,6 +78,8 @@ class BenchmarkRunner:
             cand = self.benchmarks_dir / "ground_truth_noisy_tribute.json"
         elif "ambiguous" in table_name_lower:
             cand = self.benchmarks_dir / "ground_truth_ambiguous_matrix.json"
+        elif "semtab" in table_name_lower or "bio" in table_name_lower or "chemistry" in table_name_lower:
+            cand = self.benchmarks_dir / "ground_truth_semtab_bio.json"
         else:
             cand = self.benchmarks_dir / "ground_truth_nevermore.json"
 

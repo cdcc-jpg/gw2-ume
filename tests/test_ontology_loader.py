@@ -12,6 +12,9 @@ import rdflib
 from rdflib import Literal, URIRef
 from rdflib.namespace import OWL, RDF, RDFS, XSD
 
+import tempfile
+from unittest.mock import patch
+
 from gw2_ume.ontology.loader import GW2, GW2LEG, OntologyLoader
 from gw2_ume.ontology.reasoner import SymbolicAxiomReasoner
 from gw2_ume.ontology.schema import (
@@ -62,6 +65,98 @@ class TestOntologyLoading(unittest.TestCase):
         cls_obj = custom_loader.get_class("http://example.org/TestClass")
         self.assertIsNotNone(cls_obj)
         self.assertEqual(cls_obj.label, "Test Class")
+
+    def test_dynamic_ontology_discovery(self) -> None:
+        """Verify that dynamic loading loads gw2_core.ttl first and dynamically discovers all domain extensions."""
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_path = Path(tmp_dir)
+
+            core_ttl = tmp_path / "gw2_core.ttl"
+            core_ttl.write_text(
+                """
+                @prefix gw2: <https://schema.gw2ume.org/core#> .
+                @prefix owl: <http://www.w3.org/2002/07/owl#> .
+                @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+                
+                gw2:Item a owl:Class ;
+                    rdfs:label "Item"@en .
+                gw2:Weapon a owl:Class ;
+                    rdfs:subClassOf gw2:Item ;
+                    rdfs:label "Weapon"@en .
+                """,
+                encoding="utf-8",
+            )
+
+            hope_ttl = tmp_path / "gw2_hope.ttl"
+            hope_ttl.write_text(
+                """
+                @prefix gw2: <https://schema.gw2ume.org/core#> .
+                @prefix gw2hope: <https://schema.gw2ume.org/hope#> .
+                @prefix owl: <http://www.w3.org/2002/07/owl#> .
+                @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+                
+                gw2hope:HOPE a owl:NamedIndividual, gw2:Weapon ;
+                    rdfs:label "H.O.P.E."@en .
+                """,
+                encoding="utf-8",
+            )
+
+            with patch.object(OntologyLoader, "default_ontologies_path", return_value=tmp_path):
+                loader = OntologyLoader(auto_load_defaults=True)
+                cls_item = loader.get_class("https://schema.gw2ume.org/core#Item")
+                self.assertIsNotNone(cls_item)
+
+                ind_hope = loader.get_individual("https://schema.gw2ume.org/hope#HOPE")
+                self.assertIsNotNone(ind_hope)
+                self.assertEqual(ind_hope.label, "H.O.P.E.")
+
+    def test_syntax_error_resilience(self) -> None:
+        """Verify that a malformed .ttl file does not crash loading of valid ontologies."""
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_path = Path(tmp_dir)
+
+            core_ttl = tmp_path / "gw2_core.ttl"
+            core_ttl.write_text(
+                """
+                @prefix gw2: <https://schema.gw2ume.org/core#> .
+                @prefix owl: <http://www.w3.org/2002/07/owl#> .
+                @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+                
+                gw2:Item a owl:Class ;
+                    rdfs:label "Item"@en .
+                """,
+                encoding="utf-8",
+            )
+
+            broken_ttl = tmp_path / "gw2_broken.ttl"
+            broken_ttl.write_text(
+                "THIS IS COMPLETELY INVALID TURTLE SYNTAX ::: ??? !!!",
+                encoding="utf-8",
+            )
+
+            valid_ext_ttl = tmp_path / "gw2_valid_ext.ttl"
+            valid_ext_ttl.write_text(
+                """
+                @prefix gw2: <https://schema.gw2ume.org/core#> .
+                @prefix ex: <https://example.org/> .
+                @prefix owl: <http://www.w3.org/2002/07/owl#> .
+                @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+                
+                ex:ValidObject a owl:NamedIndividual, gw2:Item ;
+                    rdfs:label "Valid Object"@en .
+                """,
+                encoding="utf-8",
+            )
+
+            with patch.object(OntologyLoader, "default_ontologies_path", return_value=tmp_path):
+                loader = OntologyLoader(auto_load_defaults=True)
+
+                cls_item = loader.get_class("https://schema.gw2ume.org/core#Item")
+                self.assertIsNotNone(cls_item)
+
+                ind_valid = loader.get_individual("https://example.org/ValidObject")
+                self.assertIsNotNone(ind_valid)
+                self.assertEqual(ind_valid.label, "Valid Object")
 
 
 class TestClassHierarchyAndIntrospection(unittest.TestCase):
@@ -476,6 +571,91 @@ class TestPathFindingAndReasoning(unittest.TestCase):
         """Verify cardinality check utility."""
         res_valid = self.reasoner.check_cardinality(GW2LEG.Nevermore, GW2.hasPrecursor, count=1)
         self.assertTrue(res_valid)
+
+
+class TestAttributeAndCurrencyExtensions(unittest.TestCase):
+    """Tests for dynamic loading of GW2 attributes, stat combinations, and extended currencies."""
+
+    def setUp(self) -> None:
+        self.loader = OntologyLoader(auto_load_defaults=True)
+        self.reasoner = SymbolicAxiomReasoner(self.loader)
+
+    def test_attribute_and_combination_classes(self) -> None:
+        """Verify Attribute, AttributeCombination, and ExpansionRelease classes are loaded."""
+        from gw2_ume.ontology.vocab import PRIORY
+        cls_attr = self.loader.get_class(str(PRIORY.Attribute))
+        self.assertIsNotNone(cls_attr)
+        self.assertEqual(cls_attr.pref_label, "Combat Attribute")
+
+        cls_combo = self.loader.get_class(str(PRIORY.AttributeCombination))
+        self.assertIsNotNone(cls_combo)
+        self.assertEqual(cls_combo.pref_label, "Attribute Combination")
+
+        cls_exp = self.loader.get_class(str(PRIORY.ExpansionRelease))
+        self.assertIsNotNone(cls_exp)
+        self.assertEqual(cls_exp.pref_label, "Expansion Release")
+
+    def test_attribute_individuals(self) -> None:
+        """Verify combat attribute individuals (Power, Precision, Agony Resistance, etc.)."""
+        from gw2_ume.ontology.vocab import ATTRIBUTE
+        power_ind = self.loader.get_individual(str(ATTRIBUTE.power))
+        self.assertIsNotNone(power_ind)
+        self.assertEqual(power_ind.label, "Power")
+
+        ar_ind = self.loader.get_individual(str(ATTRIBUTE.agony_resistance))
+        self.assertIsNotNone(ar_ind)
+        self.assertEqual(ar_ind.label, "Agony Resistance")
+        self.assertIn("AR", ar_ind.alt_labels)
+
+    def test_stat_combination_individuals(self) -> None:
+        """Verify attribute combinations (Berserker, Viper, Harrier, Marauder, Diviner)."""
+        from gw2_ume.ontology.vocab import STAT, PRIORY, ATTRIBUTE, EXPANSION
+        berserker = self.loader.get_individual(str(STAT.berserker))
+        self.assertIsNotNone(berserker)
+        self.assertEqual(berserker.pref_label, "Berserker's")
+        self.assertIn("Zojja's", berserker.alt_labels)
+        self.assertIn(str(ATTRIBUTE.power), berserker.properties.get(str(PRIORY.hasPrimaryAttribute), []))
+        self.assertIn(str(ATTRIBUTE.precision), berserker.properties.get(str(PRIORY.hasSecondaryAttribute), []))
+        self.assertIn(str(ATTRIBUTE.ferocity), berserker.properties.get(str(PRIORY.hasSecondaryAttribute), []))
+
+        viper = self.loader.get_individual(str(STAT.viper))
+        self.assertIsNotNone(viper)
+        self.assertEqual(viper.pref_label, "Viper's")
+        self.assertIn("Yassith's", viper.alt_labels)
+        self.assertIn(str(ATTRIBUTE.power), viper.properties.get(str(PRIORY.hasPrimaryAttribute), []))
+        self.assertIn(str(ATTRIBUTE.condition_damage), viper.properties.get(str(PRIORY.hasPrimaryAttribute), []))
+
+    def test_extended_currencies(self) -> None:
+        """Verify extended currencies (Unbound Magic, Volatile Magic, Magnetite Shard, etc.)."""
+        from gw2_ume.ontology.vocab import CURRENCY, PRIORY
+        unbound = self.loader.get_individual(str(CURRENCY.unbound_magic))
+        self.assertIsNotNone(unbound)
+        self.assertEqual(unbound.pref_label, "Unbound Magic")
+        self.assertIn(str(PRIORY.Currency), unbound.types)
+
+        volatile = self.loader.get_individual(str(CURRENCY.volatile_magic))
+        self.assertIsNotNone(volatile)
+        self.assertEqual(volatile.pref_label, "Volatile Magic")
+
+        magnetite = self.loader.get_individual(str(CURRENCY.magnetite_shard))
+        self.assertIsNotNone(magnetite)
+        self.assertEqual(magnetite.pref_label, "Magnetite Shard")
+
+    def test_dynamic_entity_catalog_registration(self) -> None:
+        """Verify dynamic registration of attribute combinations and currencies into ENTITY_CATALOG."""
+        from gw2_ume.ontology.schema import ENTITY_CATALOG
+        self.assertIn("berserker", ENTITY_CATALOG)
+        self.assertEqual(ENTITY_CATALOG["berserker"]["label"], "Berserker's")
+        self.assertEqual(ENTITY_CATALOG["berserker"]["type_label"], "AttributeCombination")
+        self.assertEqual(ENTITY_CATALOG["berserker"]["exotic_prefix"], "Berserker's")
+        self.assertEqual(ENTITY_CATALOG["berserker"]["ascended_prefix"], "Zojja's")
+
+        self.assertIn("viper", ENTITY_CATALOG)
+        self.assertEqual(ENTITY_CATALOG["viper"]["label"], "Viper's")
+
+        self.assertIn("unbound_magic", ENTITY_CATALOG)
+        self.assertEqual(ENTITY_CATALOG["unbound_magic"]["label"], "Unbound Magic")
+        self.assertEqual(ENTITY_CATALOG["unbound_magic"]["type_label"], "Currency")
 
 
 if __name__ == "__main__":

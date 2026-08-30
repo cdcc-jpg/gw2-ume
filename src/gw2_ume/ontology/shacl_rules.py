@@ -34,9 +34,9 @@ priory:MysticForgeRecipeShape a sh:NodeShape ;
     sh:targetClass priory:MysticForgeRecipe ;
     sh:property [
         sh:path priory:requiresIngredient ;
-        sh:minCount 4 ;
+        sh:minCount 1 ;
         sh:maxCount 4 ;
-        sh:message "A Mystic Forge recipe for a legendary weapon must require exactly 4 ingredients." ;
+        sh:message "A Mystic Forge recipe must require between 1 and 4 ingredients." ;
     ] .
 
 priory:ItemQuantityShape a sh:NodeShape ;

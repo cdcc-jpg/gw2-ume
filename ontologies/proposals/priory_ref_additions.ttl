@@ -1,0 +1,131 @@
+@prefix priory: <https://priory.gw2/def/> .
+@prefix priory-ref: <https://priory.gw2/ref/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+#################################################################
+#    ABox Vocabulary Extensions for gw2-priory-ref
+#################################################################
+
+### Expansions
+priory-ref:expansion/core a owl:NamedIndividual , priory:ExpansionRelease ;
+    rdfs:label "Core Tyria"^^xsd:string .
+
+priory-ref:expansion/heart_of_thorns a owl:NamedIndividual , priory:ExpansionRelease ;
+    rdfs:label "Heart of Thorns"^^xsd:string ;
+    skos:altLabel "HoT"^^xsd:string .
+
+priory-ref:expansion/path_of_fire a owl:NamedIndividual , priory:ExpansionRelease ;
+    rdfs:label "Path of Fire"^^xsd:string ;
+    skos:altLabel "PoF"^^xsd:string .
+
+### Combat Attributes
+priory-ref:attribute/power a owl:NamedIndividual , priory:Attribute ; rdfs:label "Power"^^xsd:string .
+priory-ref:attribute/precision a owl:NamedIndividual , priory:Attribute ; rdfs:label "Precision"^^xsd:string .
+priory-ref:attribute/toughness a owl:NamedIndividual , priory:Attribute ; rdfs:label "Toughness"^^xsd:string .
+priory-ref:attribute/vitality a owl:NamedIndividual , priory:Attribute ; rdfs:label "Vitality"^^xsd:string .
+priory-ref:attribute/ferocity a owl:NamedIndividual , priory:Attribute ; rdfs:label "Ferocity"^^xsd:string .
+priory-ref:attribute/condition_damage a owl:NamedIndividual , priory:Attribute ; rdfs:label "Condition Damage"^^xsd:string .
+priory-ref:attribute/expertise a owl:NamedIndividual , priory:Attribute ; rdfs:label "Expertise"^^xsd:string .
+priory-ref:attribute/concentration a owl:NamedIndividual , priory:Attribute ; rdfs:label "Concentration"^^xsd:string .
+priory-ref:attribute/healing_power a owl:NamedIndividual , priory:Attribute ; rdfs:label "Healing Power"^^xsd:string .
+priory-ref:attribute/agony_resistance a owl:NamedIndividual , priory:Attribute ; rdfs:label "Agony Resistance"^^xsd:string ; skos:altLabel "AR"^^xsd:string .
+
+### Attribute Combinations with Primary/Secondary Alignment
+priory-ref:stat/berserker a owl:NamedIndividual , priory:AttributeCombination ;
+    rdfs:label "Berserker's"^^xsd:string ;
+    skos:prefLabel "Berserker's"^^xsd:string ;
+    skos:altLabel "Berserker"^^xsd:string , "Zojja"^^xsd:string , "Zojja's"^^xsd:string ;
+    priory:hasExoticPrefix "Berserker's"^^xsd:string ;
+    priory:hasAscendedPrefix "Zojja's"^^xsd:string ;
+    priory:hasPrimaryAttribute priory-ref:attribute/power ;
+    priory:hasSecondaryAttribute priory-ref:attribute/precision , priory-ref:attribute/ferocity ;
+    priory:releasedInExpansion priory-ref:expansion/core .
+
+priory-ref:stat/viper a owl:NamedIndividual , priory:AttributeCombination ;
+    rdfs:label "Viper's"^^xsd:string ;
+    skos:prefLabel "Viper's"^^xsd:string ;
+    skos:altLabel "Viper"^^xsd:string , "Yassith"^^xsd:string , "Yassith's"^^xsd:string ;
+    priory:hasExoticPrefix "Viper's"^^xsd:string ;
+    priory:hasAscendedPrefix "Yassith's"^^xsd:string ;
+    priory:hasPrimaryAttribute priory-ref:attribute/power , priory-ref:attribute/condition_damage ;
+    priory:hasSecondaryAttribute priory-ref:attribute/precision , priory-ref:attribute/expertise ;
+    priory:releasedInExpansion priory-ref:expansion/heart_of_thorns .
+
+priory-ref:stat/harrier a owl:NamedIndividual , priory:AttributeCombination ;
+    rdfs:label "Harrier's"^^xsd:string ;
+    skos:prefLabel "Harrier's"^^xsd:string ;
+    skos:altLabel "Harrier"^^xsd:string , "Zehtuka"^^xsd:string , "Zehtuka's"^^xsd:string ;
+    priory:hasExoticPrefix "Harrier's"^^xsd:string ;
+    priory:hasAscendedPrefix "Zehtuka's"^^xsd:string ;
+    priory:hasPrimaryAttribute priory-ref:attribute/power ;
+    priory:hasSecondaryAttribute priory-ref:attribute/healing_power , priory-ref:attribute/concentration ;
+    priory:releasedInExpansion priory-ref:expansion/path_of_fire .
+
+priory-ref:stat/marauder a owl:NamedIndividual , priory:AttributeCombination ;
+    rdfs:label "Marauder"^^xsd:string ;
+    skos:prefLabel "Marauder"^^xsd:string ;
+    skos:altLabel "Svaard"^^xsd:string , "Svaard's"^^xsd:string ;
+    priory:hasExoticPrefix "Marauder"^^xsd:string ;
+    priory:hasAscendedPrefix "Svaard's"^^xsd:string ;
+    priory:hasPrimaryAttribute priory-ref:attribute/power , priory-ref:attribute/precision ;
+    priory:hasSecondaryAttribute priory-ref:attribute/vitality , priory-ref:attribute/ferocity ;
+    priory:releasedInExpansion priory-ref:expansion/heart_of_thorns .
+
+priory-ref:stat/diviner a owl:NamedIndividual , priory:AttributeCombination ;
+    rdfs:label "Diviner's"^^xsd:string ;
+    skos:prefLabel "Diviner's"^^xsd:string ;
+    skos:altLabel "Diviner"^^xsd:string , "Forgemaster"^^xsd:string , "Forgemaster's"^^xsd:string ;
+    priory:hasExoticPrefix "Diviner's"^^xsd:string ;
+    priory:hasAscendedPrefix "Forgemaster's"^^xsd:string ;
+    priory:hasPrimaryAttribute priory-ref:attribute/power , priory-ref:attribute/concentration ;
+    priory:hasSecondaryAttribute priory-ref:attribute/precision , priory-ref:attribute/ferocity ;
+    priory:releasedInExpansion priory-ref:expansion/path_of_fire .
+
+### Currencies
+priory-ref:currency/unbound_magic a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Unbound Magic"^^xsd:string ;
+    skos:altLabel "Unbound"^^xsd:string , "LWS3 Magic"^^xsd:string .
+
+priory-ref:currency/volatile_magic a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Volatile Magic"^^xsd:string ;
+    skos:altLabel "Volatile"^^xsd:string , "LWS4 Magic"^^xsd:string .
+
+priory-ref:currency/pristine_fractal_relic a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Pristine Fractal Relic"^^xsd:string ;
+    skos:altLabel "Pristine Relic"^^xsd:string , "PFR"^^xsd:string .
+
+priory-ref:currency/fractal_relic a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Fractal Relic"^^xsd:string ;
+    skos:altLabel "Relic"^^xsd:string .
+
+priory-ref:currency/magnetite_shard a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Magnetite Shard"^^xsd:string ;
+    skos:altLabel "Magnetite"^^xsd:string , "Raid Shard"^^xsd:string .
+
+priory-ref:currency/eternal_ice_shard a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Eternal Ice Shard"^^xsd:string ;
+    skos:altLabel "Eternal Ice"^^xsd:string , "Ice Shards"^^xsd:string .
+
+priory-ref:currency/fresh_winterberry a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Fresh Winterberry"^^xsd:string ;
+    skos:altLabel "Winterberry"^^xsd:string , "Winterberries"^^xsd:string .
+
+priory-ref:currency/badge_of_honor a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Badge of Honor"^^xsd:string ;
+    skos:altLabel "Badges of Honor"^^xsd:string , "WvW Badges"^^xsd:string .
+
+priory-ref:currency/guild_commendation a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Guild Commendation"^^xsd:string ;
+    skos:altLabel "Guild Commendations"^^xsd:string .
+
+priory-ref:currency/bandit_crest a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Bandit Crest"^^xsd:string ;
+    skos:altLabel "Bandit Crests"^^xsd:string .
+
+priory-ref:currency/tyrian_defense_seal a owl:NamedIndividual , priory:Currency ;
+    rdfs:label "Tyrian Defense Seal"^^xsd:string ;
+    skos:altLabel "Defense Seals"^^xsd:string .

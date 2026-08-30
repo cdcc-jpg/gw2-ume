@@ -54,31 +54,95 @@ gw2leg:DragonsStand rdf:type owl:NamedIndividual , gw2:MapZone ;
     skos:altLabel "DS"@en ;
     rdfs:comment "Heart of Maguuma zone hosting the Mouth of Mordremoth meta event and Crystalline Ore pods."@en .
 
+gw2leg:WayfarerFoothills rdf:type owl:NamedIndividual , gw2:MapZone ;
+    rdfs:label "Wayfarer Foothills"@en ;
+    skos:prefLabel "Wayfarer Foothills"@en ;
+    skos:altLabel "Wayfarer"@en ;
+    rdfs:comment "Norn starting zone in the Shiverpeaks."@en .
+
+gw2leg:SparkflyFen rdf:type owl:NamedIndividual , gw2:MapZone ;
+    rdfs:label "Sparkfly Fen"@en ;
+    skos:prefLabel "Sparkfly Fen"@en ;
+    skos:altLabel "Sparkfly"@en ;
+    rdfs:comment "Tequatl swamp zone in the Maguuma Jungle."@en .
+
+gw2leg:LornarsPass rdf:type owl:NamedIndividual , gw2:MapZone ;
+    rdfs:label "Lornar's Pass"@en ;
+    skos:prefLabel "Lornar's Pass"@en ;
+    skos:altLabel "Lornars Pass"@en ;
+    rdfs:comment "Shiverpeaks pass zone."@en .
+
+gw2leg:HeartOfTheMists rdf:type owl:NamedIndividual , gw2:MapZone ;
+    rdfs:label "Heart of the Mists"@en ;
+    skos:prefLabel "Heart of the Mists"@en ;
+    skos:altLabel "Mists"@en , "PvP Lobby"@en ;
+    rdfs:comment "PvP lobby area in the Mists."@en .
+
+gw2leg:DredgehauntCliffs rdf:type owl:NamedIndividual , gw2:MapZone ;
+    rdfs:label "Dredgehaunt Cliffs"@en ;
+    skos:prefLabel "Dredgehaunt Cliffs"@en ;
+    skos:altLabel "Dredgehaunt"@en ;
+    rdfs:comment "Shiverpeaks dredge zone."@en .
+
 
 #################################################################
 #    Vendors
 #################################################################
 
-gw2leg:Miyani rdf:type owl:NamedIndividual , gw2:Vendor ;
+gw2leg:Miyani rdf:type owl:NamedIndividual , gw2:NPCVendor , gw2:Vendor ;
     rdfs:label "Miyani"@en ;
     skos:prefLabel "Miyani"@en ;
     skos:altLabel "Mystic Forge Attendant"@en ;
     rdfs:comment "Mystic Forge attendant in Lion's Arch who sells Eldritch Scrolls, Bloodstone Shards, and Philosopher's Stones for Spirit Shards."@en ;
     gw2:locatedIn gw2leg:LionsArch .
 
-gw2leg:GrandmasterHobbs rdf:type owl:NamedIndividual , gw2:Vendor ;
+gw2leg:GrandmasterHobbs rdf:type owl:NamedIndividual , gw2:NPCVendor , gw2:Vendor ;
     rdfs:label "Grandmaster Craftsman Hobbs"@en ;
     skos:prefLabel "Grandmaster Craftsman Hobbs"@en ;
     skos:altLabel "Hobbs"@en ;
     rdfs:comment "Legendary crafting merchant in Lion's Arch who unlocks legendary precursor collection achievements and sells intermediate recipes."@en ;
     gw2:locatedIn gw2leg:LionsArch .
 
-gw2leg:RielRunecrafter rdf:type owl:NamedIndividual , gw2:Vendor ;
+gw2leg:RielRunecrafter rdf:type owl:NamedIndividual , gw2:NPCVendor , gw2:Vendor ;
     rdfs:label "Riel Runecrafter"@en ;
     skos:prefLabel "Riel Runecrafter"@en ;
     skos:altLabel "Riel"@en , "Icy Runestone Vendor"@en ;
     rdfs:comment "Merchant located in Frostgorge Sound selling Icy Runestones for 1 Gold each."@en ;
     gw2:locatedIn gw2leg:FrostgorgeSound .
+
+gw2leg:ShamanSigurlina rdf:type owl:NamedIndividual , gw2:NPCVendor , gw2:Vendor ;
+    rdfs:label "Shaman Sigurlina"@en ;
+    skos:prefLabel "Shaman Sigurlina"@en ;
+    skos:altLabel "Sigurlina"@en ;
+    rdfs:comment "Vendor in Wayfarer Foothills"@en ;
+    gw2:locatedIn gw2leg:WayfarerFoothills .
+
+gw2leg:HylekAlchemist rdf:type owl:NamedIndividual , gw2:NPCVendor , gw2:Vendor ;
+    rdfs:label "Hylek Alchemist"@en ;
+    skos:prefLabel "Hylek Alchemist"@en ;
+    skos:altLabel "Hylek Alchemists"@en , "Alchemist"@en ;
+    rdfs:comment "Vendor in Sparkfly Fen"@en ;
+    gw2:locatedIn gw2leg:SparkflyFen .
+
+gw2leg:GreatRavenSpirit rdf:type owl:NamedIndividual , gw2:NPCVendor , gw2:Vendor ;
+    rdfs:label "Great Raven Spirit"@en ;
+    skos:prefLabel "Great Raven Spirit"@en ;
+    skos:altLabel "Raven Spirit NPC"@en ;
+    rdfs:comment "Spirit NPC in Lornar's Pass"@en ;
+    gw2:locatedIn gw2leg:LornarsPass .
+
+gw2leg:MistWarrior rdf:type owl:NamedIndividual , gw2:NPCVendor , gw2:Vendor ;
+    rdfs:label "Mist Warrior"@en ;
+    skos:prefLabel "Mist Warrior"@en ;
+    skos:altLabel "Mist Warriors"@en ;
+    rdfs:comment "NPC in Heart of the Mists"@en ;
+    gw2:locatedIn gw2leg:HeartOfTheMists .
+
+gw2leg:OwlShaman rdf:type owl:NamedIndividual , gw2:NPCVendor , gw2:Vendor ;
+    rdfs:label "Owl Shaman"@en ;
+    skos:prefLabel "Owl Shaman"@en ;
+    skos:comment "Shaman in Dredgehaunt Cliffs"@en ;
+    gw2:locatedIn gw2leg:DredgehauntCliffs .
 
 
 #################################################################
@@ -121,6 +185,30 @@ gw2leg:DeldrimorSteelIngot rdf:type owl:NamedIndividual , gw2:AscendedMaterial ;
     skos:prefLabel "Deldrimor Steel Ingot"@en ;
     skos:altLabel "Deldrimor"@en , "Deldrimor Steel"@en , "Ascended Metal"@en ;
     rdfs:comment "Time-gated Ascended crafting metal refined from Lump of Mithrillium, Darksteel Ingots, Platinum Ingots, and Iron Ingots."@en ;
+    gw2:itemRarity "Ascended" ;
+    gw2:requiredLevel 80 .
+
+gw2leg:ElonianLeatherSquare rdf:type owl:NamedIndividual , gw2:AscendedMaterial ;
+    rdfs:label "Elonian Leather Square"@en ;
+    skos:prefLabel "Elonian Leather Square"@en ;
+    skos:altLabel "Elonian Leather"@en , "Elonian Square"@en ;
+    rdfs:comment "Ascended leather crafting material."@en ;
+    gw2:itemRarity "Ascended" ;
+    gw2:requiredLevel 80 .
+
+gw2leg:BoltOfDamask rdf:type owl:NamedIndividual , gw2:AscendedMaterial ;
+    rdfs:label "Bolt of Damask"@en ;
+    skos:prefLabel "Bolt of Damask"@en ;
+    skos:altLabel "Damask Bolt"@en , "Damask"@en ;
+    rdfs:comment "Ascended cloth crafting material."@en ;
+    gw2:itemRarity "Ascended" ;
+    gw2:requiredLevel 80 .
+
+gw2leg:SpiritwoodDowel rdf:type owl:NamedIndividual , gw2:CraftingMaterial ;
+    rdfs:label "Spiritwood Dowel"@en ;
+    skos:prefLabel "Spiritwood Dowel"@en ;
+    skos:altLabel "Spiritwood Dowels"@en ;
+    rdfs:comment "Ascended crafting dowel."@en ;
     gw2:itemRarity "Ascended" ;
     gw2:requiredLevel 80 .
 
@@ -268,6 +356,10 @@ gw2leg:RavenswoodBranch rdf:type owl:NamedIndividual , gw2:PrecursorWeapon ;
     rdfs:comment "Tier 1 precursor weapon for Nevermore, awarded after completing the Nevermore I: Ravenswood Branch collection achievement."@en ;
     gw2:itemRarity "Exotic" ;
     gw2:requiredLevel 80 ;
+    gw2:hasDiscipline gw2:Artificer ;
+    gw2:disciplineMinRating 450 ;
+    gw2:requiresMaterial gw2leg:SpiritwoodPlank ;
+    gw2:tier 1 ;
     gw2:upgradesTo gw2leg:RavenswoodStaff ;
     gw2:rewardForAchievement gw2leg:NevermoreI_RavenswoodBranch .
 
@@ -278,6 +370,10 @@ gw2leg:RavenswoodStaff rdf:type owl:NamedIndividual , gw2:PrecursorWeapon ;
     rdfs:comment "Tier 2 precursor weapon for Nevermore, crafted using the Ravenswood Branch and materials from Nevermore II collection."@en ;
     gw2:itemRarity "Exotic" ;
     gw2:requiredLevel 80 ;
+    gw2:hasDiscipline gw2:Artificer ;
+    gw2:disciplineMinRating 450 ;
+    gw2:requiresMaterial gw2leg:RavenswoodBranch ;
+    gw2:tier 2 ;
     gw2:upgradesTo gw2leg:TheRavenSpirit ;
     gw2:rewardForAchievement gw2leg:NevermoreII_RavenswoodStaff .
 
@@ -288,6 +384,10 @@ gw2leg:TheRavenSpirit rdf:type owl:NamedIndividual , gw2:PrecursorWeapon ;
     rdfs:comment "Tier 3 precursor weapon for Nevermore, crafted after completing the Nevermore III: The Raven Spirit collection."@en ;
     gw2:itemRarity "Exotic" ;
     gw2:requiredLevel 80 ;
+    gw2:hasDiscipline gw2:Artificer ;
+    gw2:disciplineMinRating 450 ;
+    gw2:requiresMaterial gw2leg:RavenswoodStaff ;
+    gw2:tier 3 ;
     gw2:upgradesTo gw2leg:TheLivingRavens ;
     gw2:rewardForAchievement gw2leg:NevermoreIII_TheRavenSpirit .
 
@@ -298,8 +398,60 @@ gw2leg:TheLivingRavens rdf:type owl:NamedIndividual , gw2:PrecursorWeapon ;
     rdfs:comment "Tier 4 final precursor weapon for Nevermore, infused with raven souls; one of four ingredients in the Nevermore Mystic Forge recipe."@en ;
     gw2:itemRarity "Ascended" ;
     gw2:requiredLevel 80 ;
+    gw2:hasDiscipline gw2:Artificer ;
+    gw2:disciplineMinRating 450 ;
+    gw2:requiresMaterial gw2leg:TheRavenSpirit ;
+    gw2:tier 4 ;
     gw2:isPrecursorOf gw2leg:Nevermore ;
     gw2:rewardForAchievement gw2leg:NevermoreIV_TheLivingRavens .
+
+gw2leg:EssenceOfTheRaven rdf:type owl:NamedIndividual , gw2:TrophyItem ;
+    rdfs:label "Essence of the Raven"@en ;
+    skos:prefLabel "Essence of the Raven"@en ;
+    skos:altLabel "Raven Essence"@en ;
+    rdfs:comment "Trophy item for Nevermore journey."@en .
+
+gw2leg:JarOfLuminescence rdf:type owl:NamedIndividual , gw2:ComponentItem ;
+    rdfs:label "Jar of Luminescence"@en ;
+    skos:prefLabel "Jar of Luminescence"@en ;
+    skos:altLabel "Luminescence Jar"@en , "Jar of Luminesce"@en ;
+    rdfs:comment "Component item for precursor collections."@en .
+
+gw2leg:SpiritwoodStaffShaft rdf:type owl:NamedIndividual , gw2:ComponentItem ;
+    rdfs:label "Spiritwood Staff Shaft"@en ;
+    skos:prefLabel "Spiritwood Staff Shaft"@en ;
+    skos:altLabel "Staff Shaft"@en ;
+    rdfs:comment "Staff shaft component."@en .
+
+gw2leg:RavenEgg rdf:type owl:NamedIndividual , gw2:TrophyItem ;
+    rdfs:label "Raven Egg"@en ;
+    skos:prefLabel "Raven Egg"@en ;
+    skos:altLabel "Egg"@en ;
+    rdfs:comment "Quest trophy item for Nevermore IV."@en .
+
+gw2leg:HeartOfTheMistsEssence rdf:type owl:NamedIndividual , gw2:TrophyItem ;
+    rdfs:label "Heart of the Mists Essence"@en ;
+    skos:prefLabel "Heart of the Mists Essence"@en ;
+    skos:altLabel "Heart of Mists Essence"@en , "Mist Essence"@en ;
+    rdfs:comment "Trophy from Heart of the Mists."@en .
+
+gw2leg:FriendsOfTheOwl rdf:type owl:NamedIndividual , gw2:TrophyItem ;
+    rdfs:label "Friends of the Owl"@en ;
+    skos:prefLabel "Friends of the Owl"@en ;
+    skos:altLabel "Friend of the Owl"@en , "Friend Owl"@en ;
+    rdfs:comment "Collection trophy."@en .
+
+gw2leg:FriendsOfTheRaven rdf:type owl:NamedIndividual , gw2:TrophyItem ;
+    rdfs:label "Friends of the Raven"@en ;
+    skos:prefLabel "Friends of the Raven"@en ;
+    skos:altLabel "Friend of the Raven"@en , "Friend Raven"@en ;
+    rdfs:comment "Collection trophy."@en .
+
+gw2leg:WoodForTheRoost rdf:type owl:NamedIndividual , gw2:TrophyItem ;
+    rdfs:label "Wood for the Roost"@en ;
+    skos:prefLabel "Wood for the Roost"@en ;
+    skos:altLabel "Wood for Roost"@en , "Roost Wood"@en ;
+    rdfs:comment "Collection trophy."@en .
 
 
 #################################################################

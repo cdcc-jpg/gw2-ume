@@ -1,0 +1,90 @@
+@prefix priory: <https://priory.gw2/def/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+#################################################################
+#    TBox Classes: Universal Entities, Attributes, Expansions
+#################################################################
+
+### Universal Entity Class
+priory:Entity a owl:Class ;
+    rdfs:label "Entity"@en ;
+    skos:prefLabel "Entity"@en ;
+    rdfs:comment "The root universal class for domain resources in the Priory ontology."@en .
+
+### Attribute Combinations & Combat Stats
+priory:AttributeCombination a owl:Class ;
+    rdfs:subClassOf priory:Entity ;
+    rdfs:label "Attribute Combination"@en ;
+    skos:prefLabel "Attribute Combination"@en ;
+    skos:altLabel "Stat Prefix"@en , "Stat Combination"@en , "Prefix"@en ;
+    rdfs:comment "A standardized set of combat attributes assigned to equipment in Guild Wars 2."@en .
+
+priory:Attribute a owl:Class ;
+    rdfs:subClassOf priory:Entity ;
+    rdfs:label "Combat Attribute"@en ;
+    skos:prefLabel "Combat Attribute"@en ;
+    skos:altLabel "Stat"@en , "Combat Stat"@en ;
+    rdfs:comment "A primary, secondary, or progression attribute (Power, Precision, Agony Resistance, etc.)."@en .
+
+priory:ExpansionRelease a owl:Class ;
+    rdfs:subClassOf priory:Entity ;
+    rdfs:label "Expansion Release"@en ;
+    skos:prefLabel "Expansion Release"@en ;
+    skos:altLabel "Expansion"@en , "Release Tier"@en ;
+    rdfs:comment "Game release tier or content cycle (Core, Heart of Thorns, Path of Fire, End of Dragons)."@en .
+
+#################################################################
+#    Object & Datatype Properties (Generalized Signatures)
+#################################################################
+
+### Attribute Associations
+priory:hasAttribute a owl:ObjectProperty ;
+    rdfs:label "hasAttribute"@en ;
+    rdfs:comment "Relates an item, buff, or attribute combination to an associated combat attribute."@en ;
+    rdfs:range priory:Attribute .
+
+priory:hasPrimaryAttribute a owl:ObjectProperty ;
+    rdfs:subPropertyOf priory:hasAttribute ;
+    rdfs:label "hasPrimaryAttribute"@en ;
+    skos:altLabel "major stat"@en ;
+    rdfs:comment "Specifies a major/primary combat attribute providing the highest stat allocation."@en ;
+    rdfs:range priory:Attribute .
+
+priory:hasSecondaryAttribute a owl:ObjectProperty ;
+    rdfs:subPropertyOf priory:hasAttribute ;
+    rdfs:label "hasSecondaryAttribute"@en ;
+    skos:altLabel "minor stat"@en ;
+    rdfs:comment "Specifies a minor/secondary combat attribute."@en ;
+    rdfs:range priory:Attribute .
+
+priory:hasAttributeCombination a owl:ObjectProperty ;
+    rdfs:label "hasAttributeCombination"@en ;
+    rdfs:comment "Relates an equippable item, recipe, or gear template to its assigned stat combination."@en ;
+    rdfs:range priory:AttributeCombination .
+
+### Generalized Release Metadata (Unconstrained Domain)
+priory:releasedInExpansion a owl:ObjectProperty ;
+    rdfs:label "releasedInExpansion"@en ;
+    rdfs:comment "Relates an entity (item, map zone, recipe, stat combination) to its introducing expansion."@en ;
+    rdfs:range priory:ExpansionRelease .
+
+### Generalized Prefix / Naming Hierarchy
+priory:statPrefix a owl:DatatypeProperty ;
+    rdfs:label "statPrefix"@en ;
+    rdfs:domain priory:AttributeCombination ;
+    rdfs:range xsd:string ;
+    rdfs:comment "Generic textual prefix name associated with this attribute combination."@en .
+
+priory:hasExoticPrefix a owl:DatatypeProperty ;
+    rdfs:subPropertyOf priory:statPrefix ;
+    rdfs:label "hasExoticPrefix"@en ;
+    rdfs:comment "Standard prefix label used on Exotic-tier items (e.g. Berserker's, Viper's)."@en .
+
+priory:hasAscendedPrefix a owl:DatatypeProperty ;
+    rdfs:subPropertyOf priory:statPrefix ;
+    rdfs:label "hasAscendedPrefix"@en ;
+    rdfs:comment "Specific lore prefix label used on Ascended-tier items (e.g. Zojja's, Yassith's)."@en .

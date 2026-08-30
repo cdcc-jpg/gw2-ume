@@ -95,8 +95,10 @@ def match_table(table_path: str, out_format: str, output_file: str | None):
 @main.command(name="classify-text")
 @click.argument("text_path", type=click.Path(exists=True, dir_okay=False))
 @click.option("--output", "-o", "output_file", default=None, help="Save RDF output to file.")
-def classify_text(text_path: str, output_file: str | None):
-    """Classify unstructured game guide text, extract entities and relations, and emit RDF graph."""
+@click.option("--synthesize-table", "-s", is_flag=True, default=False, help="Synthesize and display dynamic 2D table grid from semantic frames.")
+@click.option("--table-output", "-t", "table_output_file", default=None, help="Save synthesized table grid to CSV or Markdown file.")
+def classify_text(text_path: str, output_file: str | None, synthesize_table: bool, table_output_file: str | None):
+    """Classify unstructured game guide text, run 4-way modal logic parsing, and synthesize dynamic tables."""
     path = Path(text_path)
     with open(path, "r", encoding="utf-8") as f:
         content = f.read()
@@ -105,7 +107,26 @@ def classify_text(text_path: str, output_file: str | None):
 
     extractor = TextEntityRelationExtractor()
     result = extractor.extract_from_text(content)
+    parse_res = result.get("modality_parse_result")
 
+    # 1. Modality Logic Breakdown Card
+    if parse_res:
+        mod_table = Table(title="4-Way Modal Logic Discourse Breakdown", border_style="blue")
+        mod_table.add_column("Modality Class", style="bold")
+        mod_table.add_column("Symbol", justify="center", style="yellow")
+        mod_table.add_column("Clause Count", justify="right", style="cyan")
+        mod_table.add_column("Status / Action", style="white")
+
+        counts = parse_res.modality_counts
+        mod_table.add_row("DEONTIC_RULE (Invariant Mechanics)", "[bold green]□[/]", str(counts.get("DEONTIC_RULE", 0)), "[green]Retained for KG / Mesh[/]")
+        mod_table.add_row("EPISTEMIC_ESTIMATE (Probabilities / Costs)", "[bold yellow]◇[/]", str(counts.get("EPISTEMIC_ESTIMATE", 0)), "[yellow]Retained for Estimates[/]")
+        mod_table.add_row("HYPOTHETICAL (Conditional Contexts)", "[bold cyan]⇒[/]", str(counts.get("HYPOTHETICAL", 0)), "[cyan]Retained with Context[/]")
+        mod_table.add_row("BOULETIC_FLUFF (Subjective Commentary)", "[dim red]⚡[/]", str(counts.get("BOULETIC_FLUFF", 0)), "[bold red]Pruned / Filtered[/]")
+
+        console.print(mod_table)
+        console.print(f"[bold]Discourse Summary:[/] {parse_res.total_clauses} clauses segmented | {len(parse_res.active_frames)} active semantic frames | {len(parse_res.pruned_fluff_clauses)} fluff clauses pruned\n")
+
+    # 2. Extracted Entities Table
     ent_table = Table(title=f"Extracted Entities ({result['entity_count']} found)", border_style="green")
     ent_table.add_column("Entity Label", style="cyan bold")
     ent_table.add_column("Type", style="magenta")
@@ -116,6 +137,7 @@ def classify_text(text_path: str, output_file: str | None):
         ent_table.add_row(ent["label"], ent["type_label"], ent["matched_alias"], str(ent["occurrences"]))
     console.print(ent_table)
 
+    # 3. Extracted Relational Triples Table
     if result["triples"]:
         trip_table = Table(title=f"Extracted Relational Triples ({result['triple_count']} found)", border_style="cyan")
         trip_table.add_column("Subject", style="cyan")
@@ -126,6 +148,28 @@ def classify_text(text_path: str, output_file: str | None):
             s, p, o = str(trip[0]), str(trip[1]), str(trip[2])
             trip_table.add_row(s, p, o)
         console.print(trip_table)
+
+    # 4. Synthesized Dynamic Table Matrix
+    synth_grid = result.get("synthetic_grid")
+    if synth_grid and (synthesize_table or table_output_file):
+        grid_table = Table(title=f"Dynamic Synthesized Table Grid ({len(synth_grid.rows)} rows, {len(synth_grid.headers)} cols)", border_style="magenta")
+        for h in synth_grid.headers:
+            grid_table.add_column(h, style="cyan" if h == synth_grid.headers[0] else "white")
+
+        for row in synth_grid.rows[:25]:
+            grid_table.add_row(*[str(c) for c in row])
+        if len(synth_grid.rows) > 25:
+            grid_table.add_row(*["..." for _ in synth_grid.headers])
+
+        console.print("\n")
+        console.print(grid_table)
+
+        if table_output_file:
+            os.makedirs(os.path.dirname(os.path.abspath(table_output_file)), exist_ok=True)
+            out_content = synth_grid.to_csv() if table_output_file.endswith(".csv") else synth_grid.to_markdown()
+            with open(table_output_file, "w", encoding="utf-8") as f:
+                f.write(out_content)
+            console.print(f"[bold green]Saved synthesized table grid to:[/] {table_output_file}")
 
     if output_file:
         os.makedirs(os.path.dirname(os.path.abspath(output_file)), exist_ok=True)

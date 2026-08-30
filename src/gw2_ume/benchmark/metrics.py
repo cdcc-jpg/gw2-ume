@@ -29,6 +29,7 @@ def normalize_identifier(val: Any) -> str:
             s = f"{parts[-2]}_{parts[-1]}"
         else:
             s = parts[-1]
+    s = re.sub(r"(?<!^)(?=[A-Z])", "_", s)
     # Strip spaces and special characters, lowercase
     s = re.sub(r"[\W_]+", "", s).lower()
     return s
@@ -46,6 +47,7 @@ def normalize_entity_uri(uri: Any) -> str:
         s = s.split("#")[-1]
     elif "/" in s:
         s = s.split("/")[-1]
+    s = re.sub(r"(?<!^)(?=[A-Z])", "_", s)
     return re.sub(r"[\W_]+", "_", s).strip("_").lower()
 
 
