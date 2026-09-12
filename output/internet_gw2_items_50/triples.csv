@@ -1,0 +1,301 @@
+subject,predicate,object,confidence,method,review_flag,module_action
+4,https://priory.gw2/def/gw2Id,4,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+4,http://www.w3.org/2000/01/rdf-schema#label,Assassin Transform Weapon,0.98,Stage0-Exact,False,Literal Typed
+4,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Weapon,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+4,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+4,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+4,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+5,https://priory.gw2/def/gw2Id,5,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+5,http://www.w3.org/2000/01/rdf-schema#label,Assassin Token,0.98,Stage0-Exact,False,Literal Typed
+5,https://priory.gw2/def/hasItemType,Trophy,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+5,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+5,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+5,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+6,https://priory.gw2/def/gw2Id,6,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+6,http://www.w3.org/2000/01/rdf-schema#label,((208738)),0.98,Stage0-Exact,False,Literal Typed
+6,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Weapon,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+6,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+6,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+6,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+15,https://priory.gw2/def/gw2Id,15,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+15,http://www.w3.org/2000/01/rdf-schema#label,Abomination Hammer,0.98,Stage0-Exact,False,Literal Typed
+15,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Weapon,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+15,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+15,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Fine,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+15,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+24,https://priory.gw2/def/gw2Id,24,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+24,http://www.w3.org/2000/01/rdf-schema#label,Sealed Package of Snowballs,0.98,Stage0-Exact,False,Literal Typed
+24,https://priory.gw2/def/hasItemType,Consumable,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+24,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+24,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+24,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+33,https://priory.gw2/def/gw2Id,33,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+33,http://www.w3.org/2000/01/rdf-schema#label,PvP Heavy Helm of the Warrior,0.98,Stage0-Exact,False,Literal Typed
+33,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+33,https://priory.gw2/def/zoneLevel,80,0.81,Stage0-TokenSubset,False,Literal Typed
+33,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+33,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+46,https://priory.gw2/def/gw2Id,46,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+46,http://www.w3.org/2000/01/rdf-schema#label,Gladiator Weapon,0.98,Stage0-Exact,False,Literal Typed
+46,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Weapon,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+46,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+46,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+46,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+47,https://priory.gw2/def/gw2Id,47,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+47,http://www.w3.org/2000/01/rdf-schema#label,Gladiator Weapon,0.98,Stage0-Exact,False,Literal Typed
+47,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Weapon,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+47,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+47,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+47,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+56,https://priory.gw2/def/gw2Id,56,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+56,http://www.w3.org/2000/01/rdf-schema#label,Strong Back Brace,0.98,Stage0-Exact,False,Literal Typed
+56,https://priory.gw2/def/hasItemType,Back,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+56,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+56,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+56,https://priory.gw2/def/hasVendorValue,16,0.8467,Stage0-TokenSubset,False,Literal Typed
+57,https://priory.gw2/def/gw2Id,57,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+57,http://www.w3.org/2000/01/rdf-schema#label,Hearty Back Brace,0.98,Stage0-Exact,False,Literal Typed
+57,https://priory.gw2/def/hasItemType,Back,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+57,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+57,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+57,https://priory.gw2/def/hasVendorValue,16,0.8467,Stage0-TokenSubset,False,Literal Typed
+58,https://priory.gw2/def/gw2Id,58,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+58,http://www.w3.org/2000/01/rdf-schema#label,Enduring Back Brace,0.98,Stage0-Exact,False,Literal Typed
+58,https://priory.gw2/def/hasItemType,Back,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+58,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+58,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+58,https://priory.gw2/def/hasVendorValue,16,0.8467,Stage0-TokenSubset,False,Literal Typed
+59,https://priory.gw2/def/gw2Id,59,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+59,http://www.w3.org/2000/01/rdf-schema#label,Berserkers Spineguard of Ruby,0.98,Stage0-Exact,False,Literal Typed
+59,https://priory.gw2/def/hasItemType,Back,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+59,https://priory.gw2/def/zoneLevel,80,0.81,Stage0-TokenSubset,False,Literal Typed
+59,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Masterwork,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+59,https://priory.gw2/def/hasVendorValue,132,0.8467,Stage0-TokenSubset,False,Literal Typed
+60,https://priory.gw2/def/gw2Id,60,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+60,http://www.w3.org/2000/01/rdf-schema#label,Clerics Spineguard of Sapphire,0.98,Stage0-Exact,False,Literal Typed
+60,https://priory.gw2/def/hasItemType,Back,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+60,https://priory.gw2/def/zoneLevel,80,0.81,Stage0-TokenSubset,False,Literal Typed
+60,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Masterwork,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+60,https://priory.gw2/def/hasVendorValue,132,0.8467,Stage0-TokenSubset,False,Literal Typed
+61,https://priory.gw2/def/gw2Id,61,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+61,http://www.w3.org/2000/01/rdf-schema#label,Rampagers Spineguard of Coral,0.98,Stage0-Exact,False,Literal Typed
+61,https://priory.gw2/def/hasItemType,Back,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+61,https://priory.gw2/def/zoneLevel,80,0.81,Stage0-TokenSubset,False,Literal Typed
+61,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Masterwork,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+61,https://priory.gw2/def/hasVendorValue,132,0.8467,Stage0-TokenSubset,False,Literal Typed
+62,https://priory.gw2/def/gw2Id,62,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+62,http://www.w3.org/2000/01/rdf-schema#label,Shirt,0.98,Stage0-Exact,False,Literal Typed
+62,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+62,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+62,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+62,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+63,https://priory.gw2/def/gw2Id,63,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+63,http://www.w3.org/2000/01/rdf-schema#label,Leggings,0.98,Stage0-Exact,False,Literal Typed
+63,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+63,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+63,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+63,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+64,https://priory.gw2/def/gw2Id,64,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+64,http://www.w3.org/2000/01/rdf-schema#label,Boots,0.98,Stage0-Exact,False,Literal Typed
+64,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+64,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+64,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+64,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+65,https://priory.gw2/def/gw2Id,65,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+65,http://www.w3.org/2000/01/rdf-schema#label,Shirt,0.98,Stage0-Exact,False,Literal Typed
+65,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+65,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+65,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+65,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+68,https://priory.gw2/def/gw2Id,68,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+68,http://www.w3.org/2000/01/rdf-schema#label,Mighty Country Coat,0.98,Stage0-Exact,False,Literal Typed
+68,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+68,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+68,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+68,https://priory.gw2/def/hasVendorValue,6,0.8467,Stage0-TokenSubset,False,Literal Typed
+69,https://priory.gw2/def/gw2Id,69,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+69,http://www.w3.org/2000/01/rdf-schema#label,Mighty Country Coat,0.98,Stage0-Exact,False,Literal Typed
+69,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+69,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+69,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+69,https://priory.gw2/def/hasVendorValue,7,0.8467,Stage0-TokenSubset,False,Literal Typed
+70,https://priory.gw2/def/gw2Id,70,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+70,http://www.w3.org/2000/01/rdf-schema#label,Mighty Studded Coat,0.98,Stage0-Exact,False,Literal Typed
+70,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+70,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+70,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+70,https://priory.gw2/def/hasVendorValue,6,0.8467,Stage0-TokenSubset,False,Literal Typed
+71,https://priory.gw2/def/gw2Id,71,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+71,http://www.w3.org/2000/01/rdf-schema#label,Mighty Worn Chain Greaves,0.98,Stage0-Exact,False,Literal Typed
+71,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+71,https://priory.gw2/def/zoneLevel,6,0.81,Stage0-TokenSubset,False,Literal Typed
+71,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Fine,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+71,https://priory.gw2/def/hasVendorValue,11,0.8467,Stage0-TokenSubset,False,Literal Typed
+72,https://priory.gw2/def/gw2Id,72,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+72,http://www.w3.org/2000/01/rdf-schema#label,Berserker's Sneakthief Mask of the Afflicted,0.98,Stage0-Exact,False,Literal Typed
+72,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+72,https://priory.gw2/def/zoneLevel,62,0.81,Stage0-TokenSubset,False,Literal Typed
+72,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+72,https://priory.gw2/def/hasVendorValue,265,0.8467,Stage0-TokenSubset,False,Literal Typed
+73,https://priory.gw2/def/gw2Id,73,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+73,http://www.w3.org/2000/01/rdf-schema#label,Berserker's Sneakthief Mask of Dwayna,0.98,Stage0-Exact,False,Literal Typed
+73,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+73,https://priory.gw2/def/zoneLevel,70,0.81,Stage0-TokenSubset,False,Literal Typed
+73,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+73,https://priory.gw2/def/hasVendorValue,295,0.8467,Stage0-TokenSubset,False,Literal Typed
+74,https://priory.gw2/def/gw2Id,74,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+74,http://www.w3.org/2000/01/rdf-schema#label,Mighty Worn Chain Greaves,0.98,Stage0-Exact,False,Literal Typed
+74,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+74,https://priory.gw2/def/zoneLevel,11,0.81,Stage0-TokenSubset,False,Literal Typed
+74,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Fine,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+74,https://priory.gw2/def/hasVendorValue,16,0.8467,Stage0-TokenSubset,False,Literal Typed
+75,https://priory.gw2/def/gw2Id,75,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+75,http://www.w3.org/2000/01/rdf-schema#label,Berserker's Sneakthief Mask of Strength,0.98,Stage0-Exact,False,Literal Typed
+75,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+75,https://priory.gw2/def/zoneLevel,78,0.81,Stage0-TokenSubset,False,Literal Typed
+75,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+75,https://priory.gw2/def/hasVendorValue,320,0.8467,Stage0-TokenSubset,False,Literal Typed
+76,https://priory.gw2/def/gw2Id,76,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+76,http://www.w3.org/2000/01/rdf-schema#label,Berserker's Seer Coat of the Flame Legion,0.98,Stage0-Exact,False,Literal Typed
+76,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+76,https://priory.gw2/def/zoneLevel,62,0.81,Stage0-TokenSubset,False,Literal Typed
+76,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+76,https://priory.gw2/def/hasVendorValue,318,0.8467,Stage0-TokenSubset,False,Literal Typed
+77,https://priory.gw2/def/gw2Id,77,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+77,http://www.w3.org/2000/01/rdf-schema#label,Mighty Studded Coat,0.98,Stage0-Exact,False,Literal Typed
+77,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+77,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+77,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+77,https://priory.gw2/def/hasVendorValue,7,0.8467,Stage0-TokenSubset,False,Literal Typed
+78,https://priory.gw2/def/gw2Id,78,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+78,http://www.w3.org/2000/01/rdf-schema#label,Strong Worn Scale Boots,0.98,Stage0-Exact,False,Literal Typed
+78,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+78,https://priory.gw2/def/zoneLevel,46,0.81,Stage0-TokenSubset,False,Literal Typed
+78,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Fine,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+78,https://priory.gw2/def/hasVendorValue,42,0.8467,Stage0-TokenSubset,False,Literal Typed
+79,https://priory.gw2/def/gw2Id,79,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+79,http://www.w3.org/2000/01/rdf-schema#label,Berserker's Seer Coat of the Traveler,0.98,Stage0-Exact,False,Literal Typed
+79,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+79,https://priory.gw2/def/zoneLevel,70,0.81,Stage0-TokenSubset,False,Literal Typed
+79,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+79,https://priory.gw2/def/hasVendorValue,354,0.8467,Stage0-TokenSubset,False,Literal Typed
+80,https://priory.gw2/def/gw2Id,80,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+80,http://www.w3.org/2000/01/rdf-schema#label,Nika's Mask,0.98,Stage0-Exact,False,Literal Typed
+80,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+80,https://priory.gw2/def/zoneLevel,80,0.81,Stage0-TokenSubset,False,Literal Typed
+80,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+80,https://priory.gw2/def/hasVendorValue,330,0.8467,Stage0-TokenSubset,False,Literal Typed
+81,https://priory.gw2/def/gw2Id,81,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+81,http://www.w3.org/2000/01/rdf-schema#label,Mighty Studded Boots,0.98,Stage0-Exact,False,Literal Typed
+81,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+81,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+81,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+81,https://priory.gw2/def/hasVendorValue,4,0.8467,Stage0-TokenSubset,False,Literal Typed
+82,https://priory.gw2/def/gw2Id,82,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+82,http://www.w3.org/2000/01/rdf-schema#label,Berserker's Seer Coat of the Afflicted,0.98,Stage0-Exact,False,Literal Typed
+82,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+82,https://priory.gw2/def/zoneLevel,78,0.81,Stage0-TokenSubset,False,Literal Typed
+82,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+82,https://priory.gw2/def/hasVendorValue,384,0.8467,Stage0-TokenSubset,False,Literal Typed
+83,https://priory.gw2/def/gw2Id,83,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+83,http://www.w3.org/2000/01/rdf-schema#label,Strong Worn Scale Boots,0.98,Stage0-Exact,False,Literal Typed
+83,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+83,https://priory.gw2/def/zoneLevel,51,0.81,Stage0-TokenSubset,False,Literal Typed
+83,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Fine,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+83,https://priory.gw2/def/hasVendorValue,45,0.8467,Stage0-TokenSubset,False,Literal Typed
+84,https://priory.gw2/def/gw2Id,84,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+84,http://www.w3.org/2000/01/rdf-schema#label,Zhed's Coat,0.98,Stage0-Exact,False,Literal Typed
+84,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+84,https://priory.gw2/def/zoneLevel,80,0.81,Stage0-TokenSubset,False,Literal Typed
+84,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+84,https://priory.gw2/def/hasVendorValue,396,0.8467,Stage0-TokenSubset,False,Literal Typed
+85,https://priory.gw2/def/gw2Id,85,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+85,http://www.w3.org/2000/01/rdf-schema#label,Carrion Seer Coat of Rage,0.98,Stage0-Exact,False,Literal Typed
+85,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+85,https://priory.gw2/def/zoneLevel,63,0.81,Stage0-TokenSubset,False,Literal Typed
+85,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+85,https://priory.gw2/def/hasVendorValue,324,0.8467,Stage0-TokenSubset,False,Literal Typed
+86,https://priory.gw2/def/gw2Id,86,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+86,http://www.w3.org/2000/01/rdf-schema#label,Carrion Sneakthief Mask of Grenth,0.98,Stage0-Exact,False,Literal Typed
+86,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+86,https://priory.gw2/def/zoneLevel,63,0.81,Stage0-TokenSubset,False,Literal Typed
+86,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+86,https://priory.gw2/def/hasVendorValue,270,0.8467,Stage0-TokenSubset,False,Literal Typed
+87,https://priory.gw2/def/gw2Id,87,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+87,http://www.w3.org/2000/01/rdf-schema#label,Strong Worn Scale Boots,0.98,Stage0-Exact,False,Literal Typed
+87,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+87,https://priory.gw2/def/zoneLevel,56,0.81,Stage0-TokenSubset,False,Literal Typed
+87,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Fine,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+87,https://priory.gw2/def/hasVendorValue,49,0.8467,Stage0-TokenSubset,False,Literal Typed
+88,https://priory.gw2/def/gw2Id,88,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+88,http://www.w3.org/2000/01/rdf-schema#label,Carrion Seer Coat of the Centaur,0.98,Stage0-Exact,False,Literal Typed
+88,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+88,https://priory.gw2/def/zoneLevel,71,0.81,Stage0-TokenSubset,False,Literal Typed
+88,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+88,https://priory.gw2/def/hasVendorValue,354,0.8467,Stage0-TokenSubset,False,Literal Typed
+89,https://priory.gw2/def/gw2Id,89,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+89,http://www.w3.org/2000/01/rdf-schema#label,Carrion Sneakthief Mask of Balthazar,0.98,Stage0-Exact,False,Literal Typed
+89,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+89,https://priory.gw2/def/zoneLevel,71,0.81,Stage0-TokenSubset,False,Literal Typed
+89,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+89,https://priory.gw2/def/hasVendorValue,295,0.8467,Stage0-TokenSubset,False,Literal Typed
+90,https://priory.gw2/def/gw2Id,90,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+90,http://www.w3.org/2000/01/rdf-schema#label,Berserker's Reinforced Scale Boots,0.98,Stage0-Exact,False,Literal Typed
+90,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+90,https://priory.gw2/def/zoneLevel,61,0.81,Stage0-TokenSubset,False,Literal Typed
+90,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Fine,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+90,https://priory.gw2/def/hasVendorValue,52,0.8467,Stage0-TokenSubset,False,Literal Typed
+91,https://priory.gw2/def/gw2Id,91,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+91,http://www.w3.org/2000/01/rdf-schema#label,Carrion Seer Coat of the Afflicted,0.98,Stage0-Exact,False,Literal Typed
+91,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+91,https://priory.gw2/def/zoneLevel,79,0.81,Stage0-TokenSubset,False,Literal Typed
+91,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+91,https://priory.gw2/def/hasVendorValue,390,0.8467,Stage0-TokenSubset,False,Literal Typed
+92,https://priory.gw2/def/gw2Id,92,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+92,http://www.w3.org/2000/01/rdf-schema#label,Carrion Sneakthief Mask of the Flame Legion,0.98,Stage0-Exact,False,Literal Typed
+92,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+92,https://priory.gw2/def/zoneLevel,79,0.81,Stage0-TokenSubset,False,Literal Typed
+92,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+92,https://priory.gw2/def/hasVendorValue,325,0.8467,Stage0-TokenSubset,False,Literal Typed
+93,https://priory.gw2/def/gw2Id,93,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+93,http://www.w3.org/2000/01/rdf-schema#label,Shiro's Mask,0.98,Stage0-Exact,False,Literal Typed
+93,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+93,https://priory.gw2/def/zoneLevel,80,0.81,Stage0-TokenSubset,False,Literal Typed
+93,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+93,https://priory.gw2/def/hasVendorValue,330,0.8467,Stage0-TokenSubset,False,Literal Typed
+94,https://priory.gw2/def/gw2Id,94,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+94,http://www.w3.org/2000/01/rdf-schema#label,Ogden's Coat,0.98,Stage0-Exact,False,Literal Typed
+94,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+94,https://priory.gw2/def/zoneLevel,80,0.81,Stage0-TokenSubset,False,Literal Typed
+94,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+94,https://priory.gw2/def/hasVendorValue,396,0.8467,Stage0-TokenSubset,False,Literal Typed
+95,https://priory.gw2/def/gw2Id,95,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+95,http://www.w3.org/2000/01/rdf-schema#label,Berserker's Reinforced Scale Boots,0.98,Stage0-Exact,False,Literal Typed
+95,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+95,https://priory.gw2/def/zoneLevel,66,0.81,Stage0-TokenSubset,False,Literal Typed
+95,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Fine,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+95,https://priory.gw2/def/hasVendorValue,56,0.8467,Stage0-TokenSubset,False,Literal Typed
+96,https://priory.gw2/def/gw2Id,96,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+96,http://www.w3.org/2000/01/rdf-schema#label,Rampager's Sneakthief Mask of the Citadel,0.98,Stage0-Exact,False,Literal Typed
+96,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+96,https://priory.gw2/def/zoneLevel,64,0.81,Stage0-TokenSubset,False,Literal Typed
+96,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+96,https://priory.gw2/def/hasVendorValue,270,0.8467,Stage0-TokenSubset,False,Literal Typed
+97,https://priory.gw2/def/gw2Id,97,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+97,http://www.w3.org/2000/01/rdf-schema#label,Rampager's Seer Coat of the Traveler,0.98,Stage0-Exact,False,Literal Typed
+97,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+97,https://priory.gw2/def/zoneLevel,64,0.81,Stage0-TokenSubset,False,Literal Typed
+97,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Exotic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+97,https://priory.gw2/def/hasVendorValue,324,0.8467,Stage0-TokenSubset,False,Literal Typed
+98,https://priory.gw2/def/gw2Id,98,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+98,http://www.w3.org/2000/01/rdf-schema#label,Berserker's Reinforced Scale Boots,0.98,Stage0-Exact,False,Literal Typed
+98,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+98,https://priory.gw2/def/zoneLevel,71,0.81,Stage0-TokenSubset,False,Literal Typed
+98,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Fine,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+98,https://priory.gw2/def/hasVendorValue,59,0.8467,Stage0-TokenSubset,False,Literal Typed
+99,https://priory.gw2/def/gw2Id,99,0.6,AxiomFilter-Ambiguous,True,HITL Validation
+99,http://www.w3.org/2000/01/rdf-schema#label,Mighty Studded Boots,0.98,Stage0-Exact,False,Literal Typed
+99,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Armor,0.588,AxiomFilter-Ambiguous+Concept-StringMatch,True,HITL Validation
+99,https://priory.gw2/def/zoneLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+99,https://priory.gw2/def/hasRarity,https://priory.gw2/ref/rarity/Basic,0.7938,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+99,https://priory.gw2/def/hasVendorValue,5,0.8467,Stage0-TokenSubset,False,Literal Typed

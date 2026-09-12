@@ -115,13 +115,28 @@ class OntologyLoader:
 
     def load_defaults(self) -> OntologyLoader:
         """Loads both local ontologies and master Priory ontologies from gw2-priory-def and gw2-priory-ref if present."""
-        # 1. Check for sibling master Priory repositories
-        workspace_parent = Path.cwd().parent
-        priory_def_dir = workspace_parent / "gw2-priory-def" / "ontology"
-        priory_ref_dir = workspace_parent / "gw2-priory-ref" / "vocab"
+        # 1. Check for sibling master Priory repositories (gw2-priory-def and gw2-priory-ref)
+        def_candidates = [Path(os.environ["GW2_PRIORY_DEF_DIR"])] if "GW2_PRIORY_DEF_DIR" in os.environ else []
+        def_candidates.extend([
+            Path.cwd().parent / "gw2-priory-def" / "ontology",
+            Path.cwd() / "gw2-priory-def" / "ontology",
+            Path(__file__).resolve().parents[4] / "gw2-priory-def" / "ontology",
+            Path("/Users/clementd/Documents/GitHub/gw2-priory-def/ontology"),
+        ])
+
+        ref_candidates = [Path(os.environ["GW2_PRIORY_REF_DIR"])] if "GW2_PRIORY_REF_DIR" in os.environ else []
+        ref_candidates.extend([
+            Path.cwd().parent / "gw2-priory-ref" / "vocab",
+            Path.cwd() / "gw2-priory-ref" / "vocab",
+            Path(__file__).resolve().parents[4] / "gw2-priory-ref" / "vocab",
+            Path("/Users/clementd/Documents/GitHub/gw2-priory-ref/vocab"),
+        ])
+
+        priory_def_dir = next((p for p in def_candidates if p.exists() and p.is_dir()), None)
+        priory_ref_dir = next((p for p in ref_candidates if p.exists() and p.is_dir()), None)
 
         loaded_priory = False
-        if priory_def_dir.exists() and priory_def_dir.is_dir():
+        if priory_def_dir and priory_def_dir.exists() and priory_def_dir.is_dir():
             for ttl in sorted(priory_def_dir.rglob("*.ttl")):
                 try:
                     self.load_file(ttl)
@@ -129,7 +144,7 @@ class OntologyLoader:
                 except Exception as e:
                     logger.warning("Failed to load Priory def ontology %s: %s", ttl, e)
 
-        if priory_ref_dir.exists() and priory_ref_dir.is_dir():
+        if priory_ref_dir and priory_ref_dir.exists() and priory_ref_dir.is_dir():
             for ttl in sorted(priory_ref_dir.rglob("*.ttl")):
                 try:
                     self.load_file(ttl)

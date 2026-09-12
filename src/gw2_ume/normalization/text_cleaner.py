@@ -13,7 +13,7 @@ import json
 import re
 import unicodedata
 from html.parser import HTMLParser
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Set, Tuple, Union
 
 from gw2_ume.models import EntitySpan, TableGrid
 
@@ -265,6 +265,89 @@ KNOWN_ENTITY_TYPES: Dict[str, str] = {
 
 
 # ============================================================================
+# DECOMPOSED CELL DATA STRUCTURES
+# ============================================================================
+
+class DecomposedDict(dict):
+    """Decomposed single compound entity (e.g. discipline+rating, vendor+location).
+
+    Behaves as a dictionary, but also supports list-like indexing [0] for backwards-compatibility
+    with list consumers.
+    """
+    def __getitem__(self, key: Any) -> Any:
+        if key == 0:
+            return self
+        return super().__getitem__(key)
+
+
+class DecomposedList(list):
+    """Decomposed list of sub-entities (e.g. ingredients, mixed currencies).
+
+    Behaves as a list of dictionaries, but allows dictionary-style get/lookup if accessed with string key.
+    """
+    def __getitem__(self, key: Any) -> Any:
+        if isinstance(key, str):
+            for d in self:
+                if isinstance(d, dict) and key in d:
+                    return d[key]
+            raise KeyError(key)
+        return super().__getitem__(key)
+
+    def get(self, key: str, default: Any = None) -> Any:
+        for d in self:
+            if isinstance(d, dict) and key in d:
+                return d[key]
+        return default
+
+
+_DYNAMIC_VOCAB_CACHE: Optional[Dict[str, Set[str]]] = None
+
+
+def get_dynamic_vocab() -> Dict[str, Set[str]]:
+    """Dynamically queries loaded ontology vocabulary for disciplines and currencies without hardcoding."""
+    global _DYNAMIC_VOCAB_CACHE
+    if _DYNAMIC_VOCAB_CACHE is not None:
+        return _DYNAMIC_VOCAB_CACHE
+
+    disciplines: Set[str] = set()
+    currencies: Set[str] = set()
+
+    try:
+        from gw2_ume.ontology.vocab import CONTROLLED_DISCIPLINES, CONTROLLED_CURRENCIES
+        for k in CONTROLLED_DISCIPLINES.keys():
+            disciplines.add(k.lower())
+            disciplines.add(k.replace("_", " ").lower())
+        for k in CONTROLLED_CURRENCIES.keys():
+            currencies.add(k.lower())
+            currencies.add(k.replace("_", " ").lower())
+    except Exception:
+        pass
+
+    try:
+        from gw2_ume.ontology.loader import OntologyLoader
+        from gw2_ume.ontology.vocab import CLASS_CRAFTING_DISCIPLINE, CLASS_CURRENCY
+        loader = OntologyLoader(auto_load_defaults=True)
+        for ind in loader.list_individuals(CLASS_CRAFTING_DISCIPLINE):
+            if ind.label:
+                disciplines.add(ind.label.lower())
+            for l in ind.alt_labels:
+                disciplines.add(l.lower())
+        for ind in loader.list_individuals(CLASS_CURRENCY):
+            if ind.label:
+                currencies.add(ind.label.lower())
+            for l in ind.alt_labels:
+                currencies.add(l.lower())
+    except Exception:
+        pass
+
+    _DYNAMIC_VOCAB_CACHE = {
+        "disciplines": disciplines,
+        "currencies": currencies,
+    }
+    return _DYNAMIC_VOCAB_CACHE
+
+
+# ============================================================================
 # TEXT CLEANER CLASS
 # ============================================================================
 
@@ -405,6 +488,198 @@ class TextCleaner:
 
         norm = cls.normalize_typos(cleaned)
         return norm, None, None
+
+    @classmethod
+    def decompose_compound_cell(
+        cls,
+        cell_value: str,
+        as_list: bool = False,
+    ) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
+        """Cleanly unrolls compound cell mentions into structured components.
+
+        Supports:
+        - Ingredient lists: '3x Spiritwood Plank + 3x Deldrimor Steel Ingot' ->
+            [{'quantity': 3, 'name': 'Spiritwood Plank'}, {'quantity': 3, 'name': 'Deldrimor Steel Ingot'}]
+        - Discipline & rating: 'Artificer (450)' or 'Weaponsmith 500' ->
+            {'discipline': 'Artificer', 'rating': 450}
+        - Vendor & location: "Hobbs in Lion's Arch" or "Purchased from Hobbs in Lion's Arch" ->
+            {'vendor': 'Hobbs', 'zone': "Lion's Arch"}
+        - Mixed currencies: '10g + 500 karma' ->
+            [{'amount': 10, 'currency': 'Gold'}, {'amount': 500, 'currency': 'Karma'}]
+          '5g 50s' ->
+            [{'amount': 5, 'currency': 'Gold'}, {'amount': 50, 'currency': 'Silver'}]
+        """
+        if not cell_value or not str(cell_value).strip():
+            return DecomposedList([]) if as_list else DecomposedList([])
+
+        cleaned = cls.clean_text(str(cell_value))
+        if not cleaned:
+            return DecomposedList([]) if as_list else DecomposedList([])
+
+        vocab = get_dynamic_vocab()
+        known_disciplines = vocab["disciplines"]
+        known_currencies = vocab["currencies"]
+
+        # 1. Check for GW2 Coins format: e.g. '5g 50s' or '10g 50s 25c' or '10g'
+        coin_full_match = re.match(
+            r"^(?:(\d+)\s*g)?\s*(?:(\d+)\s*s)?\s*(?:(\d+)\s*c)?$",
+            cleaned,
+            re.IGNORECASE,
+        )
+        if coin_full_match and any(coin_full_match.groups()):
+            g_str, s_str, c_str = coin_full_match.groups()
+            coins: List[Dict[str, Any]] = []
+            if g_str:
+                coins.append({"amount": int(g_str), "currency": "Gold"})
+            if s_str:
+                coins.append({"amount": int(s_str), "currency": "Silver"})
+            if c_str:
+                coins.append({"amount": int(c_str), "currency": "Copper"})
+            if coins:
+                return DecomposedList(coins)
+
+        # 2. Check for Mixed Currencies: e.g. '10g + 500 karma'
+        curr_delims = r"\s*(?:\+|\band\b|&)\s*"
+        curr_chunks = re.split(curr_delims, cleaned, flags=re.IGNORECASE)
+        if len(curr_chunks) > 1 or any(c in cleaned.lower() for c in ("karma", "spirit shard", "gold", "silver", "laurel")):
+            parsed_currencies: List[Dict[str, Any]] = []
+            is_all_currencies = True
+
+            for chunk in curr_chunks:
+                chunk = chunk.strip()
+                if not chunk:
+                    continue
+
+                coin_m = re.match(r"^(\d+(?:[,\.]\d+)?)\s*([gsc]|gold|silver|copper)$", chunk, re.IGNORECASE)
+                if coin_m:
+                    amt_str, denom = coin_m.groups()
+                    amt = float(amt_str.replace(",", ""))
+                    if amt.is_integer():
+                        amt = int(amt)
+                    d_lower = denom.lower()
+                    c_name = "Gold" if d_lower in ("g", "gold") else ("Silver" if d_lower in ("s", "silver") else "Copper")
+                    parsed_currencies.append({"amount": amt, "currency": c_name})
+                    continue
+
+                std_m = re.match(r"^(\d+(?:[,\.]\d+)?)\s*(?:x\s*)?([A-Za-z\s'\-]+)$", chunk, re.IGNORECASE)
+                if std_m:
+                    amt_str, cand_curr = std_m.groups()
+                    cand_clean = cand_curr.strip().lower()
+                    matched_curr = None
+                    if cand_clean in known_currencies:
+                        matched_curr = cand_curr.strip().title()
+                    else:
+                        cand_sing = cand_clean.rstrip("s")
+                        if cand_sing in known_currencies:
+                            matched_curr = cand_curr.strip().title()
+                        elif any(c in cand_clean for c in ("karma", "spirit shard", "laurel", "relic", "badge", "astral", "favor")):
+                            matched_curr = cand_curr.strip().title()
+
+                    if matched_curr:
+                        amt = float(amt_str.replace(",", ""))
+                        if amt.is_integer():
+                            amt = int(amt)
+                        if "Karma" in matched_curr:
+                            matched_curr = "Karma"
+                        elif "Spirit Shard" in matched_curr:
+                            matched_curr = "Spirit Shards"
+                        elif "Fractal Relic" in matched_curr:
+                            matched_curr = "Fractal Relics"
+                        elif "Badge" in matched_curr:
+                            matched_curr = "Badge of Honor"
+                        elif "Laurel" in matched_curr:
+                            matched_curr = "Laurel"
+                        parsed_currencies.append({"amount": amt, "currency": matched_curr})
+                        continue
+
+                is_all_currencies = False
+                break
+
+            if is_all_currencies and len(parsed_currencies) > 0:
+                return DecomposedList(parsed_currencies)
+
+        # 3. Check for Discipline and Rating: e.g. 'Artificer (450)' or 'Weaponsmith 500'
+        disc_pattern = re.match(
+            r"^(?:(?:crafted\s+by|crafting|discipline|profession):\s*)?([A-Za-z\s]+?)\s*(?:[\(:]\s*|\s+(?:lvl|level|rating)?\s*)(\d{1,4})\s*\)?$",
+            cleaned,
+            re.IGNORECASE,
+        )
+        if disc_pattern:
+            cand_name, rating_str = disc_pattern.groups()
+            cand_norm = cand_name.strip().lower()
+            if cand_norm in known_disciplines or any(cand_norm == d.lower() for d in ("artificer", "weaponsmith", "huntsman", "armorsmith", "tailor", "leatherworker", "chef", "jeweler", "scribe")):
+                rating_val = int(rating_str)
+                res_dict = DecomposedDict({"discipline": cand_name.strip().title(), "rating": rating_val})
+                return [res_dict] if as_list else res_dict
+
+        # 4. Check for Vendor and Location/Zone: e.g. "Hobbs in Lion's Arch" or "Purchased from Hobbs in Lion's Arch"
+        vendor_prefix_stripped = re.sub(
+            r"^(?:purchased\s+from|bought\s+from|sold\s+by|obtained\s+from|vendor:\s*|merchant:\s*|npc:\s*)",
+            "",
+            cleaned,
+            flags=re.IGNORECASE,
+        ).strip()
+        vendor_pattern = re.match(
+            r"^([^\(]+?)\s*(?:\s+in\s+|\s+at\s+|\s+@\s+|\s*-\s*|\s*\()\s*([^)]+)\)?$",
+            vendor_prefix_stripped,
+            re.IGNORECASE,
+        )
+        if vendor_pattern:
+            cand_vendor, cand_zone = vendor_pattern.groups()
+            cand_vendor = cand_vendor.strip()
+            cand_zone = cand_zone.strip()
+            if not cand_vendor.isdigit() and not cand_zone.isdigit() and len(cand_vendor) > 1 and len(cand_zone) > 1:
+                if not any(c in cand_vendor.lower() for c in ("gold", "karma", "silver", "copper")):
+                    res_dict = DecomposedDict({"vendor": cand_vendor, "zone": cand_zone})
+                    return [res_dict] if as_list else res_dict
+
+        # 5. Check for Ingredient Lists with Quantities: e.g. '3x Spiritwood Plank + 3x Deldrimor Steel Ingot'
+        ing_delims = r"\s*(?:\+|\band\b|;|\n)\s*"
+        is_delimited = bool(re.search(ing_delims, cleaned, re.IGNORECASE) or ("," in cleaned and re.search(r"\d+x?\s+", cleaned)))
+        chunks = re.split(ing_delims, cleaned, flags=re.IGNORECASE) if is_delimited else (re.split(r"\s*,\s*", cleaned) if ("," in cleaned and re.search(r"\d+x?\s+", cleaned)) else [cleaned])
+
+        parsed_ingredients: List[Dict[str, Any]] = []
+        has_any_explicit_qty = False
+
+        for chunk in chunks:
+            chunk = chunk.strip()
+            if not chunk:
+                continue
+
+            p_match = re.match(r"^(\d+(?:[,\.]\d+)?)\s*(?:x|\*|qty:?|count:?|ea\.?)?\s+(.*)$", chunk, re.IGNORECASE)
+            s_match = re.match(r"^(.*?)\s*(?:[-:\(]\s*|\s+x|\s+qty:?\s*)(\d+(?:[,\.]\d+)?)\s*\)?$", chunk, re.IGNORECASE)
+
+            if p_match:
+                raw_num, raw_name = p_match.groups()
+                try:
+                    v = float(raw_num.replace(",", ""))
+                    q = int(v) if v.is_integer() else v
+                    has_any_explicit_qty = True
+                    norm_name = cls.normalize_typos(raw_name.strip())
+                    parsed_ingredients.append({"quantity": q, "name": norm_name})
+                    continue
+                except ValueError:
+                    pass
+            elif s_match:
+                raw_name, raw_num = s_match.groups()
+                try:
+                    v = float(raw_num.replace(",", ""))
+                    q = int(v) if v.is_integer() else v
+                    has_any_explicit_qty = True
+                    norm_name = cls.normalize_typos(raw_name.strip())
+                    parsed_ingredients.append({"quantity": q, "name": norm_name})
+                    continue
+                except ValueError:
+                    pass
+
+            norm_name = cls.normalize_typos(chunk.strip())
+            parsed_ingredients.append({"quantity": 1, "name": norm_name})
+
+        if len(parsed_ingredients) > 1 or (len(parsed_ingredients) == 1 and has_any_explicit_qty):
+            return DecomposedList(parsed_ingredients)
+
+        fallback_item = {"name": cls.normalize_typos(cleaned)}
+        return [fallback_item] if as_list else DecomposedDict(fallback_item)
 
     @classmethod
     def split_sentences(cls, text: str) -> List[str]:
@@ -760,6 +1035,11 @@ def extract_entity_spans(text: str) -> List[EntitySpan]:
     return TextCleaner.extract_entity_spans(text)
 
 
+def decompose_compound_cell(cell_str: str, as_list: bool = False) -> Union[List[Dict[str, Any]], Dict[str, Any]]:
+    """Cleanly unpacks compound cell mentions into structured components."""
+    return TextCleaner.decompose_compound_cell(cell_str, as_list=as_list)
+
+
 def parse_table(raw_input: Union[str, List[Any], Dict[str, Any], TableGrid], format_hint: Optional[str] = None) -> TableGrid:
     """Parse raw table inputs in Markdown, CSV, TSV, HTML, or JSON format into TableGrid."""
     if isinstance(raw_input, TableGrid):
@@ -804,3 +1084,21 @@ def parse_table(raw_input: Union[str, List[Any], Dict[str, Any], TableGrid], for
         return TSVTableParser.parse(raw_str)
 
     return CSVTableParser.parse(raw_str)
+
+
+__all__ = [
+    "GW2_NORMALIZATION_RULES",
+    "KNOWN_ENTITY_TYPES",
+    "TextCleaner",
+    "MarkdownTableParser",
+    "CSVTableParser",
+    "TSVTableParser",
+    "HTMLTableParser",
+    "JSONTableParser",
+    "normalize_text",
+    "extract_entity_spans",
+    "decompose_compound_cell",
+    "DecomposedDict",
+    "DecomposedList",
+    "parse_table",
+]

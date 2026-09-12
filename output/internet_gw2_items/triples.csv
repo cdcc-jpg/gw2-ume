@@ -1,0 +1,181 @@
+subject,predicate,object,confidence,method,review_flag,module_action
+Row-1,https://priory.gw2/def/apiWalletId,4,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-1,https://priory.gw2/def/waypointName,https://priory.gw2/def/Weapon,0.6534,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-1,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Weapon,0.7578,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-1,https://priory.gw2/def/requiredLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-1,https://priory.gw2/def/hasRarity,Basic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-1,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-2,https://priory.gw2/def/apiWalletId,5,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-2,https://priory.gw2/def/waypointName,Assassin Token,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-2,https://priory.gw2/def/hasItemType,Trophy,0.7733,Stage0-TokenSubset,False,Literal Typed
+Row-2,https://priory.gw2/def/requiredLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-2,https://priory.gw2/def/hasRarity,Basic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-2,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-3,https://priory.gw2/def/apiWalletId,6,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-3,https://priory.gw2/def/waypointName,((208738)),0.81,Stage0-TokenSubset,False,Literal Typed
+Row-3,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Weapon,0.7578,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-3,https://priory.gw2/def/requiredLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-3,https://priory.gw2/def/hasRarity,Basic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-3,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-4,https://priory.gw2/def/apiWalletId,15,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-4,https://priory.gw2/def/waypointName,Abomination Hammer,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-4,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Weapon,0.7578,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-4,https://priory.gw2/def/requiredLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-4,https://priory.gw2/def/hasRarity,Fine,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-4,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-5,https://priory.gw2/def/apiWalletId,24,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-5,https://priory.gw2/def/waypointName,Sealed Package of Snowballs,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-5,https://priory.gw2/def/hasItemType,Consumable,0.7733,Stage0-TokenSubset,False,Literal Typed
+Row-5,https://priory.gw2/def/requiredLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-5,https://priory.gw2/def/hasRarity,Basic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-5,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-6,https://priory.gw2/def/apiWalletId,33,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-6,https://priory.gw2/def/waypointName,PvP Heavy Helm of the Warrior,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-6,https://priory.gw2/def/hasItemType,https://priory.gw2/def/HeavyArmor,0.6457,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-6,https://priory.gw2/def/requiredLevel,80,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-6,https://priory.gw2/def/hasRarity,Exotic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-6,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-7,https://priory.gw2/def/apiWalletId,46,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-7,https://priory.gw2/def/waypointName,https://priory.gw2/def/Weapon,0.6764,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-7,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Weapon,0.7578,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-7,https://priory.gw2/def/requiredLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-7,https://priory.gw2/def/hasRarity,Basic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-7,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-8,https://priory.gw2/def/apiWalletId,47,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-8,https://priory.gw2/def/waypointName,https://priory.gw2/def/Weapon,0.6764,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-8,https://priory.gw2/def/hasItemType,https://priory.gw2/def/Weapon,0.7578,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-8,https://priory.gw2/def/requiredLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-8,https://priory.gw2/def/hasRarity,Basic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-8,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-9,https://priory.gw2/def/apiWalletId,56,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-9,https://priory.gw2/def/waypointName,Strong Back Brace,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-9,https://priory.gw2/def/hasItemType,https://priory.gw2/def/BackpackItem,0.6238,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-9,https://priory.gw2/def/requiredLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-9,https://priory.gw2/def/hasRarity,Basic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-9,https://priory.gw2/def/hasVendorValue,16,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-10,https://priory.gw2/def/apiWalletId,57,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-10,https://priory.gw2/def/waypointName,Hearty Back Brace,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-10,https://priory.gw2/def/hasItemType,https://priory.gw2/def/BackpackItem,0.6238,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-10,https://priory.gw2/def/requiredLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-10,https://priory.gw2/def/hasRarity,Basic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-10,https://priory.gw2/def/hasVendorValue,16,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-11,https://priory.gw2/def/apiWalletId,58,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-11,https://priory.gw2/def/waypointName,Enduring Back Brace,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-11,https://priory.gw2/def/hasItemType,https://priory.gw2/def/BackpackItem,0.6238,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-11,https://priory.gw2/def/requiredLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-11,https://priory.gw2/def/hasRarity,Basic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-11,https://priory.gw2/def/hasVendorValue,16,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-12,https://priory.gw2/def/apiWalletId,59,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-12,https://priory.gw2/def/waypointName,Berserkers Spineguard of Ruby,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-12,https://priory.gw2/def/hasItemType,https://priory.gw2/def/BackpackItem,0.6238,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-12,https://priory.gw2/def/requiredLevel,80,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-12,https://priory.gw2/def/hasRarity,Masterwork,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-12,https://priory.gw2/def/hasVendorValue,132,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-13,https://priory.gw2/def/apiWalletId,60,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-13,https://priory.gw2/def/waypointName,Clerics Spineguard of Sapphire,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-13,https://priory.gw2/def/hasItemType,https://priory.gw2/def/BackpackItem,0.6238,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-13,https://priory.gw2/def/requiredLevel,80,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-13,https://priory.gw2/def/hasRarity,Masterwork,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-13,https://priory.gw2/def/hasVendorValue,132,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-14,https://priory.gw2/def/apiWalletId,61,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-14,https://priory.gw2/def/waypointName,Rampagers Spineguard of Coral,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-14,https://priory.gw2/def/hasItemType,https://priory.gw2/def/BackpackItem,0.6238,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-14,https://priory.gw2/def/requiredLevel,80,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-14,https://priory.gw2/def/hasRarity,Masterwork,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-14,https://priory.gw2/def/hasVendorValue,132,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-15,https://priory.gw2/def/apiWalletId,62,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-15,https://priory.gw2/def/waypointName,Shirt,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-15,https://priory.gw2/def/hasItemType,https://priory.gw2/def/HeavyArmor,0.6457,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-15,https://priory.gw2/def/requiredLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-15,https://priory.gw2/def/hasRarity,Basic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-15,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-16,https://priory.gw2/def/apiWalletId,63,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-16,https://priory.gw2/def/waypointName,Leggings,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-16,https://priory.gw2/def/hasItemType,https://priory.gw2/def/HeavyArmor,0.6457,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-16,https://priory.gw2/def/requiredLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-16,https://priory.gw2/def/hasRarity,Basic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-16,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-17,https://priory.gw2/def/apiWalletId,64,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-17,https://priory.gw2/def/waypointName,Boots,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-17,https://priory.gw2/def/hasItemType,https://priory.gw2/def/HeavyArmor,0.6457,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-17,https://priory.gw2/def/requiredLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-17,https://priory.gw2/def/hasRarity,Basic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-17,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-18,https://priory.gw2/def/apiWalletId,65,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-18,https://priory.gw2/def/waypointName,Shirt,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-18,https://priory.gw2/def/hasItemType,https://priory.gw2/def/HeavyArmor,0.6457,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-18,https://priory.gw2/def/requiredLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-18,https://priory.gw2/def/hasRarity,Basic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-18,https://priory.gw2/def/hasVendorValue,0,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-19,https://priory.gw2/def/apiWalletId,68,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-19,https://priory.gw2/def/waypointName,Mighty Country Coat,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-19,https://priory.gw2/def/hasItemType,https://priory.gw2/def/HeavyArmor,0.6457,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-19,https://priory.gw2/def/requiredLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-19,https://priory.gw2/def/hasRarity,Basic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-19,https://priory.gw2/def/hasVendorValue,6,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-20,https://priory.gw2/def/apiWalletId,69,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-20,https://priory.gw2/def/waypointName,Mighty Country Coat,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-20,https://priory.gw2/def/hasItemType,https://priory.gw2/def/HeavyArmor,0.6457,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-20,https://priory.gw2/def/requiredLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-20,https://priory.gw2/def/hasRarity,Basic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-20,https://priory.gw2/def/hasVendorValue,7,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-21,https://priory.gw2/def/apiWalletId,70,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-21,https://priory.gw2/def/waypointName,Mighty Studded Coat,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-21,https://priory.gw2/def/hasItemType,https://priory.gw2/def/HeavyArmor,0.6457,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-21,https://priory.gw2/def/requiredLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-21,https://priory.gw2/def/hasRarity,Basic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-21,https://priory.gw2/def/hasVendorValue,6,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-22,https://priory.gw2/def/apiWalletId,71,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-22,https://priory.gw2/def/waypointName,Mighty Worn Chain Greaves,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-22,https://priory.gw2/def/hasItemType,https://priory.gw2/def/HeavyArmor,0.6457,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-22,https://priory.gw2/def/requiredLevel,6,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-22,https://priory.gw2/def/hasRarity,Fine,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-22,https://priory.gw2/def/hasVendorValue,11,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-23,https://priory.gw2/def/apiWalletId,72,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-23,https://priory.gw2/def/waypointName,Berserker's Sneakthief Mask of the Afflicted,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-23,https://priory.gw2/def/hasItemType,https://priory.gw2/def/HeavyArmor,0.6457,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-23,https://priory.gw2/def/requiredLevel,62,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-23,https://priory.gw2/def/hasRarity,Exotic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-23,https://priory.gw2/def/hasVendorValue,265,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-24,https://priory.gw2/def/apiWalletId,73,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-24,https://priory.gw2/def/waypointName,Berserker's Sneakthief Mask of Dwayna,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-24,https://priory.gw2/def/hasItemType,https://priory.gw2/def/HeavyArmor,0.6457,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-24,https://priory.gw2/def/requiredLevel,70,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-24,https://priory.gw2/def/hasRarity,Exotic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-24,https://priory.gw2/def/hasVendorValue,295,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-25,https://priory.gw2/def/apiWalletId,74,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-25,https://priory.gw2/def/waypointName,Mighty Worn Chain Greaves,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-25,https://priory.gw2/def/hasItemType,https://priory.gw2/def/HeavyArmor,0.6457,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-25,https://priory.gw2/def/requiredLevel,11,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-25,https://priory.gw2/def/hasRarity,Fine,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-25,https://priory.gw2/def/hasVendorValue,16,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-26,https://priory.gw2/def/apiWalletId,75,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-26,https://priory.gw2/def/waypointName,Berserker's Sneakthief Mask of Strength,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-26,https://priory.gw2/def/hasItemType,https://priory.gw2/def/HeavyArmor,0.6457,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-26,https://priory.gw2/def/requiredLevel,78,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-26,https://priory.gw2/def/hasRarity,Exotic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-26,https://priory.gw2/def/hasVendorValue,320,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-27,https://priory.gw2/def/apiWalletId,76,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-27,https://priory.gw2/def/waypointName,Berserker's Seer Coat of the Flame Legion,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-27,https://priory.gw2/def/hasItemType,https://priory.gw2/def/HeavyArmor,0.6457,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-27,https://priory.gw2/def/requiredLevel,62,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-27,https://priory.gw2/def/hasRarity,Exotic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-27,https://priory.gw2/def/hasVendorValue,318,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-28,https://priory.gw2/def/apiWalletId,77,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-28,https://priory.gw2/def/waypointName,Mighty Studded Coat,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-28,https://priory.gw2/def/hasItemType,https://priory.gw2/def/HeavyArmor,0.6457,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-28,https://priory.gw2/def/requiredLevel,0,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-28,https://priory.gw2/def/hasRarity,Basic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-28,https://priory.gw2/def/hasVendorValue,7,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-29,https://priory.gw2/def/apiWalletId,78,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-29,https://priory.gw2/def/waypointName,Strong Worn Scale Boots,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-29,https://priory.gw2/def/hasItemType,https://priory.gw2/def/HeavyArmor,0.6457,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-29,https://priory.gw2/def/requiredLevel,46,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-29,https://priory.gw2/def/hasRarity,Fine,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-29,https://priory.gw2/def/hasVendorValue,42,0.8467,Stage0-TokenSubset,False,Literal Typed
+Row-30,https://priory.gw2/def/apiWalletId,79,0.755,Stage0-TokenSubset,False,Literal Typed
+Row-30,https://priory.gw2/def/waypointName,Berserker's Seer Coat of the Traveler,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-30,https://priory.gw2/def/hasItemType,https://priory.gw2/def/HeavyArmor,0.6457,Stage0-TokenSubset+Concept-StringMatch,False,Deterministic Mapped
+Row-30,https://priory.gw2/def/requiredLevel,70,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-30,https://priory.gw2/def/hasRarity,Exotic,0.81,Stage0-TokenSubset,False,Literal Typed
+Row-30,https://priory.gw2/def/hasVendorValue,354,0.8467,Stage0-TokenSubset,False,Literal Typed

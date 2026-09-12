@@ -9,7 +9,18 @@ from typing import Any, Dict, List, Optional, Tuple
 from collections import Counter
 
 from gw2_ume.mesh.models import CellAnnotation, ColumnAnnotation, ColumnPropertyAnnotation
-from gw2_ume.ontology.namespaces import DEFAULT_PRIORY_PREFIXES
+from gw2_ume.normalization.text_cleaner import decompose_compound_cell
+from gw2_ume.ontology.namespaces import (
+    DEFAULT_PRIORY_PREFIXES,
+    PRIORY,
+    PRIORY_REF,
+    ITEM,
+    RECIPE,
+    DISCIPLINE,
+    ZONE,
+    VENDOR,
+    CURRENCY,
+)
 from gw2_ume.ontology.vocab import (
     CLASS_COLLECTION_STEP,
     CLASS_COLLECTION_TIER,
@@ -45,12 +56,15 @@ from gw2_ume.ontology.vocab import (
     PROP_REQUIRES_INGREDIENT,
     PROP_REQUIRES_CURRENCY,
     PROP_COSTS_CURRENCY,
+    PROP_REQUIRES_DISCIPLINE,
     PROP_HAS_ATTRIBUTE,
     PROP_HAS_PRIMARY_ATTRIBUTE,
     PROP_HAS_SECONDARY_ATTRIBUTE,
     PROP_HAS_ATTRIBUTE_COMBINATION,
     PROP_RELEASED_IN_EXPANSION,
     PROP_REWARD_FOR_STEP,
+    CONTROLLED_DISCIPLINES,
+    CONTROLLED_CURRENCIES,
 )
 from gw2_ume.ontology.reasoner import SymbolicAxiomReasoner
 from gw2_ume.retrieval.vector_index import VectorIndex, _lexical_similarity, get_default_vector_index
@@ -135,10 +149,10 @@ def match_cell_entity(
     slug = re.sub(r"[^\w\s-]", "", raw).strip().lower().replace(" ", "_")
 
     if any(w in header_norm for w in ["tier"]) or norm.startswith("tier"):
-        return str(GW2RES[f"tier/{slug}"]), raw, "CollectionTier", 0.95
+        return str(PRIORY_REF[f"tier/{slug}"]), raw, "CollectionTier", 0.95
 
     if any(w in header_norm for w in ["step", "journey"]):
-        return str(GW2RES[f"step/{slug}"]), raw, "CollectionStep", 0.95
+        return str(PRIORY_REF[f"step/{slug}"]), raw, "CollectionStep", 0.95
 
     index = vector_index if vector_index is not None else get_default_vector_index()
     results = index.search_entities(raw, top_k=5)
@@ -149,6 +163,22 @@ def match_cell_entity(
         type_label = top_cand.metadata.get("type_label", top_cand.types[0] if top_cand.types else "Item")
         canonical_label = top_cand.metadata.get("canonical_label", top_cand.label)
         uri = top_cand.iri
+
+        # Map to canonical gw2-priory-def and gw2-priory-ref namespaces without database IDs
+        if uri.startswith("https://gw2ume.org/resource/") or "gw2ume.org" in uri or "priory.gw2/id/item/" in uri:
+            clean_slug = canonical_label.lower().replace("'", "").replace(" ", "_").strip()
+            # PascalCase label for SKOS reference concepts
+            pascal_label = "".join(w.capitalize() for w in re.findall(r"[A-Za-z0-9]+", canonical_label))
+            if type_label in ("Zone", "MapZone"):
+                uri = str(PRIORY_REF[f"zone/{pascal_label}"])
+            elif type_label in ("NPCVendor", "Vendor"):
+                uri = str(PRIORY_REF[f"vendor/{pascal_label}"])
+            elif type_label == "CraftingDiscipline":
+                uri = str(PRIORY_REF[f"discipline/{pascal_label}"])
+            elif type_label == "Currency":
+                uri = str(PRIORY_REF[f"currency/{pascal_label}"])
+            else:
+                uri = str(ITEM[clean_slug])
 
         # Contextual boost if header semantic type aligns with candidate type
         if header_norm:
@@ -169,9 +199,24 @@ def match_cell_entity(
         if score >= 0.70:
             return uri, canonical_label, type_label, min(1.0, score)
 
-    # Named entity fallback
-    fallback_uri = str(GW2RES[f"entity/{slug}"])
-    return fallback_uri, raw, "Item", 0.85
+    # Named entity fallback using canonical Priory namespaces (Zero Database IDs)
+    if any(w in header_norm for w in ["zone", "loc", "place"]):
+        fallback_uri = str(PRIORY_REF[f"zone/{slug}"])
+        fallback_type = "Zone"
+    elif any(w in header_norm for w in ["vendor", "merchant", "npc", "source"]):
+        fallback_uri = str(PRIORY_REF[f"vendor/{slug}"])
+        fallback_type = "NPCVendor"
+    elif any(w in header_norm for w in ["discipline", "craft", "prof"]):
+        fallback_uri = str(CONTROLLED_DISCIPLINES.get(slug, PRIORY_REF[f"discipline/{slug}"]))
+        fallback_type = "CraftingDiscipline"
+    elif any(w in header_norm for w in ["currency", "coin", "token", "cost"]):
+        fallback_uri = str(CONTROLLED_CURRENCIES.get(slug, PRIORY_REF[f"currency/{slug}"]))
+        fallback_type = "Currency"
+    else:
+        fallback_uri = str(ITEM[slug])
+        fallback_type = "Item"
+
+    return fallback_uri, raw, fallback_type, 0.85
 
 
 def annotate_table(
@@ -188,27 +233,103 @@ def annotate_table(
     index = vector_index if vector_index is not None else get_default_vector_index()
     reasoner_inst = reasoner if reasoner is not None else SymbolicAxiomReasoner()
 
-    # 1. CEA: Cell Entity Annotation (Tentative resolution for cell typing)
+    # 1. CEA: Cell Entity Annotation with Native Compound Cell Decomposition
     col_cell_matches: Dict[int, List[Tuple[int, Tuple[str, str, str, float]]]] = {}
     for r_idx, row in enumerate(rows):
         for c_idx, cell_val in enumerate(row):
             if not cell_val.strip():
                 continue
             header_name = headers[c_idx] if c_idx < len(headers) else ""
-            matched = match_cell_entity(cell_val, header_name, vector_index=index, reasoner=reasoner_inst)
-            if matched:
-                uri, label, type_label, conf = matched
-                cea_ann = CellAnnotation(
-                    row_idx=r_idx,
-                    col_idx=c_idx,
-                    raw_value=cell_val,
-                    entity_uri=uri,
-                    label=label,
-                    entity_type=type_label,
-                    confidence=conf,
-                )
-                cea_list.append(cea_ann)
-                col_cell_matches.setdefault(c_idx, []).append((r_idx, matched))
+
+            # Check for multimodal compound decomposition (ingredients, discipline+rating, vendor+zone, mixed currencies)
+            decomp = decompose_compound_cell(cell_val)
+
+            # Case A: Ingredient list with quantities
+            if isinstance(decomp, list) and len(decomp) > 0 and all("name" in d for d in decomp):
+                for ing in decomp:
+                    ing_name = ing["name"]
+                    matched = match_cell_entity(ing_name, header_name, vector_index=index, reasoner=reasoner_inst)
+                    if matched:
+                        uri, label, type_label, conf = matched
+                        qty = ing.get("quantity", 1)
+                        raw_desc = f"{qty}x {ing_name}" if qty > 1 else ing_name
+                        cea_ann = CellAnnotation(
+                            row_idx=r_idx,
+                            col_idx=c_idx,
+                            raw_value=ing_name,
+                            entity_uri=uri,
+                            label=label,
+                            entity_type=type_label,
+                            confidence=conf,
+                        )
+                        cea_list.append(cea_ann)
+                        col_cell_matches.setdefault(c_idx, []).append((r_idx, matched))
+
+            # Case B: Discipline and Rating
+            elif isinstance(decomp, dict) and "discipline" in decomp and "rating" in decomp:
+                d_name = decomp["discipline"]
+                matched = match_cell_entity(d_name, "discipline", vector_index=index, reasoner=reasoner_inst)
+                if matched:
+                    uri, label, _, conf = matched
+                    cea_ann = CellAnnotation(
+                        row_idx=r_idx,
+                        col_idx=c_idx,
+                        raw_value=d_name,
+                        entity_uri=uri,
+                        label=label,
+                        entity_type="CraftingDiscipline",
+                        confidence=conf,
+                    )
+                    cea_list.append(cea_ann)
+                    col_cell_matches.setdefault(c_idx, []).append((r_idx, (uri, label, "CraftingDiscipline", conf)))
+
+            # Case C: Vendor and Zone
+            elif isinstance(decomp, dict) and "vendor" in decomp and "zone" in decomp:
+                v_name = decomp["vendor"]
+                z_name = decomp["zone"]
+                v_match = match_cell_entity(v_name, "vendor", vector_index=index, reasoner=reasoner_inst)
+                if v_match:
+                    cea_list.append(CellAnnotation(
+                        row_idx=r_idx, col_idx=c_idx, raw_value=v_name,
+                        entity_uri=v_match[0], label=v_match[1], entity_type="NPCVendor", confidence=v_match[3]
+                    ))
+                    col_cell_matches.setdefault(c_idx, []).append((r_idx, v_match))
+                z_match = match_cell_entity(z_name, "zone", vector_index=index, reasoner=reasoner_inst)
+                if z_match:
+                    cea_list.append(CellAnnotation(
+                        row_idx=r_idx, col_idx=c_idx, raw_value=z_name,
+                        entity_uri=z_match[0], label=z_match[1], entity_type="Zone", confidence=z_match[3]
+                    ))
+                    col_cell_matches.setdefault(c_idx, []).append((r_idx, z_match))
+
+            # Case D: Mixed Currencies
+            elif isinstance(decomp, list) and len(decomp) > 0 and all("currency" in d and "amount" in d for d in decomp):
+                for curr in decomp:
+                    c_name = curr["currency"]
+                    c_match = match_cell_entity(c_name, "currency", vector_index=index, reasoner=reasoner_inst)
+                    if c_match:
+                        cea_list.append(CellAnnotation(
+                            row_idx=r_idx, col_idx=c_idx, raw_value=c_name,
+                            entity_uri=c_match[0], label=c_match[1], entity_type="Currency", confidence=c_match[3]
+                        ))
+                        col_cell_matches.setdefault(c_idx, []).append((r_idx, c_match))
+
+            # Case E: Standard single entity mention
+            else:
+                matched = match_cell_entity(cell_val, header_name, vector_index=index, reasoner=reasoner_inst)
+                if matched:
+                    uri, label, type_label, conf = matched
+                    cea_ann = CellAnnotation(
+                        row_idx=r_idx,
+                        col_idx=c_idx,
+                        raw_value=cell_val,
+                        entity_uri=uri,
+                        label=label,
+                        entity_type=type_label,
+                        confidence=conf,
+                    )
+                    cea_list.append(cea_ann)
+                    col_cell_matches.setdefault(c_idx, []).append((r_idx, matched))
 
     # 2. CTA: Column Type Annotation using Least Common Subsumer (LCS) and Ontology Introspection
     for col_idx, header in enumerate(headers):
@@ -323,7 +444,7 @@ def annotate_table(
             sample_values=sample_vals,
         ))
 
-    # 3. CPA: Column Property Annotation using Reasoner Domain/Range Axioms
+    # 3. CPA: Column Property Annotation using Reasoner Domain/Range Axioms & Dynamic Ontology Introspection
     for i, c_src in enumerate(cta_list):
         for j, c_dst in enumerate(cta_list):
             if i == j:
@@ -369,7 +490,6 @@ def annotate_table(
 
             # Special Datatype and Structural Column Annotations
             if is_src_item and c_dst.type_label in ("IngredientQuantity", "Ingredient Quantity"):
-                # Quantity is associated with the closest preceding component/item
                 if c_src.col_idx < c_dst.col_idx and (c_dst.col_idx - c_src.col_idx <= 2):
                     prop_uri = str(PROP_INGREDIENT_QUANTITY)
                     prop_label = "ingredientQuantity"
@@ -395,9 +515,9 @@ def annotate_table(
                 prop_label = "locatedInZone"
                 cpa_conf = 0.98
             elif is_src_item and c_dst.type_label == "Currency":
-                prop_uri = str(PROP_REQUIRES_CURRENCY)
-                prop_label = "requiresCurrency"
-                cpa_conf = 0.92
+                prop_uri = str(PROP_COSTS_CURRENCY)
+                prop_label = "costsCurrency"
+                cpa_conf = 0.95
             else:
                 # Dynamic Reasoner Domain/Range Axiom Discovery
                 compatible_props = reasoner_inst.get_compatible_properties(c_src.type_uri, c_dst.type_uri)

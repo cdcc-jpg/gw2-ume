@@ -1,0 +1,1413 @@
+{
+  "dataset": "wild_community_crafting_table",
+  "table_id": "bench_wild_community_crafting",
+  "name": "Wild Community Crafting Table Benchmark",
+  "description": "Realistic, unstructured community guide table for legendary precursor crafting across Nevermore, H.O.P.E., Astralaria, Sunrise, and Mystic Tribute containing compound cells, natural language abbreviations, and zero database IDs.",
+  "columns": [
+    {
+      "column_index": 0,
+      "header": "Tier_Step",
+      "semantic_role": "Collection tier classification and progressive collection step title",
+      "expected_cta_type": "priory:CollectionStep",
+      "expected_cta_uri": "https://priory.gw2/def/CollectionStep",
+      "description": "The community-facing collection journey tier or crafting step name for precursor progression."
+    },
+    {
+      "column_index": 1,
+      "header": "Target_Item",
+      "semantic_role": "Primary synthesized or acquired item entity (precursor, gift, or legendary weapon)",
+      "expected_cta_type": "priory:Item",
+      "expected_cta_uri": "https://priory.gw2/def/Item",
+      "description": "The specific item produced by the step, whether an intermediate precursor, legendary gift, or final weapon."
+    },
+    {
+      "column_index": 2,
+      "header": "Components_And_Qty",
+      "semantic_role": "Compound collection of ingredient items and discrete numerical quantities",
+      "expected_cta_type": "priory:CraftingMaterial",
+      "expected_cta_uri": "https://priory.gw2/def/CraftingMaterial",
+      "is_compound": true,
+      "sub_elements": [
+        "priory:IngredientQuantity",
+        "priory:Item"
+      ],
+      "description": "Multi-ingredient cell containing quantity-prefixed material names joined by plus delimiters."
+    },
+    {
+      "column_index": 3,
+      "header": "Crafting_Discipline_Req",
+      "semantic_role": "Artisan trade discipline and minimum skill rating prerequisite",
+      "expected_cta_type": "priory:CraftingDiscipline",
+      "expected_cta_uri": "https://priory.gw2/def/CraftingDiscipline",
+      "is_compound": true,
+      "sub_elements": [
+        "priory:CraftingDiscipline",
+        "priory:DisciplineRating"
+      ],
+      "description": "Compound cell combining trade discipline (Artificer, Huntsman, Weaponsmith) and required skill level (0-500) or em-dash for non-artisan sources."
+    },
+    {
+      "column_index": 4,
+      "header": "Acquisition_Source",
+      "semantic_role": "NPC vendor merchant, world boss event encounter, or Mystic Forge venue with map zone",
+      "expected_cta_type": "priory:NPCVendor",
+      "expected_cta_uri": "https://priory.gw2/def/NPCVendor",
+      "is_compound": true,
+      "sub_elements": [
+        "priory:NPCVendor",
+        "priory:Zone",
+        "priory:MysticForgeRecipe"
+      ],
+      "description": "Compound provenance descriptor combining NPC vendor / encounter with the geographic map zone."
+    },
+    {
+      "column_index": 5,
+      "header": "Costs",
+      "semantic_role": "Direct vendor purchase expense or recipe unlocks in coins, karma, spirit shards, or barter tokens",
+      "expected_cta_type": "priory:Currency",
+      "expected_cta_uri": "https://priory.gw2/def/Currency",
+      "is_compound": true,
+      "sub_elements": [
+        "priory:Currency",
+        "priory:IngredientQuantity"
+      ],
+      "description": "Mixed monetary expressions including gold/silver, karma, spirit shards, and map tokens."
+    },
+    {
+      "column_index": 6,
+      "header": "Notes",
+      "semantic_role": "Informational gameplay flags, account binding status, mastery prerequisites, and recipe classifications",
+      "expected_cta_type": "priory:Entity",
+      "expected_cta_uri": "https://priory.gw2/def/Entity",
+      "description": "Player-written annotations describing mastery requirements, account binding, and recipe mechanics."
+    }
+  ],
+  "cta": {
+    "Tier_Step": "https://priory.gw2/def/CollectionStep",
+    "Target_Item": "https://priory.gw2/def/Item",
+    "Components_And_Qty": "https://priory.gw2/def/CraftingMaterial",
+    "Crafting_Discipline_Req": "https://priory.gw2/def/CraftingDiscipline",
+    "Acquisition_Source": "https://priory.gw2/def/NPCVendor",
+    "Costs": "https://priory.gw2/def/Currency",
+    "Notes": "https://priory.gw2/def/Entity"
+  },
+  "expected_relations": [
+    {
+      "relation_name": "priory:requiresIngredient",
+      "property_curie": "priory:requiresIngredient",
+      "property_uri": "https://priory.gw2/def/requiresIngredient",
+      "source_column": "Target_Item",
+      "target_column": "Components_And_Qty",
+      "description": "Connects target item to each decomposed component item required to forge or craft it.",
+      "cardinality": "1:N"
+    },
+    {
+      "relation_name": "priory:requiresDiscipline",
+      "property_curie": "priory:requiresDiscipline",
+      "property_uri": "https://priory.gw2/def/requiresDiscipline",
+      "source_column": "Target_Item",
+      "target_column": "Crafting_Discipline_Req",
+      "description": "Connects target item recipe to the artisan discipline required (Artificer, Huntsman, Weaponsmith).",
+      "cardinality": "1:1"
+    },
+    {
+      "relation_name": "priory:requiredRating",
+      "property_curie": "priory:requiredRating",
+      "property_uri": "https://priory.gw2/def/requiredRating",
+      "source_column": "Target_Item",
+      "target_column": "Crafting_Discipline_Req",
+      "description": "Connects target item recipe to the numerical crafting discipline skill rating threshold (e.g. 400, 450, 500).",
+      "cardinality": "1:1"
+    },
+    {
+      "relation_name": "priory:obtainedFromVendor",
+      "property_curie": "priory:obtainedFromVendor",
+      "property_uri": "https://priory.gw2/def/obtainedFromVendor",
+      "source_column": "Target_Item",
+      "target_column": "Acquisition_Source",
+      "description": "Connects target item or recipe collection to the NPC vendor who provides it.",
+      "cardinality": "1:1"
+    },
+    {
+      "relation_name": "priory:locatedInZone",
+      "property_curie": "priory:locatedInZone",
+      "property_uri": "https://priory.gw2/def/locatedInZone",
+      "source_column": "Acquisition_Source",
+      "target_column": "Acquisition_Source",
+      "description": "Connects the vendor NPC or encounter venue to the geographic map zone where it is situated.",
+      "cardinality": "1:1"
+    },
+    {
+      "relation_name": "priory:costsCurrency",
+      "property_curie": "priory:costsCurrency",
+      "property_uri": "https://priory.gw2/def/requiresCurrency",
+      "source_column": "Target_Item",
+      "target_column": "Costs",
+      "description": "Connects target item acquisition to the required currency types and expenditure amounts.",
+      "cardinality": "1:N"
+    }
+  ],
+  "cpa": [
+    {
+      "source_column": "Target_Item",
+      "target_column": "Components_And_Qty",
+      "property": "https://priory.gw2/def/requiresIngredient"
+    },
+    {
+      "source_column": "Target_Item",
+      "target_column": "Crafting_Discipline_Req",
+      "property": "https://priory.gw2/def/requiresDiscipline"
+    },
+    {
+      "source_column": "Target_Item",
+      "target_column": "Crafting_Discipline_Req",
+      "property": "https://priory.gw2/def/requiredRating"
+    },
+    {
+      "source_column": "Target_Item",
+      "target_column": "Acquisition_Source",
+      "property": "https://priory.gw2/def/obtainedFromVendor"
+    },
+    {
+      "source_column": "Acquisition_Source",
+      "target_column": "Acquisition_Source",
+      "property": "https://priory.gw2/def/locatedInZone"
+    },
+    {
+      "source_column": "Target_Item",
+      "target_column": "Costs",
+      "property": "https://priory.gw2/def/requiresCurrency"
+    }
+  ],
+  "sample_row_ground_truths": [
+    {
+      "row_index": 0,
+      "tier_step": {
+        "text": "Nevermore I: Experimental Staff",
+        "uri": "https://priory.gw2/def/step/NevermoreI_ExperimentalStaff"
+      },
+      "target_item": {
+        "label": "Ravenswood Branch",
+        "uri": "https://priory.gw2/id/item/ravenswood_branch",
+        "type": "https://priory.gw2/def/PrecursorWeapon"
+      },
+      "components": [
+        {
+          "item": "Spiritwood Plank",
+          "quantity": 3,
+          "uri": "https://priory.gw2/id/item/spiritwood_plank",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Deldrimor Steel Ingot",
+          "quantity": 3,
+          "uri": "https://priory.gw2/id/item/deldrimor_steel_ingot",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Jar of Luminescence",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/jar_of_luminescence",
+          "type": "https://priory.gw2/def/ComponentItem"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": "Artificer",
+        "discipline_uri": "https://priory.gw2/ref/discipline/Artificer",
+        "required_rating": 450
+      },
+      "acquisition_source": {
+        "vendor": "Grandmaster Craftsman Hobbs",
+        "vendor_uri": "https://priory.gw2/ref/vendor/GrandmasterCraftsmanHobbs",
+        "zone": "Lion's Arch",
+        "zone_uri": "https://priory.gw2/ref/zone/LionsArch"
+      },
+      "costs": [
+        {
+          "currency": "Coin",
+          "amount": 50000,
+          "formatted": "5g",
+          "uri": "https://priory.gw2/ref/currency/Coin"
+        },
+        {
+          "currency": "Karma",
+          "amount": 10003,
+          "formatted": "10003 karma",
+          "uri": "https://priory.gw2/ref/currency/Karma"
+        }
+      ],
+      "notes": "Precursor Tier 1, Requires Revered Antiquarian mastery"
+    },
+    {
+      "row_index": 1,
+      "tier_step": {
+        "text": "Nevermore II: The Mnemonic Device",
+        "uri": "https://priory.gw2/def/step/NevermoreII_TheMnemonicDevice"
+      },
+      "target_item": {
+        "label": "Ravenswood Staff",
+        "uri": "https://priory.gw2/id/item/ravenswood_staff",
+        "type": "https://priory.gw2/def/PrecursorWeapon"
+      },
+      "components": [
+        {
+          "item": "Ravenswood Branch",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/ravenswood_branch",
+          "type": "https://priory.gw2/def/PrecursorWeapon"
+        },
+        {
+          "item": "Spiritwood Plank",
+          "quantity": 3,
+          "uri": "https://priory.gw2/id/item/spiritwood_plank",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Jar of Luminescence",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/jar_of_luminescence",
+          "type": "https://priory.gw2/def/ComponentItem"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": "Artificer",
+        "discipline_uri": "https://priory.gw2/ref/discipline/Artificer",
+        "required_rating": 450
+      },
+      "acquisition_source": {
+        "vendor": "Shaman Sigurlina",
+        "vendor_uri": "https://priory.gw2/ref/vendor/ShamanSigurlina",
+        "zone": "Wayfarer Foothills",
+        "zone_uri": "https://priory.gw2/ref/zone/WayfarerFoothills"
+      },
+      "costs": [
+        {
+          "currency": "Coin",
+          "amount": 100000,
+          "formatted": "10g",
+          "uri": "https://priory.gw2/ref/currency/Coin"
+        }
+      ],
+      "notes": "Precursor Tier 2, Account Bound"
+    },
+    {
+      "row_index": 2,
+      "tier_step": {
+        "text": "Nevermore III: The Raven Spirit",
+        "uri": "https://priory.gw2/def/step/NevermoreIII_TheRavenSpirit"
+      },
+      "target_item": {
+        "label": "The Raven Spirit",
+        "uri": "https://priory.gw2/id/item/the_raven_spirit",
+        "type": "https://priory.gw2/def/PrecursorWeapon"
+      },
+      "components": [
+        {
+          "item": "Ravenswood Staff",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/ravenswood_staff",
+          "type": "https://priory.gw2/def/PrecursorWeapon"
+        },
+        {
+          "item": "Spiritwood Plank",
+          "quantity": 5,
+          "uri": "https://priory.gw2/id/item/spiritwood_plank",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Essence of the Raven",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/essence_of_the_raven",
+          "type": "https://priory.gw2/def/ComponentItem"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": "Artificer",
+        "discipline_uri": "https://priory.gw2/ref/discipline/Artificer",
+        "required_rating": 450
+      },
+      "acquisition_source": {
+        "vendor": "Great Raven Spirit",
+        "vendor_uri": "https://priory.gw2/ref/vendor/GreatRavenSpirit",
+        "zone": "Wayfarer Foothills",
+        "zone_uri": "https://priory.gw2/ref/zone/WayfarerFoothills"
+      },
+      "costs": [
+        {
+          "currency": "Coin",
+          "amount": 100000,
+          "formatted": "10g",
+          "uri": "https://priory.gw2/ref/currency/Coin"
+        },
+        {
+          "currency": "Karma",
+          "amount": 500,
+          "formatted": "500 karma",
+          "uri": "https://priory.gw2/ref/currency/Karma"
+        }
+      ],
+      "notes": "Precursor Tier 3, Requires Magister of Legends mastery"
+    },
+    {
+      "row_index": 3,
+      "tier_step": {
+        "text": "Nevermore IV: The Living Ravens",
+        "uri": "https://priory.gw2/def/step/NevermoreIV_TheLivingRavens"
+      },
+      "target_item": {
+        "label": "The Living Ravens",
+        "uri": "https://priory.gw2/id/item/the_living_ravens",
+        "type": "https://priory.gw2/def/PrecursorWeapon"
+      },
+      "components": [
+        {
+          "item": "The Raven Spirit",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/the_raven_spirit",
+          "type": "https://priory.gw2/def/PrecursorWeapon"
+        },
+        {
+          "item": "Spiritwood Plank",
+          "quantity": 10,
+          "uri": "https://priory.gw2/id/item/spiritwood_plank",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Friends of the Owl",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/friends_of_the_owl",
+          "type": "https://priory.gw2/def/ComponentItem"
+        },
+        {
+          "item": "Friends of the Raven",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/friends_of_the_raven",
+          "type": "https://priory.gw2/def/ComponentItem"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": "Artificer",
+        "discipline_uri": "https://priory.gw2/ref/discipline/Artificer",
+        "required_rating": 500
+      },
+      "acquisition_source": {
+        "vendor": "Grandmaster Craftsman Hobbs",
+        "vendor_uri": "https://priory.gw2/ref/vendor/GrandmasterCraftsmanHobbs",
+        "zone": "Lion's Arch",
+        "zone_uri": "https://priory.gw2/ref/zone/LionsArch"
+      },
+      "costs": [
+        {
+          "currency": "Coin",
+          "amount": 150000,
+          "formatted": "15g",
+          "uri": "https://priory.gw2/ref/currency/Coin"
+        }
+      ],
+      "notes": "Precursor Tier 4 (Ascended), Account Bound"
+    },
+    {
+      "row_index": 4,
+      "tier_step": {
+        "text": "H.O.P.E. I: Research",
+        "uri": "https://priory.gw2/def/step/HOPE_I_Research"
+      },
+      "target_item": {
+        "label": "Experimental Pistol",
+        "uri": "https://priory.gw2/id/item/experimental_pistol",
+        "type": "https://priory.gw2/def/PrecursorWeapon"
+      },
+      "components": [
+        {
+          "item": "Deldrimor Steel Ingot",
+          "quantity": 3,
+          "uri": "https://priory.gw2/id/item/deldrimor_steel_ingot",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Spiritwood Plank",
+          "quantity": 3,
+          "uri": "https://priory.gw2/id/item/spiritwood_plank",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Elonian Leather Square",
+          "quantity": 10,
+          "uri": "https://priory.gw2/id/item/elonian_leather_square",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": "Huntsman",
+        "discipline_uri": "https://priory.gw2/ref/discipline/Huntsman",
+        "required_rating": 450
+      },
+      "acquisition_source": {
+        "vendor": "Grandmaster Craftsman Hobbs",
+        "vendor_uri": "https://priory.gw2/ref/vendor/GrandmasterCraftsmanHobbs",
+        "zone": "Lion's Arch",
+        "zone_uri": "https://priory.gw2/ref/zone/LionsArch"
+      },
+      "costs": [
+        {
+          "currency": "Coin",
+          "amount": 50000,
+          "formatted": "5g",
+          "uri": "https://priory.gw2/ref/currency/Coin"
+        },
+        {
+          "currency": "Karma",
+          "amount": 10003,
+          "formatted": "10003 karma",
+          "uri": "https://priory.gw2/ref/currency/Karma"
+        }
+      ],
+      "notes": "Precursor Tier 1, Requires Revered Antiquarian mastery"
+    },
+    {
+      "row_index": 5,
+      "tier_step": {
+        "text": "H.O.P.E. II: Development",
+        "uri": "https://priory.gw2/def/step/HOPE_II_Development"
+      },
+      "target_item": {
+        "label": "Prototype",
+        "uri": "https://priory.gw2/id/item/prototype",
+        "type": "https://priory.gw2/def/PrecursorWeapon"
+      },
+      "components": [
+        {
+          "item": "Experimental Pistol",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/experimental_pistol",
+          "type": "https://priory.gw2/def/PrecursorWeapon"
+        },
+        {
+          "item": "Deldrimor Steel Ingot",
+          "quantity": 3,
+          "uri": "https://priory.gw2/id/item/deldrimor_steel_ingot",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Elonian Leather Square",
+          "quantity": 10,
+          "uri": "https://priory.gw2/id/item/elonian_leather_square",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": "Huntsman",
+        "discipline_uri": "https://priory.gw2/ref/discipline/Huntsman",
+        "required_rating": 450
+      },
+      "acquisition_source": {
+        "vendor": "Corrupted Shaman",
+        "vendor_uri": "https://priory.gw2/ref/vendor/CorruptedShaman",
+        "zone": "Wayfarer Foothills",
+        "zone_uri": "https://priory.gw2/ref/zone/WayfarerFoothills"
+      },
+      "costs": [
+        {
+          "currency": "Coin",
+          "amount": 100000,
+          "formatted": "10g",
+          "uri": "https://priory.gw2/ref/currency/Coin"
+        }
+      ],
+      "notes": "Precursor Tier 2, Account Bound"
+    },
+    {
+      "row_index": 6,
+      "tier_step": {
+        "text": "H.O.P.E. III: Prototype",
+        "uri": "https://priory.gw2/def/step/HOPE_III_Prototype"
+      },
+      "target_item": {
+        "label": "Advanced Pistol",
+        "uri": "https://priory.gw2/id/item/advanced_pistol",
+        "type": "https://priory.gw2/def/PrecursorWeapon"
+      },
+      "components": [
+        {
+          "item": "Prototype",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/prototype",
+          "type": "https://priory.gw2/def/PrecursorWeapon"
+        },
+        {
+          "item": "Deldrimor Steel Ingot",
+          "quantity": 5,
+          "uri": "https://priory.gw2/id/item/deldrimor_steel_ingot",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Synergetics Gyro",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/synergetics_gyro",
+          "type": "https://priory.gw2/def/ComponentItem"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": "Huntsman",
+        "discipline_uri": "https://priory.gw2/ref/discipline/Huntsman",
+        "required_rating": 450
+      },
+      "acquisition_source": {
+        "vendor": "Mechanist Ninn",
+        "vendor_uri": "https://priory.gw2/ref/vendor/MechanistNinn",
+        "zone": "Rata Sum",
+        "zone_uri": "https://priory.gw2/ref/zone/RataSum"
+      },
+      "costs": [
+        {
+          "currency": "Coin",
+          "amount": 100000,
+          "formatted": "10g",
+          "uri": "https://priory.gw2/ref/currency/Coin"
+        },
+        {
+          "currency": "Karma",
+          "amount": 500,
+          "formatted": "500 karma",
+          "uri": "https://priory.gw2/ref/currency/Karma"
+        }
+      ],
+      "notes": "Precursor Tier 3, Requires Magister of Legends mastery"
+    },
+    {
+      "row_index": 7,
+      "tier_step": {
+        "text": "H.O.P.E. IV: The Catalyst",
+        "uri": "https://priory.gw2/def/step/HOPE_IV_TheCatalyst"
+      },
+      "target_item": {
+        "label": "The Catalyst",
+        "uri": "https://priory.gw2/id/item/the_catalyst",
+        "type": "https://priory.gw2/def/PrecursorWeapon"
+      },
+      "components": [
+        {
+          "item": "Advanced Pistol",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/advanced_pistol",
+          "type": "https://priory.gw2/def/PrecursorWeapon"
+        },
+        {
+          "item": "Deldrimor Steel Ingot",
+          "quantity": 10,
+          "uri": "https://priory.gw2/id/item/deldrimor_steel_ingot",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Crystalline Fluid",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/crystalline_fluid",
+          "type": "https://priory.gw2/def/ComponentItem"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": "Huntsman",
+        "discipline_uri": "https://priory.gw2/ref/discipline/Huntsman",
+        "required_rating": 500
+      },
+      "acquisition_source": {
+        "vendor": "Hylek Alchemist",
+        "vendor_uri": "https://priory.gw2/ref/vendor/HylekAlchemist",
+        "zone": "Sparkfly Fen",
+        "zone_uri": "https://priory.gw2/ref/zone/SparkflyFen"
+      },
+      "costs": [
+        {
+          "currency": "Coin",
+          "amount": 150000,
+          "formatted": "15g",
+          "uri": "https://priory.gw2/ref/currency/Coin"
+        }
+      ],
+      "notes": "Precursor Tier 4 (Ascended), Account Bound"
+    },
+    {
+      "row_index": 8,
+      "tier_step": {
+        "text": "Astralaria I: The Device",
+        "uri": "https://priory.gw2/def/step/AstralariaI_TheDevice"
+      },
+      "target_item": {
+        "label": "The Device",
+        "uri": "https://priory.gw2/id/item/the_device",
+        "type": "https://priory.gw2/def/PrecursorWeapon"
+      },
+      "components": [
+        {
+          "item": "Deldrimor Steel Ingot",
+          "quantity": 3,
+          "uri": "https://priory.gw2/id/item/deldrimor_steel_ingot",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Spiritwood Plank",
+          "quantity": 3,
+          "uri": "https://priory.gw2/id/item/spiritwood_plank",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Bolt of Damask",
+          "quantity": 10,
+          "uri": "https://priory.gw2/id/item/bolt_of_damask",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": "Weaponsmith",
+        "discipline_uri": "https://priory.gw2/ref/discipline/Weaponsmith",
+        "required_rating": 450
+      },
+      "acquisition_source": {
+        "vendor": "Grandmaster Craftsman Hobbs",
+        "vendor_uri": "https://priory.gw2/ref/vendor/GrandmasterCraftsmanHobbs",
+        "zone": "Lion's Arch",
+        "zone_uri": "https://priory.gw2/ref/zone/LionsArch"
+      },
+      "costs": [
+        {
+          "currency": "Coin",
+          "amount": 50000,
+          "formatted": "5g",
+          "uri": "https://priory.gw2/ref/currency/Coin"
+        },
+        {
+          "currency": "Karma",
+          "amount": 10003,
+          "formatted": "10003 karma",
+          "uri": "https://priory.gw2/ref/currency/Karma"
+        }
+      ],
+      "notes": "Precursor Tier 1, Requires Revered Antiquarian mastery"
+    },
+    {
+      "row_index": 9,
+      "tier_step": {
+        "text": "Astralaria II: The Apparatus",
+        "uri": "https://priory.gw2/def/step/AstralariaII_TheApparatus"
+      },
+      "target_item": {
+        "label": "The Apparatus",
+        "uri": "https://priory.gw2/id/item/the_apparatus",
+        "type": "https://priory.gw2/def/PrecursorWeapon"
+      },
+      "components": [
+        {
+          "item": "The Device",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/the_device",
+          "type": "https://priory.gw2/def/PrecursorWeapon"
+        },
+        {
+          "item": "Deldrimor Steel Ingot",
+          "quantity": 3,
+          "uri": "https://priory.gw2/id/item/deldrimor_steel_ingot",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Star Chart",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/star_chart",
+          "type": "https://priory.gw2/def/ComponentItem"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": "Weaponsmith",
+        "discipline_uri": "https://priory.gw2/ref/discipline/Weaponsmith",
+        "required_rating": 450
+      },
+      "acquisition_source": {
+        "vendor": "Ogden Stonehealer",
+        "vendor_uri": "https://priory.gw2/ref/vendor/OgdenStonehealer",
+        "zone": "Lornar's Pass",
+        "zone_uri": "https://priory.gw2/ref/zone/LornarsPass"
+      },
+      "costs": [
+        {
+          "currency": "Coin",
+          "amount": 100000,
+          "formatted": "10g",
+          "uri": "https://priory.gw2/ref/currency/Coin"
+        }
+      ],
+      "notes": "Precursor Tier 2, Account Bound"
+    },
+    {
+      "row_index": 10,
+      "tier_step": {
+        "text": "Astralaria III: The Mechanism",
+        "uri": "https://priory.gw2/def/step/AstralariaIII_TheMechanism"
+      },
+      "target_item": {
+        "label": "The Mechanism",
+        "uri": "https://priory.gw2/id/item/the_mechanism",
+        "type": "https://priory.gw2/def/PrecursorWeapon"
+      },
+      "components": [
+        {
+          "item": "The Apparatus",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/the_apparatus",
+          "type": "https://priory.gw2/def/PrecursorWeapon"
+        },
+        {
+          "item": "Deldrimor Steel Ingot",
+          "quantity": 5,
+          "uri": "https://priory.gw2/id/item/deldrimor_steel_ingot",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Celestial Essence",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/celestial_essence",
+          "type": "https://priory.gw2/def/ComponentItem"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": "Weaponsmith",
+        "discipline_uri": "https://priory.gw2/ref/discipline/Weaponsmith",
+        "required_rating": 450
+      },
+      "acquisition_source": {
+        "vendor": "Explorer Rikkiti",
+        "vendor_uri": "https://priory.gw2/ref/vendor/ExplorerRikkiti",
+        "zone": "Dredgehaunt Cliffs",
+        "zone_uri": "https://priory.gw2/ref/zone/DredgehauntCliffs"
+      },
+      "costs": [
+        {
+          "currency": "Coin",
+          "amount": 100000,
+          "formatted": "10g",
+          "uri": "https://priory.gw2/ref/currency/Coin"
+        },
+        {
+          "currency": "Karma",
+          "amount": 500,
+          "formatted": "500 karma",
+          "uri": "https://priory.gw2/ref/currency/Karma"
+        }
+      ],
+      "notes": "Precursor Tier 3, Requires Magister of Legends mastery"
+    },
+    {
+      "row_index": 11,
+      "tier_step": {
+        "text": "Astralaria IV: The Cosmos",
+        "uri": "https://priory.gw2/def/step/AstralariaIV_TheCosmos"
+      },
+      "target_item": {
+        "label": "Astralaria",
+        "uri": "https://priory.gw2/id/item/astralaria",
+        "type": "https://priory.gw2/def/LegendaryWeapon"
+      },
+      "components": [
+        {
+          "item": "The Cosmos",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/the_cosmos",
+          "type": "https://priory.gw2/def/PrecursorWeapon"
+        },
+        {
+          "item": "Mystic Tribute",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/mystic_tribute",
+          "type": "https://priory.gw2/def/GiftItem"
+        },
+        {
+          "item": "Gift of the Cosmos",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/gift_of_the_cosmos",
+          "type": "https://priory.gw2/def/GiftItem"
+        },
+        {
+          "item": "Gift of Maguuma Mastery",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/gift_of_maguuma_mastery",
+          "type": "https://priory.gw2/def/GiftItem"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": null,
+        "discipline_uri": null,
+        "required_rating": null
+      },
+      "acquisition_source": {
+        "vendor": "Miyani",
+        "vendor_uri": "https://priory.gw2/ref/vendor/Miyani",
+        "zone": "Lion's Arch",
+        "zone_uri": "https://priory.gw2/ref/zone/LionsArch"
+      },
+      "costs": [
+        {
+          "currency": "Coin",
+          "amount": 1000000,
+          "formatted": "100g",
+          "uri": "https://priory.gw2/ref/currency/Coin"
+        }
+      ],
+      "notes": "Legendary Axe, Gen 2, Mystic Forge recipe"
+    },
+    {
+      "row_index": 12,
+      "tier_step": {
+        "text": "Sunrise Crafting: Precursor Step",
+        "uri": "https://priory.gw2/def/step/Sunrise_PrecursorStep"
+      },
+      "target_item": {
+        "label": "Dawn",
+        "uri": "https://priory.gw2/id/item/dawn",
+        "type": "https://priory.gw2/def/PrecursorWeapon"
+      },
+      "components": [
+        {
+          "item": "The Hunter",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/the_hunter",
+          "type": "https://priory.gw2/def/PrecursorWeapon"
+        },
+        {
+          "item": "Spark",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/spark",
+          "type": "https://priory.gw2/def/PrecursorWeapon"
+        },
+        {
+          "item": "Zap",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/zap",
+          "type": "https://priory.gw2/def/PrecursorWeapon"
+        },
+        {
+          "item": "Dusk",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/dusk",
+          "type": "https://priory.gw2/def/PrecursorWeapon"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": null,
+        "discipline_uri": null,
+        "required_rating": null
+      },
+      "acquisition_source": {
+        "vendor": "Miyani",
+        "vendor_uri": "https://priory.gw2/ref/vendor/Miyani",
+        "zone": "Lion's Arch",
+        "zone_uri": "https://priory.gw2/ref/zone/LionsArch"
+      },
+      "costs": [
+        {
+          "currency": "Coin",
+          "amount": 2500000,
+          "formatted": "250g",
+          "uri": "https://priory.gw2/ref/currency/Coin"
+        }
+      ],
+      "notes": "Exotic Precursor for Sunrise, Tradeable"
+    },
+    {
+      "row_index": 13,
+      "tier_step": {
+        "text": "Sunrise Crafting: Gift of Mastery",
+        "uri": "https://priory.gw2/def/step/Sunrise_GiftOfMastery"
+      },
+      "target_item": {
+        "label": "Gift of Mastery",
+        "uri": "https://priory.gw2/id/item/gift_of_mastery",
+        "type": "https://priory.gw2/def/GiftItem"
+      },
+      "components": [
+        {
+          "item": "Bloodstone Shard",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/bloodstone_shard",
+          "type": "https://priory.gw2/def/ComponentItem"
+        },
+        {
+          "item": "Obsidian Shard",
+          "quantity": 250,
+          "uri": "https://priory.gw2/id/item/obsidian_shard",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Gift of Exploration",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/gift_of_exploration",
+          "type": "https://priory.gw2/def/GiftItem"
+        },
+        {
+          "item": "Gift of Battle",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/gift_of_battle",
+          "type": "https://priory.gw2/def/GiftItem"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": null,
+        "discipline_uri": null,
+        "required_rating": null
+      },
+      "acquisition_source": {
+        "vendor": "Miyani",
+        "vendor_uri": "https://priory.gw2/ref/vendor/Miyani",
+        "zone": "Lion's Arch",
+        "zone_uri": "https://priory.gw2/ref/zone/LionsArch"
+      },
+      "costs": [
+        {
+          "currency": "Spirit Shard",
+          "amount": 200,
+          "formatted": "200 Spirit Shards",
+          "uri": "https://priory.gw2/ref/currency/SpiritShard"
+        },
+        {
+          "currency": "Badge of Honor",
+          "amount": 500,
+          "formatted": "500 Badges of Honor",
+          "uri": "https://priory.gw2/ref/currency/BadgeOfHonor"
+        }
+      ],
+      "notes": "Account Bound, Core Tyria World Completion"
+    },
+    {
+      "row_index": 14,
+      "tier_step": {
+        "text": "Sunrise Crafting: Gift of the Sun",
+        "uri": "https://priory.gw2/def/step/Sunrise_GiftOfTheSun"
+      },
+      "target_item": {
+        "label": "Gift of the Sun",
+        "uri": "https://priory.gw2/id/item/gift_of_the_sun",
+        "type": "https://priory.gw2/def/GiftItem"
+      },
+      "components": [
+        {
+          "item": "Gift of Metal",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/gift_of_metal",
+          "type": "https://priory.gw2/def/GiftItem"
+        },
+        {
+          "item": "Gift of Light",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/gift_of_light",
+          "type": "https://priory.gw2/def/GiftItem"
+        },
+        {
+          "item": "Icy Runestone",
+          "quantity": 100,
+          "uri": "https://priory.gw2/id/item/icy_runestone",
+          "type": "https://priory.gw2/def/ComponentItem"
+        },
+        {
+          "item": "Superior Sigil of Strength",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/superior_sigil_of_strength",
+          "type": "https://priory.gw2/def/UpgradeComponent"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": "Weaponsmith",
+        "discipline_uri": "https://priory.gw2/ref/discipline/Weaponsmith",
+        "required_rating": 400
+      },
+      "acquisition_source": {
+        "vendor": "Master Weaponsmith",
+        "vendor_uri": "https://priory.gw2/ref/vendor/MasterWeaponsmith",
+        "zone": "Divinity's Reach",
+        "zone_uri": "https://priory.gw2/ref/zone/DivinitysReach"
+      },
+      "costs": [
+        {
+          "currency": "Coin",
+          "amount": 100000,
+          "formatted": "100g",
+          "uri": "https://priory.gw2/ref/currency/Coin"
+        }
+      ],
+      "notes": "Component for Gift of Sunrise, Account Bound"
+    },
+    {
+      "row_index": 15,
+      "tier_step": {
+        "text": "Sunrise Crafting: Final Weapon",
+        "uri": "https://priory.gw2/def/step/Sunrise_FinalWeapon"
+      },
+      "target_item": {
+        "label": "Sunrise",
+        "uri": "https://priory.gw2/id/item/sunrise",
+        "type": "https://priory.gw2/def/LegendaryWeapon"
+      },
+      "components": [
+        {
+          "item": "Dawn",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/dawn",
+          "type": "https://priory.gw2/def/PrecursorWeapon"
+        },
+        {
+          "item": "Gift of Sunrise",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/gift_of_sunrise",
+          "type": "https://priory.gw2/def/GiftItem"
+        },
+        {
+          "item": "Gift of Mastery",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/gift_of_mastery",
+          "type": "https://priory.gw2/def/GiftItem"
+        },
+        {
+          "item": "Icy Runestone",
+          "quantity": 100,
+          "uri": "https://priory.gw2/id/item/icy_runestone",
+          "type": "https://priory.gw2/def/ComponentItem"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": null,
+        "discipline_uri": null,
+        "required_rating": null
+      },
+      "acquisition_source": {
+        "vendor": "Miyani",
+        "vendor_uri": "https://priory.gw2/ref/vendor/Miyani",
+        "zone": "Lion's Arch",
+        "zone_uri": "https://priory.gw2/ref/zone/LionsArch"
+      },
+      "costs": [
+        {
+          "currency": "Coin",
+          "amount": 1000000,
+          "formatted": "100g",
+          "uri": "https://priory.gw2/ref/currency/Coin"
+        }
+      ],
+      "notes": "Legendary Greatsword, Gen 1, Mystic Forge recipe"
+    },
+    {
+      "row_index": 16,
+      "tier_step": {
+        "text": "Mystic Tribute: Mystic Clovers",
+        "uri": "https://priory.gw2/def/step/MysticTribute_MysticClovers"
+      },
+      "target_item": {
+        "label": "Mystic Clover",
+        "uri": "https://priory.gw2/id/item/mystic_clover",
+        "type": "https://priory.gw2/def/CraftingMaterial"
+      },
+      "components": [
+        {
+          "item": "Mystic Coin",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/mystic_coin",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Glob of Ectoplasm",
+          "quantity": 1,
+          "uri": "https://priory.gw2/id/item/glob_of_ectoplasm",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Philosopher's Stone",
+          "quantity": 6,
+          "uri": "https://priory.gw2/id/item/philosophers_stone",
+          "type": "https://priory.gw2/def/ComponentItem"
+        },
+        {
+          "item": "Obsidian Shard",
+          "quantity": 6,
+          "uri": "https://priory.gw2/id/item/obsidian_shard",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": null,
+        "discipline_uri": null,
+        "required_rating": null
+      },
+      "acquisition_source": {
+        "vendor": "Miyani",
+        "vendor_uri": "https://priory.gw2/ref/vendor/Miyani",
+        "zone": "Lion's Arch",
+        "zone_uri": "https://priory.gw2/ref/zone/LionsArch"
+      },
+      "costs": [
+        {
+          "currency": "Spirit Shard",
+          "amount": 10,
+          "formatted": "10 Spirit Shards",
+          "uri": "https://priory.gw2/ref/currency/SpiritShard"
+        }
+      ],
+      "notes": "Mystic Forge recipe, ~33% yield rate"
+    },
+    {
+      "row_index": 17,
+      "tier_step": {
+        "text": "Mystic Tribute: Condensed Magic",
+        "uri": "https://priory.gw2/def/step/MysticTribute_CondensedMagic"
+      },
+      "target_item": {
+        "label": "Gift of Condensed Magic",
+        "uri": "https://priory.gw2/id/item/gift_of_condensed_magic",
+        "type": "https://priory.gw2/def/GiftItem"
+      },
+      "components": [
+        {
+          "item": "Bloodstone Shard",
+          "quantity": 100,
+          "uri": "https://priory.gw2/id/item/bloodstone_shard",
+          "type": "https://priory.gw2/def/ComponentItem"
+        },
+        {
+          "item": "Powerful Blood",
+          "quantity": 200,
+          "uri": "https://priory.gw2/id/item/powerful_blood",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Powerful Venom Sac",
+          "quantity": 200,
+          "uri": "https://priory.gw2/id/item/powerful_venom_sac",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Elaborate Totem",
+          "quantity": 100,
+          "uri": "https://priory.gw2/id/item/elaborate_totem",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": null,
+        "discipline_uri": null,
+        "required_rating": null
+      },
+      "acquisition_source": {
+        "vendor": "Miyani",
+        "vendor_uri": "https://priory.gw2/ref/vendor/Miyani",
+        "zone": "Lion's Arch",
+        "zone_uri": "https://priory.gw2/ref/zone/LionsArch"
+      },
+      "costs": [
+        {
+          "currency": "Spirit Shard",
+          "amount": 200,
+          "formatted": "200 Spirit Shards",
+          "uri": "https://priory.gw2/ref/currency/SpiritShard"
+        }
+      ],
+      "notes": "Tier 6 fine crafting materials, Mystic Forge recipe"
+    },
+    {
+      "row_index": 18,
+      "tier_step": {
+        "text": "Mystic Tribute: Condensed Might",
+        "uri": "https://priory.gw2/def/step/MysticTribute_CondensedMight"
+      },
+      "target_item": {
+        "label": "Gift of Condensed Might",
+        "uri": "https://priory.gw2/id/item/gift_of_condensed_might",
+        "type": "https://priory.gw2/def/GiftItem"
+      },
+      "components": [
+        {
+          "item": "Vicious Claw",
+          "quantity": 200,
+          "uri": "https://priory.gw2/id/item/vicious_claw",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Vicious Fang",
+          "quantity": 200,
+          "uri": "https://priory.gw2/id/item/vicious_fang",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Armored Scale",
+          "quantity": 200,
+          "uri": "https://priory.gw2/id/item/armored_scale",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Ancient Bone",
+          "quantity": 200,
+          "uri": "https://priory.gw2/id/item/ancient_bone",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": null,
+        "discipline_uri": null,
+        "required_rating": null
+      },
+      "acquisition_source": {
+        "vendor": "Miyani",
+        "vendor_uri": "https://priory.gw2/ref/vendor/Miyani",
+        "zone": "Lion's Arch",
+        "zone_uri": "https://priory.gw2/ref/zone/LionsArch"
+      },
+      "costs": [
+        {
+          "currency": "Bandit Crest",
+          "amount": 1000,
+          "formatted": "1000 Bandit Crests",
+          "uri": "https://priory.gw2/ref/currency/BanditCrest"
+        }
+      ],
+      "notes": "Tier 6 trophy materials, Mystic Forge recipe"
+    },
+    {
+      "row_index": 19,
+      "tier_step": {
+        "text": "Mystic Tribute: Final Synthesis",
+        "uri": "https://priory.gw2/def/step/MysticTribute_FinalSynthesis"
+      },
+      "target_item": {
+        "label": "Mystic Tribute",
+        "uri": "https://priory.gw2/id/item/mystic_tribute",
+        "type": "https://priory.gw2/def/GiftItem"
+      },
+      "components": [
+        {
+          "item": "Mystic Clover",
+          "quantity": 77,
+          "uri": "https://priory.gw2/id/item/mystic_clover",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Mystic Coin",
+          "quantity": 250,
+          "uri": "https://priory.gw2/id/item/mystic_coin",
+          "type": "https://priory.gw2/def/CraftingMaterial"
+        },
+        {
+          "item": "Gift of Condensed Magic",
+          "quantity": 2,
+          "uri": "https://priory.gw2/id/item/gift_of_condensed_magic",
+          "type": "https://priory.gw2/def/GiftItem"
+        },
+        {
+          "item": "Gift of Condensed Might",
+          "quantity": 2,
+          "uri": "https://priory.gw2/id/item/gift_of_condensed_might",
+          "type": "https://priory.gw2/def/GiftItem"
+        }
+      ],
+      "crafting_discipline": {
+        "discipline": null,
+        "discipline_uri": null,
+        "required_rating": null
+      },
+      "acquisition_source": {
+        "vendor": "Miyani",
+        "vendor_uri": "https://priory.gw2/ref/vendor/Miyani",
+        "zone": "Lion's Arch",
+        "zone_uri": "https://priory.gw2/ref/zone/LionsArch"
+      },
+      "costs": [
+        {
+          "currency": "Coin",
+          "amount": 5000000,
+          "formatted": "500g",
+          "uri": "https://priory.gw2/ref/currency/Coin"
+        }
+      ],
+      "notes": "Key component for Gen 2 legendary weapons, Mystic Forge recipe"
+    }
+  ],
+  "cea_entities": {
+    "Ravenswood Branch": "https://priory.gw2/id/item/ravenswood_branch",
+    "Ravenswood Staff": "https://priory.gw2/id/item/ravenswood_staff",
+    "The Raven Spirit": "https://priory.gw2/id/item/the_raven_spirit",
+    "The Living Ravens": "https://priory.gw2/id/item/the_living_ravens",
+    "Spiritwood Plank": "https://priory.gw2/id/item/spiritwood_plank",
+    "Deldrimor Steel Ingot": "https://priory.gw2/id/item/deldrimor_steel_ingot",
+    "Jar of Luminescence": "https://priory.gw2/id/item/jar_of_luminescence",
+    "Essence of the Raven": "https://priory.gw2/id/item/essence_of_the_raven",
+    "Friends of the Owl": "https://priory.gw2/id/item/friends_of_the_owl",
+    "Friends of the Raven": "https://priory.gw2/id/item/friends_of_the_raven",
+    "Experimental Pistol": "https://priory.gw2/id/item/experimental_pistol",
+    "Prototype": "https://priory.gw2/id/item/prototype",
+    "Advanced Pistol": "https://priory.gw2/id/item/advanced_pistol",
+    "The Catalyst": "https://priory.gw2/id/item/the_catalyst",
+    "Elonian Leather Square": "https://priory.gw2/id/item/elonian_leather_square",
+    "Synergetics Gyro": "https://priory.gw2/id/item/synergetics_gyro",
+    "Crystalline Fluid": "https://priory.gw2/id/item/crystalline_fluid",
+    "The Device": "https://priory.gw2/id/item/the_device",
+    "The Apparatus": "https://priory.gw2/id/item/the_apparatus",
+    "The Mechanism": "https://priory.gw2/id/item/the_mechanism",
+    "The Cosmos": "https://priory.gw2/id/item/the_cosmos",
+    "Astralaria": "https://priory.gw2/id/item/astralaria",
+    "Bolt of Damask": "https://priory.gw2/id/item/bolt_of_damask",
+    "Star Chart": "https://priory.gw2/id/item/star_chart",
+    "Celestial Essence": "https://priory.gw2/id/item/celestial_essence",
+    "Gift of the Cosmos": "https://priory.gw2/id/item/gift_of_the_cosmos",
+    "Gift of Maguuma Mastery": "https://priory.gw2/id/item/gift_of_maguuma_mastery",
+    "Dawn": "https://priory.gw2/id/item/dawn",
+    "The Hunter": "https://priory.gw2/id/item/the_hunter",
+    "Spark": "https://priory.gw2/id/item/spark",
+    "Zap": "https://priory.gw2/id/item/zap",
+    "Dusk": "https://priory.gw2/id/item/dusk",
+    "Gift of Mastery": "https://priory.gw2/id/item/gift_of_mastery",
+    "Bloodstone Shard": "https://priory.gw2/id/item/bloodstone_shard",
+    "Obsidian Shard": "https://priory.gw2/id/item/obsidian_shard",
+    "Gift of Exploration": "https://priory.gw2/id/item/gift_of_exploration",
+    "Gift of Battle": "https://priory.gw2/id/item/gift_of_battle",
+    "Gift of the Sun": "https://priory.gw2/id/item/gift_of_the_sun",
+    "Gift of Sunrise": "https://priory.gw2/id/item/gift_of_sunrise",
+    "Gift of Metal": "https://priory.gw2/id/item/gift_of_metal",
+    "Gift of Light": "https://priory.gw2/id/item/gift_of_light",
+    "Icy Runestone": "https://priory.gw2/id/item/icy_runestone",
+    "Superior Sigil of Strength": "https://priory.gw2/id/item/superior_sigil_of_strength",
+    "Sunrise": "https://priory.gw2/id/item/sunrise",
+    "Mystic Clover": "https://priory.gw2/id/item/mystic_clover",
+    "Mystic Coin": "https://priory.gw2/id/item/mystic_coin",
+    "Glob of Ectoplasm": "https://priory.gw2/id/item/glob_of_ectoplasm",
+    "Philosopher's Stone": "https://priory.gw2/id/item/philosophers_stone",
+    "Gift of Condensed Magic": "https://priory.gw2/id/item/gift_of_condensed_magic",
+    "Powerful Blood": "https://priory.gw2/id/item/powerful_blood",
+    "Powerful Venom Sac": "https://priory.gw2/id/item/powerful_venom_sac",
+    "Elaborate Totem": "https://priory.gw2/id/item/elaborate_totem",
+    "Gift of Condensed Might": "https://priory.gw2/id/item/gift_of_condensed_might",
+    "Vicious Claw": "https://priory.gw2/id/item/vicious_claw",
+    "Vicious Fang": "https://priory.gw2/id/item/vicious_fang",
+    "Armored Scale": "https://priory.gw2/id/item/armored_scale",
+    "Ancient Bone": "https://priory.gw2/id/item/ancient_bone",
+    "Mystic Tribute": "https://priory.gw2/id/item/mystic_tribute",
+    "Artificer": "https://priory.gw2/ref/discipline/Artificer",
+    "Huntsman": "https://priory.gw2/ref/discipline/Huntsman",
+    "Weaponsmith": "https://priory.gw2/ref/discipline/Weaponsmith",
+    "Grandmaster Craftsman Hobbs": "https://priory.gw2/ref/vendor/GrandmasterCraftsmanHobbs",
+    "Hobbs": "https://priory.gw2/ref/vendor/GrandmasterCraftsmanHobbs",
+    "Shaman Sigurlina": "https://priory.gw2/ref/vendor/ShamanSigurlina",
+    "Great Raven Spirit": "https://priory.gw2/ref/vendor/GreatRavenSpirit",
+    "Corrupted Shaman": "https://priory.gw2/ref/vendor/CorruptedShaman",
+    "Mechanist Ninn": "https://priory.gw2/ref/vendor/MechanistNinn",
+    "Hylek Alchemist": "https://priory.gw2/ref/vendor/HylekAlchemist",
+    "Ogden Stonehealer": "https://priory.gw2/ref/vendor/OgdenStonehealer",
+    "Explorer Rikkiti": "https://priory.gw2/ref/vendor/ExplorerRikkiti",
+    "Miyani": "https://priory.gw2/ref/vendor/Miyani",
+    "Master Weaponsmith": "https://priory.gw2/ref/vendor/MasterWeaponsmith",
+    "Lion's Arch": "https://priory.gw2/ref/zone/LionsArch",
+    "Wayfarer Foothills": "https://priory.gw2/ref/zone/WayfarerFoothills",
+    "Rata Sum": "https://priory.gw2/ref/zone/RataSum",
+    "Sparkfly Fen": "https://priory.gw2/ref/zone/SparkflyFen",
+    "Lornar's Pass": "https://priory.gw2/ref/zone/LornarsPass",
+    "Dredgehaunt Cliffs": "https://priory.gw2/ref/zone/DredgehauntCliffs",
+    "Divinity's Reach": "https://priory.gw2/ref/zone/DivinitysReach",
+    "Coin": "https://priory.gw2/ref/currency/Coin",
+    "Gold": "https://priory.gw2/ref/currency/Coin",
+    "Karma": "https://priory.gw2/ref/currency/Karma",
+    "Spirit Shard": "https://priory.gw2/ref/currency/SpiritShard",
+    "Bandit Crest": "https://priory.gw2/ref/currency/BanditCrest",
+    "Badge of Honor": "https://priory.gw2/ref/currency/BadgeOfHonor"
+  }
+}

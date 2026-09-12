@@ -1,0 +1,156 @@
+{
+  "benchmark_metadata": {
+    "table_path": "/Users/clementd/Documents/GitHub/gw2-ume/data/sample_tables/wild_community_crafting_table.csv",
+    "ground_truth_path": "/Users/clementd/Documents/GitHub/gw2-ume/data/benchmarks/ground_truth_wild_community_schema.json",
+    "row_count": 20,
+    "column_count": 7,
+    "execution_duration_sec": 27.1727
+  },
+  "evaluation_metrics": {
+    "cea_precision": 82.58,
+    "cea_correct": 128,
+    "cea_total_evaluated": 155,
+    "cta_accuracy": 100.0,
+    "cta_correct": 7,
+    "cta_total": 7,
+    "cpa_coverage": 100.0,
+    "relations_found": 6,
+    "relations_expected": 6,
+    "shacl_conformance": "CONFORMING",
+    "shacl_violations_count": 0
+  },
+  "knowledge_graph_stats": {
+    "mesh_nodes": 289,
+    "mesh_edges": 203,
+    "rdf_triples": 21933
+  },
+  "cta_annotations": [
+    {
+      "col_idx": 0,
+      "col_name": "Tier_Step",
+      "type_uri": "https://priory.gw2/def/CollectionTier",
+      "type_label": "CollectionTier",
+      "confidence": 0.95,
+      "sample_values": [
+        "Nevermore I: Experimental Staff",
+        "Nevermore II: The Mnemonic Device",
+        "Nevermore III: The Raven Spirit",
+        "Nevermore IV: The Living Ravens",
+        "H.O.P.E. I: Research"
+      ]
+    },
+    {
+      "col_idx": 1,
+      "col_name": "Target_Item",
+      "type_uri": "PrecursorWeapon",
+      "type_label": "PrecursorWeapon",
+      "confidence": 0.9,
+      "sample_values": [
+        "Ravenswood Branch",
+        "Ravenswood Staff",
+        "The Raven Spirit",
+        "The Living Ravens",
+        "Experimental Pistol"
+      ]
+    },
+    {
+      "col_idx": 2,
+      "col_name": "Components_And_Qty",
+      "type_uri": "https://priory.gw2/def/ComponentItem",
+      "type_label": "ComponentItem",
+      "confidence": 0.9,
+      "sample_values": [
+        "3x Spiritwood Plank + 3x Deldrimor Steel Ingot + 1x Jar of Luminescence",
+        "1x Ravenswood Branch + 3x Spiritwood Plank + 1x Jar of Luminescence",
+        "1x Ravenswood Staff + 5x Spiritwood Plank + 1x Essence of the Raven",
+        "1x The Raven Spirit + 10x Spiritwood Plank + 1x Friends of the Owl + 1x Friends of the Raven",
+        "3x Deldrimor Steel Ingot + 3x Spiritwood Plank + 10x Elonian Leather Square"
+      ]
+    },
+    {
+      "col_idx": 3,
+      "col_name": "Crafting_Discipline_Req",
+      "type_uri": "https://priory.gw2/def/CraftingDiscipline",
+      "type_label": "CraftingDiscipline",
+      "confidence": 0.95,
+      "sample_values": [
+        "Artificer (450)",
+        "Artificer (450)",
+        "Artificer (450)",
+        "Artificer 500",
+        "Huntsman (450)"
+      ]
+    },
+    {
+      "col_idx": 4,
+      "col_name": "Acquisition_Source",
+      "type_uri": "https://priory.gw2/def/NPCVendor",
+      "type_label": "NPCVendor",
+      "confidence": 0.95,
+      "sample_values": [
+        "Hobbs in Lion's Arch",
+        "Shaman Sigurlina in Wayfarer Foothills",
+        "Great Raven Spirit in Wayfarer Foothills",
+        "Hobbs in Lion's Arch",
+        "Hobbs in Lion's Arch"
+      ]
+    },
+    {
+      "col_idx": 5,
+      "col_name": "Costs",
+      "type_uri": "https://priory.gw2/def/IngredientQuantity",
+      "type_label": "IngredientQuantity",
+      "confidence": 0.95,
+      "sample_values": [
+        "5g + 10003 karma",
+        "10g",
+        "10g + 500 karma",
+        "15g",
+        "5g + 10003 karma"
+      ]
+    },
+    {
+      "col_idx": 6,
+      "col_name": "Notes",
+      "type_uri": "CollectionTier",
+      "type_label": "CollectionTier",
+      "confidence": 0.9,
+      "sample_values": [
+        "Precursor Tier 1, Requires Revered Antiquarian mastery",
+        "Precursor Tier 2, Account Bound",
+        "Precursor Tier 3, Requires Magister of Legends mastery",
+        "Precursor Tier 4 (Ascended), Account Bound",
+        "Precursor Tier 1, Requires Revered Antiquarian mastery"
+      ]
+    }
+  ],
+  "cpa_annotations": [
+    {
+      "source_col_idx": 1,
+      "target_col_idx": 2,
+      "source_col": "Target_Item",
+      "target_col": "Components_And_Qty",
+      "property_uri": "https://priory.gw2/def/requiresIngredient",
+      "property_label": "requiresIngredient",
+      "confidence": 0.92
+    },
+    {
+      "source_col_idx": 1,
+      "target_col_idx": 3,
+      "source_col": "Target_Item",
+      "target_col": "Crafting_Discipline_Req",
+      "property_uri": "https://priory.gw2/def/craftedByDiscipline",
+      "property_label": "craftedByDiscipline",
+      "confidence": 0.95
+    },
+    {
+      "source_col_idx": 1,
+      "target_col_idx": 4,
+      "source_col": "Target_Item",
+      "target_col": "Acquisition_Source",
+      "property_uri": "https://priory.gw2/def/obtainedFromVendor",
+      "property_label": "obtainedFromVendor",
+      "confidence": 0.92
+    }
+  ]
+}

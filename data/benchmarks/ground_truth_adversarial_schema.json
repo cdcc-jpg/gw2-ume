@@ -1,0 +1,143 @@
+{
+  "metadata": {
+    "dataset_name": "Adversarial Semantic Table Interpretation (ASTI-GW2)",
+    "row_count": 100,
+    "column_count": 16,
+    "entities": [
+      "priory:Item",
+      "priory:Weapon",
+      "priory:DisciplineRecipe"
+    ],
+    "random_seed": 42
+  },
+  "columns": [
+    {
+      "column_index": 0,
+      "injected_header": "artwork_uri",
+      "true_property_uri": "priory:icon",
+      "true_subject_class": "priory:Item",
+      "header_type": "synonym",
+      "deception_explanation": "Colloquial synonym: Official ArenaNet CDN image render URL labeled as generic artwork URI."
+    },
+    {
+      "column_index": 1,
+      "injected_header": "damage_type",
+      "true_property_uri": "priory:damageType",
+      "true_subject_class": "priory:Weapon",
+      "header_type": "standard",
+      "deception_explanation": "Standard header: In-game combat strike damage classification (Physical, Fire, etc.)."
+    },
+    {
+      "column_index": 2,
+      "injected_header": "item_rank",
+      "true_property_uri": "priory:hasVendorValue",
+      "true_subject_class": "priory:Item",
+      "header_type": "deceptive",
+      "deception_explanation": "False friend: Merchant coin sell value in copper misleadingly labeled as a competitive item rank."
+    },
+    {
+      "column_index": 3,
+      "injected_header": "ping_code",
+      "true_property_uri": "priory:chatCode",
+      "true_subject_class": "priory:Item",
+      "header_type": "synonym",
+      "deception_explanation": "Colloquial synonym: Informal gamer slang for official GW2 chat link protocol format [&...]."
+    },
+    {
+      "column_index": 4,
+      "injected_header": "col_14",
+      "true_property_uri": "priory:requiredRating",
+      "true_subject_class": "priory:DisciplineRecipe",
+      "header_type": "opaque",
+      "deception_explanation": "Opaque identifier: Stripped of semantic meaning, masking required crafting skill rating (0-500)."
+    },
+    {
+      "column_index": 5,
+      "injected_header": "armor_defense",
+      "true_property_uri": "priory:minWeaponPower",
+      "true_subject_class": "priory:Weapon",
+      "header_type": "deceptive",
+      "deception_explanation": "False friend: Minimum weapon offensive attack power misleadingly labeled as defensive armor rating."
+    },
+    {
+      "column_index": 6,
+      "injected_header": "tax_code",
+      "true_property_uri": "priory:gw2RecipeId",
+      "true_subject_class": "priory:DisciplineRecipe",
+      "header_type": "deceptive",
+      "deception_explanation": "False friend: Crafting recipe identifier misleadingly labeled as a financial tax code."
+    },
+    {
+      "column_index": 7,
+      "injected_header": "col_04",
+      "true_property_uri": "priory:itemFlags",
+      "true_subject_class": "priory:Item",
+      "header_type": "opaque",
+      "deception_explanation": "Opaque identifier: Stripped of semantic meaning, concealing behavioral item restriction flags."
+    },
+    {
+      "column_index": 8,
+      "injected_header": "item_name",
+      "true_property_uri": "rdfs:label",
+      "true_subject_class": "priory:Item",
+      "header_type": "standard",
+      "deception_explanation": "Standard header: In-game display title of the item entity."
+    },
+    {
+      "column_index": 9,
+      "injected_header": "category_kind",
+      "true_property_uri": "priory:hasItemType",
+      "true_subject_class": "priory:Item",
+      "header_type": "synonym",
+      "deception_explanation": "Colloquial synonym: Informally renames ontology item type classification to category kind."
+    },
+    {
+      "column_index": 10,
+      "injected_header": "crafting_discipline",
+      "true_property_uri": "priory:requiresDiscipline",
+      "true_subject_class": "priory:DisciplineRecipe",
+      "header_type": "standard",
+      "deception_explanation": "Standard header: Artisan trade discipline required to execute the recipe."
+    },
+    {
+      "column_index": 11,
+      "injected_header": "output_quantity",
+      "true_property_uri": "priory:outputQuantity",
+      "true_subject_class": "priory:DisciplineRecipe",
+      "header_type": "standard",
+      "deception_explanation": "Standard header: Batch item output quantity produced by recipe execution."
+    },
+    {
+      "column_index": 12,
+      "injected_header": "gold_price",
+      "true_property_uri": "priory:requiredLevel",
+      "true_subject_class": "priory:Item",
+      "header_type": "deceptive",
+      "deception_explanation": "False friend: Required character level (integer 0-80) misleadingly labeled as monetary gold price."
+    },
+    {
+      "column_index": 13,
+      "injected_header": "col_09",
+      "true_property_uri": "priory:maxWeaponPower",
+      "true_subject_class": "priory:Weapon",
+      "header_type": "opaque",
+      "deception_explanation": "Opaque identifier: Stripped of semantic meaning, masking upper bound weapon attack power."
+    },
+    {
+      "column_index": 14,
+      "injected_header": "col_02",
+      "true_property_uri": "priory:gw2Id",
+      "true_subject_class": "priory:Item",
+      "header_type": "opaque",
+      "deception_explanation": "Opaque identifier: Stripped of semantic meaning, concealing the primary GW2 API item identifier."
+    },
+    {
+      "column_index": 15,
+      "injected_header": "tier_grade",
+      "true_property_uri": "priory:hasRarity",
+      "true_subject_class": "priory:Item",
+      "header_type": "synonym",
+      "deception_explanation": "Colloquial synonym: Informal gamer terminology substituting for official item rarity tier."
+    }
+  ]
+}

@@ -13,6 +13,10 @@ from gw2_ume.pipeline.triangulator import (
     FusedEntity,
     FusedTriple,
 )
+from gw2_ume.pipeline.semantic_table_annotator import (
+    SemanticTableAnnotator,
+    TableAnnotationResult,
+)
 
 __all__ = [
     "NeuroSymbolicPingPongEngine",
@@ -23,4 +27,7 @@ __all__ = [
     "TriangulationResult",
     "FusedEntity",
     "FusedTriple",
+    "SemanticTableAnnotator",
+    "TableAnnotationResult",
 ]
+

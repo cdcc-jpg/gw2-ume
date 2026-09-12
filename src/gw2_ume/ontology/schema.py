@@ -335,7 +335,11 @@ def extract_entity_catalog_from_graph(graph: Graph) -> Dict[str, Dict[str, Any]]
 
         # Types
         types = [o for o in graph.objects(s, RDF.type) if o not in (OWL.NamedIndividual, OWL.Thing)]
-        main_type = types[0] if types else CLASS_ITEM
+        domain_types = [
+            o for o in types
+            if "BFO" not in str(o) and "obolibrary" not in str(o) and "Entity" not in str(o).split("#")[-1].split("/")[-1]
+        ]
+        main_type = domain_types[0] if domain_types else (types[0] if types else CLASS_ITEM)
 
         type_str = str(main_type)
         if "#" in type_str:

@@ -7,6 +7,10 @@ from gw2_ume.mesh.relational_mesh import build_relational_mesh
 from gw2_ume.pipeline.engine import UMEEngine
 from gw2_ume.pipeline.pingpong import NeuroSymbolicPingPongEngine, SymbolicAxiomReasoner
 from gw2_ume.pipeline.enricher import KnowledgeGraphEnricher
+from gw2_ume.pipeline.semantic_table_annotator import (
+    SemanticTableAnnotator,
+    TableAnnotationResult,
+)
 from gw2_ume.normalization.text_cleaner import (
     TableGrid,
     TextCleaner,
@@ -69,4 +73,6 @@ __all__ = [
     "ColumnAnnotation",
     "ColumnPropertyAnnotation",
     "build_relational_mesh",
+    "SemanticTableAnnotator",
+    "TableAnnotationResult",
 ]
