@@ -211,25 +211,42 @@ class SymbolicAxiomReasoner:
             subs.add(str(iri))
         return subs
 
-    def get_class_depth(self, class_iri: Union[str, URIRef]) -> int:
+    def get_class_depth(self, class_iri: Union[str, URIRef], _visited: Optional[Set[str]] = None) -> int:
         """Calculate depth of a class in the ontology hierarchy (Thing=0, direct children=1, etc.)."""
         iri_str = str(class_iri)
         if iri_str in self._depth_cache:
             return self._depth_cache[iri_str]
 
         uri = self.loader.resolve_iri(class_iri)
+        uri_str = str(uri)
+        if uri_str in self._depth_cache:
+            self._depth_cache[iri_str] = self._depth_cache[uri_str]
+            return self._depth_cache[uri_str]
+
         if uri in (OWL.Thing, URIRef("http://www.w3.org/2002/07/owl#Thing")):
             self._depth_cache[iri_str] = 0
+            self._depth_cache[uri_str] = 0
             return 0
 
-        parents = list(self.loader.get_superclasses(uri, direct=True))
+        if _visited is None:
+            _visited = set()
+        if uri_str in _visited or iri_str in _visited:
+            return 0
+        next_visited = _visited | {uri_str, iri_str}
+
+        parents = [
+            p for p in self.loader.get_superclasses(uri, direct=True)
+            if p != uri and not isinstance(p, BNode) and str(p) not in next_visited
+        ]
         if not parents:
             self._depth_cache[iri_str] = 1
+            self._depth_cache[uri_str] = 1
             return 1
 
-        max_parent_depth = max((self.get_class_depth(p) for p in parents if p != uri), default=0)
+        max_parent_depth = max((self.get_class_depth(p, _visited=next_visited) for p in parents), default=0)
         depth = max_parent_depth + 1
         self._depth_cache[iri_str] = depth
+        self._depth_cache[uri_str] = depth
         return depth
 
     def find_lcs(self, class_iris: List[Union[str, URIRef]]) -> Optional[str]:

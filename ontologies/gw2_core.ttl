@@ -1,5 +1,6 @@
 @prefix : <https://schema.gw2ume.org/core#> .
 @prefix gw2: <https://schema.gw2ume.org/core#> .
+@prefix priory: <https://priory.gw2/def/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
@@ -567,3 +568,94 @@ gw2:CrystallineOre rdf:type owl:NamedIndividual , gw2:Currency ;
     skos:prefLabel "Crystalline Ore"@en ;
     skos:altLabel "Ore"@en ;
     rdfs:comment "Dragon's Stand map currency harvested from Noxious Pods."@en .
+
+#################################################################
+#    Canonical Priory Ontology Alignment
+#################################################################
+
+priory:Item rdf:type owl:Class ;
+    owl:equivalentClass gw2:Item ;
+    rdfs:label "Item"@en .
+
+priory:Weapon rdf:type owl:Class ;
+    rdfs:subClassOf priory:Item ;
+    owl:equivalentClass gw2:Weapon ;
+    rdfs:label "Weapon"@en .
+
+priory:LegendaryWeapon rdf:type owl:Class ;
+    rdfs:subClassOf priory:Weapon ;
+    owl:equivalentClass gw2:LegendaryWeapon ;
+    rdfs:label "Legendary Weapon"@en .
+
+priory:PrecursorWeapon rdf:type owl:Class ;
+    rdfs:subClassOf priory:Weapon ;
+    owl:equivalentClass gw2:PrecursorWeapon ;
+    rdfs:label "Precursor Weapon"@en .
+
+priory:CraftingMaterial rdf:type owl:Class ;
+    rdfs:subClassOf priory:Item ;
+    owl:equivalentClass gw2:CraftingMaterial ;
+    rdfs:label "Crafting Material"@en .
+
+priory:MysticComponent rdf:type owl:Class ;
+    rdfs:subClassOf priory:CraftingMaterial ;
+    owl:equivalentClass gw2:MysticComponent ;
+    rdfs:label "Mystic Component"@en .
+
+priory:GiftComponent rdf:type owl:Class ;
+    rdfs:subClassOf priory:CraftingMaterial ;
+    owl:equivalentClass gw2:GiftComponent ;
+    rdfs:label "Gift Component"@en .
+
+priory:CraftingRecipe rdf:type owl:Class ;
+    owl:equivalentClass gw2:CraftingRecipe ;
+    rdfs:label "Crafting Recipe"@en .
+
+priory:DisciplineRecipe rdf:type owl:Class ;
+    rdfs:subClassOf priory:CraftingRecipe ;
+    owl:equivalentClass gw2:DisciplineRecipe ;
+    rdfs:label "Discipline Recipe"@en .
+
+priory:MysticForgeRecipe rdf:type owl:Class ;
+    rdfs:subClassOf priory:CraftingRecipe ;
+    owl:equivalentClass gw2:MysticForgeRecipe ;
+    rdfs:label "Mystic Forge Recipe"@en .
+
+priory:IngredientRequirement rdf:type owl:Class ;
+    rdfs:label "Ingredient Requirement"@en .
+
+priory:NPCVendor rdf:type owl:Class ;
+    owl:equivalentClass gw2:NPCVendor ;
+    rdfs:label "NPC Vendor"@en .
+
+priory:MapZone rdf:type owl:Class ;
+    owl:equivalentClass gw2:MapZone ;
+    rdfs:label "Map Zone"@en .
+
+priory:Achievement rdf:type owl:Class ;
+    owl:equivalentClass gw2:Achievement ;
+    rdfs:label "Achievement"@en .
+
+priory:Currency rdf:type owl:Class ;
+    owl:equivalentClass gw2:Currency ;
+    rdfs:label "Currency"@en .
+
+priory:CraftingDiscipline rdf:type owl:Class ;
+    owl:equivalentClass gw2:CraftingDiscipline ;
+    rdfs:label "Crafting Discipline"@en .
+
+gw2:ingredientQuantity rdf:type owl:DatatypeProperty ;
+    owl:equivalentProperty gw2:ingredientCount ;
+    rdfs:label "ingredient quantity"@en ;
+    rdfs:range xsd:integer .
+
+priory:ingredientQuantity rdf:type owl:DatatypeProperty ;
+    owl:equivalentProperty gw2:ingredientQuantity ;
+    rdfs:label "ingredient quantity"@en ;
+    rdfs:range xsd:integer .
+
+priory:requiredQuantity rdf:type owl:DatatypeProperty ;
+    owl:equivalentProperty gw2:ingredientQuantity ;
+    rdfs:label "required quantity"@en ;
+    rdfs:range xsd:integer .
+

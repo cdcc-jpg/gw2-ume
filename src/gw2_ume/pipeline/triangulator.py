@@ -335,6 +335,7 @@ class CrossModalTriangulator:
             row_attributes[r_idx] = row_info
 
         seen_table_uris: Set[str] = set()
+        seen_table_norm_labels: Set[str] = set()
 
         for c_ann in cea:
             uri = c_ann.entity_uri
@@ -356,6 +357,8 @@ class CrossModalTriangulator:
                 c_txt = 0.85 + min(0.10, 0.02 * matched_txt.get("occurrences", 1))
                 provenance = "cross_modal_corroborated"
                 txt_occurrences = matched_txt.get("occurrences", 1)
+                if matched_txt.get("uri"):
+                    seen_table_uris.add(str(matched_txt["uri"]))
             else:
                 c_txt = 0.0
                 provenance = "table_only"
@@ -411,11 +414,13 @@ class CrossModalTriangulator:
                 )
                 fused_entities_map[uri] = fused_ent
                 seen_table_uris.add(uri)
+                seen_table_norm_labels.add(norm_lbl)
 
         # Step 4b: Process Text-Only Entities
         for t_ent in text_entities_list:
             uri = t_ent["uri"]
-            if uri in seen_table_uris:
+            norm_t_lbl = normalize_text(t_ent["label"])
+            if uri in seen_table_uris or norm_t_lbl in seen_table_norm_labels:
                 continue
 
             c_txt = 0.80 + min(0.12, 0.03 * t_ent.get("occurrences", 1))

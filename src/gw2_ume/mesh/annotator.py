@@ -131,6 +131,9 @@ def match_cell_entity(
         return None
 
     raw = cell_val.strip()
+    # Punctuation-only strings and boolean literals are not entities
+    if not any(c.isalnum() for c in raw) or raw.lower() in ("true", "false"):
+        return None
     # Numeric literals are not entities
     if raw.isdigit():
         return None
@@ -166,9 +169,16 @@ def match_cell_entity(
 
         # Map to canonical gw2-priory-def and gw2-priory-ref namespaces without database IDs
         if uri.startswith("https://gw2ume.org/resource/") or "gw2ume.org" in uri or "priory.gw2/id/item/" in uri:
-            clean_slug = canonical_label.lower().replace("'", "").replace(" ", "_").strip()
+            clean_slug = re.sub(
+                r"[^\w\s-]",
+                "",
+                canonical_label.lower().replace("'", "").replace("\u2019", ""),
+            ).strip().replace(" ", "_")
             # PascalCase label for SKOS reference concepts
-            pascal_label = "".join(w.capitalize() for w in re.findall(r"[A-Za-z0-9]+", canonical_label))
+            pascal_label = "".join(
+                w.capitalize()
+                for w in re.findall(r"[A-Za-z0-9]+", canonical_label.replace("'", "").replace("\u2019", ""))
+            )
             if type_label in ("Zone", "MapZone"):
                 uri = str(PRIORY_REF[f"zone/{pascal_label}"])
             elif type_label in ("NPCVendor", "Vendor"):

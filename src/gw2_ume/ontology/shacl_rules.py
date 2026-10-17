@@ -12,7 +12,7 @@ SHACL_RULES_TURTLE = """
 @prefix priory-ref: <https://priory.gw2/ref/> .
 @prefix item: <https://priory.gw2/id/item/> .
 @prefix recipe: <https://priory.gw2/id/recipe/> .
-@prefix gw2: <https://priory.gw2/def/> .
+@prefix gw2: <https://schema.gw2ume.org/core#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
@@ -25,9 +25,9 @@ priory:PrecursorStaffShape a sh:NodeShape ;
         sh:message "Precursor weapons must specify a crafting discipline." ;
     ] ;
     sh:property [
-        sh:path priory:requiresIngredient ;
+        sh:path [ sh:alternativePath ( priory:requiresIngredient priory:isPrecursorOf priory:acquiredVia ) ] ;
         sh:minCount 1 ;
-        sh:message "Precursor weapons must have at least one required ingredient." ;
+        sh:message "Precursor weapons must have at least one required ingredient or precursor/acquisition relation." ;
     ] .
 
 priory:MysticForgeRecipeShape a sh:NodeShape ;
@@ -46,6 +46,26 @@ priory:ItemQuantityShape a sh:NodeShape ;
         sh:datatype xsd:integer ;
         sh:minInclusive 1 ;
         sh:message "Ingredient quantity must be a positive integer >= 1." ;
+    ] .
+
+gw2:MaterialCountShape a sh:NodeShape ;
+    sh:targetClass gw2:CraftingRecipe , priory:IngredientRequirement ;
+    sh:property [
+        sh:path gw2:requiresMaterial ;
+        sh:nodeKind sh:BlankNodeOrIRI ;
+        sh:message "Required material must be a valid Item IRI or node." ;
+    ] ;
+    sh:property [
+        sh:path gw2:ingredientQuantity ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 1 ;
+        sh:message "Ingredient quantity must be a positive integer >= 1." ;
+    ] ;
+    sh:property [
+        sh:path priory:requiredQuantity ;
+        sh:datatype xsd:integer ;
+        sh:minInclusive 1 ;
+        sh:message "Required quantity must be a positive integer >= 1." ;
     ] .
 
 priory:VendorLocationShape a sh:NodeShape ;

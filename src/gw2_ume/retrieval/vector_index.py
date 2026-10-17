@@ -397,6 +397,7 @@ class VectorIndex:
         self.entities: dict[str, IndexedEntity] = {}
         self.classes: dict[str, IndexedClass] = {}
         self.properties: dict[str, IndexedProperty] = {}
+        self._search_cache: dict[tuple[Any, ...], list[RetrievalResult]] = {}
 
     def __len__(self) -> int:
         return len(self.entities) + len(self.classes) + len(self.properties)
@@ -411,6 +412,7 @@ class VectorIndex:
         metadata: dict[str, Any] | None = None,
     ) -> None:
         """Index an entity with its label, types, description, and aliases."""
+        self._search_cache.clear()
         alias_list = aliases or []
         meta = metadata or {}
         type_list = [types] if isinstance(types, str) else list(types)
@@ -605,7 +607,12 @@ class VectorIndex:
         if not query.strip() or not self.entities:
             return []
 
+        cache_key = (query, type_filter, alpha, beta)
+        if cache_key in self._search_cache:
+            return self._search_cache[cache_key][:top_k]
+
         query_emb = self.embed_fn(query)
+        q_clean = normalize_text(query)
         results: list[RetrievalResult] = []
 
         for iri, item in self.entities.items():
@@ -629,7 +636,6 @@ class VectorIndex:
             combined_score = alpha * dense_score + beta * lexical_score
 
             # Boost exact matches
-            q_clean = normalize_text(query)
             cand_clean = normalize_text(item.label)
             alias_cleans = [normalize_text(a) for a in item.aliases]
             if q_clean == cand_clean or q_clean in alias_cleans:
@@ -648,6 +654,7 @@ class VectorIndex:
             )
 
         results.sort(key=lambda x: x.score, reverse=True)
+        self._search_cache[cache_key] = results[:50]
         return results[:top_k]
 
     def search_classes(

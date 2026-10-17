@@ -21,7 +21,7 @@
 gw2leg:LionsArch rdf:type owl:NamedIndividual , gw2:MapZone ;
     rdfs:label "Lion's Arch"@en ;
     skos:prefLabel "Lion's Arch"@en ;
-    skos:altLabel "LA"@en ;
+    skos:altLabel "LA"@en , "Mystic Plaza"@en ;
     rdfs:comment "The central trading hub city containing the Mystic Forge, Grandmaster Craftsman Hobbs, and Miyani."@en .
 
 gw2leg:FrostgorgeSound rdf:type owl:NamedIndividual , gw2:MapZone ;
@@ -127,7 +127,7 @@ gw2leg:HylekAlchemist rdf:type owl:NamedIndividual , gw2:NPCVendor , gw2:Vendor 
 gw2leg:GreatRavenSpirit rdf:type owl:NamedIndividual , gw2:NPCVendor , gw2:Vendor ;
     rdfs:label "Great Raven Spirit"@en ;
     skos:prefLabel "Great Raven Spirit"@en ;
-    skos:altLabel "Raven Spirit NPC"@en ;
+    skos:altLabel "Raven Spirit NPC"@en , "Great Spirit"@en ;
     rdfs:comment "Spirit NPC in Lornar's Pass"@en ;
     gw2:locatedIn gw2leg:LornarsPass .
 
@@ -270,7 +270,7 @@ gw2leg:ObsidianShard rdf:type owl:NamedIndividual , gw2:MysticComponent ;
 gw2leg:GiftOfNevermore rdf:type owl:NamedIndividual , gw2:GiftComponent ;
     rdfs:label "Gift of Nevermore"@en ;
     skos:prefLabel "Gift of Nevermore"@en ;
-    skos:altLabel "Nevermore Gift"@en ;
+    skos:altLabel "Nevermore Gift"@en , "Gift"@en ;
     rdfs:comment "The weapon-specific gift required to forge the legendary staff Nevermore in the Mystic Forge."@en ;
     gw2:itemRarity "Legendary" .
 
@@ -284,7 +284,7 @@ gw2leg:MysticTribute rdf:type owl:NamedIndividual , gw2:LegendaryTribute ;
 gw2leg:GiftOfMastery rdf:type owl:NamedIndividual , gw2:GiftComponent ;
     rdfs:label "Gift of Mastery"@en ;
     skos:prefLabel "Gift of Mastery"@en ;
-    skos:altLabel "Mastery Gift"@en ;
+    skos:altLabel "Mastery Gift"@en , "Mastery"@en ;
     rdfs:comment "A core component for Generation 1 and Generation 2 weapons combining Gift of Exploration, Gift of Battle, Bloodstone Shard, and 250 Obsidian Shards."@en ;
     gw2:itemRarity "Legendary" .
 
@@ -352,7 +352,7 @@ gw2leg:GiftOfCondensedMight rdf:type owl:NamedIndividual , gw2:GiftComponent ;
 gw2leg:RavenswoodBranch rdf:type owl:NamedIndividual , gw2:PrecursorWeapon ;
     rdfs:label "Ravenswood Branch"@en ;
     skos:prefLabel "Ravenswood Branch"@en ;
-    skos:altLabel "Tier 1 Nevermore Precursor"@en , "Ravenswood Branch (Tier 1)"@en , "T1 Nevermore"@en ;
+    skos:altLabel "Tier 1 Nevermore Precursor"@en , "Ravenswood Branch (Tier 1)"@en , "T1 Nevermore"@en , "Raven"@en ;
     rdfs:comment "Tier 1 precursor weapon for Nevermore, awarded after completing the Nevermore I: Ravenswood Branch collection achievement."@en ;
     gw2:itemRarity "Exotic" ;
     gw2:requiredLevel 80 ;
@@ -366,7 +366,7 @@ gw2leg:RavenswoodBranch rdf:type owl:NamedIndividual , gw2:PrecursorWeapon ;
 gw2leg:RavenswoodStaff rdf:type owl:NamedIndividual , gw2:PrecursorWeapon ;
     rdfs:label "Ravenswood Staff"@en ;
     skos:prefLabel "Ravenswood Staff"@en ;
-    skos:altLabel "Tier 2 Nevermore Precursor"@en , "Ravenswood Staff (Tier 2)"@en , "T2 Nevermore"@en ;
+    skos:altLabel "Tier 2 Nevermore Precursor"@en , "Ravenswood Staff (Tier 2)"@en , "T2 Nevermore"@en , "Spirit"@en ;
     rdfs:comment "Tier 2 precursor weapon for Nevermore, crafted using the Ravenswood Branch and materials from Nevermore II collection."@en ;
     gw2:itemRarity "Exotic" ;
     gw2:requiredLevel 80 ;
@@ -380,7 +380,7 @@ gw2leg:RavenswoodStaff rdf:type owl:NamedIndividual , gw2:PrecursorWeapon ;
 gw2leg:TheRavenSpirit rdf:type owl:NamedIndividual , gw2:PrecursorWeapon ;
     rdfs:label "The Raven Spirit"@en ;
     skos:prefLabel "The Raven Spirit"@en ;
-    skos:altLabel "Tier 3 Nevermore Precursor"@en , "The Raven Spirit (Tier 3)"@en , "T3 Nevermore"@en ;
+    skos:altLabel "Tier 3 Nevermore Precursor"@en , "The Raven Spirit (Tier 3)"@en , "T3 Nevermore"@en , "Raven Spirit"@en ;
     rdfs:comment "Tier 3 precursor weapon for Nevermore, crafted after completing the Nevermore III: The Raven Spirit collection."@en ;
     gw2:itemRarity "Exotic" ;
     gw2:requiredLevel 80 ;

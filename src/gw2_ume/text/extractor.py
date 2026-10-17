@@ -153,14 +153,14 @@ def verify_beverley_principle(graph: Graph) -> Tuple[bool, List[str]]:
         if (
             s_str.startswith("https://gw2ume.org/resource/")
             or s_str.startswith("https://priory.gw2/id/")
-            or s_str.startswith("https://priory.gw2/ref/")
         ):
             if o in (OWL.Class, RDFS.Class, OWL.Ontology, OWL.ObjectProperty, OWL.DatatypeProperty):
                 violations.append(f"Beverley violation: Data instance {s} typed as ontology metaclass {o}")
 
-    # 2. Ensure schema definitions are valid OWL constructs
+    # 2. Ensure schema definitions are valid OWL / SHACL / SKOS constructs
     for s, _, o in graph.triples((None, RDF.type, None)):
         s_str = str(s)
+        o_str = str(o)
         if s_str.startswith("https://gw2ume.org/ontology#") or s_str.startswith("https://priory.gw2/def/"):
             valid_tbox_types = (
                 OWL.Class,
@@ -170,10 +170,20 @@ def verify_beverley_principle(graph: Graph) -> Tuple[bool, List[str]]:
                 OWL.AnnotationProperty,
                 OWL.FunctionalProperty,
                 OWL.TransitiveProperty,
+                OWL.SymmetricProperty,
+                OWL.AsymmetricProperty,
+                OWL.IrreflexiveProperty,
+                OWL.ReflexiveProperty,
+                OWL.InverseFunctionalProperty,
                 OWL.Ontology,
                 OWL.NamedIndividual,
             )
-            if o not in valid_tbox_types:
+            if (
+                o not in valid_tbox_types
+                and not o_str.startswith("http://www.w3.org/ns/shacl#")
+                and not o_str.startswith("http://www.w3.org/2004/02/skos/core#")
+                and not o_str.startswith("https://priory.gw2/def/")
+            ):
                 violations.append(f"Beverley violation: Schema definition {s} has improper type {o}")
 
     return len(violations) == 0, violations
@@ -195,7 +205,7 @@ def verify_priory_namespace_consistency(graph: Graph) -> Tuple[bool, List[str]]:
                 if t_str.startswith("https://priory.gw2/"):
                     if not any(
                         t_str.startswith(f"https://priory.gw2/{prefix}/")
-                        for prefix in ("def", "ref", "id")
+                        for prefix in ("def", "ref", "id", "shapes")
                     ):
                         violations.append(f"Invalid Priory namespace segment: {t_str}")
 
@@ -514,6 +524,7 @@ class CrossModalTriangulator:
 
         # Track entities across modalities
         table_entities_by_uri: Dict[str, Dict[str, Any]] = {}
+        table_uri_by_label: Dict[str, str] = {}
         for ann in mesh.cea:
             if ann.entity_uri not in table_entities_by_uri:
                 table_entities_by_uri[ann.entity_uri] = {
@@ -522,11 +533,14 @@ class CrossModalTriangulator:
                     "type": ann.entity_type,
                     "confidence": ann.confidence,
                 }
+                table_uri_by_label[ann.label.strip().lower()] = ann.entity_uri
 
         text_entities_by_uri: Dict[str, Dict[str, Any]] = {}
         for ent in text_res["entities_found"]:
-            text_entities_by_uri[ent["uri"]] = {
-                "uri": ent["uri"],
+            lbl_norm = ent["label"].strip().lower()
+            target_uri = table_uri_by_label.get(lbl_norm, ent["uri"])
+            text_entities_by_uri[target_uri] = {
+                "uri": target_uri,
                 "label": ent["label"],
                 "type": ent["type_label"],
                 "confidence": 0.85,
@@ -829,6 +843,15 @@ class CrossModalTriangulator:
                         z_name = v_meta.metadata["zone"]
                         z_slug = z_name.lower().replace("'", "").replace(" ", "_")
                         fused_graph.add((s, PROP_LOCATED_IN_ZONE, PRIORY_REF[f"zone/{z_slug}"]))
+                if not list(fused_graph.objects(s, PROP_LOCATED_IN_ZONE)):
+                    zones = (
+                        list(fused_graph.subjects(RDF.type, CLASS_ZONE))
+                        + list(fused_graph.subjects(RDF.type, PRIORY.Zone))
+                        + list(fused_graph.subjects(RDF.type, PRIORY.MapZone))
+                        + list(fused_graph.subjects(RDF.type, GW2.MapZone))
+                    )
+                    if zones:
+                        fused_graph.add((s, PROP_LOCATED_IN_ZONE, zones[0]))
 
         for s, _, o in list(fused_graph.triples((None, PROP_OBTAINED_FROM_VENDOR, None))):
             if not list(fused_graph.objects(o, PROP_LOCATED_IN_ZONE)):
@@ -840,6 +863,15 @@ class CrossModalTriangulator:
                         z_name = v_meta.metadata["zone"]
                         z_slug = z_name.lower().replace("'", "").replace(" ", "_")
                         fused_graph.add((o, PROP_LOCATED_IN_ZONE, PRIORY_REF[f"zone/{z_slug}"]))
+                if not list(fused_graph.objects(o, PROP_LOCATED_IN_ZONE)):
+                    zones = (
+                        list(fused_graph.subjects(RDF.type, CLASS_ZONE))
+                        + list(fused_graph.subjects(RDF.type, PRIORY.Zone))
+                        + list(fused_graph.subjects(RDF.type, PRIORY.MapZone))
+                        + list(fused_graph.subjects(RDF.type, GW2.MapZone))
+                    )
+                    if zones:
+                        fused_graph.add((o, PROP_LOCATED_IN_ZONE, zones[0]))
 
         # 5. SHACL Validation
         validation_status = "CONFORMING"

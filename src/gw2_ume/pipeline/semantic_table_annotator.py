@@ -242,26 +242,27 @@ class SemanticTableAnnotator:
         PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
         PREFIX owl: <http://www.w3.org/2002/07/owl#>
         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        SELECT DISTINCT ?scheme ?property WHERE {
-            {
-                ?instance ?property ?concept .
-                ?concept a skos:Concept ;
-                         skos:inScheme ?scheme .
-                FILTER(?property NOT IN (
-                    skos:broader, skos:narrower, skos:inScheme, skos:topConceptOf,
-                    skos:hasTopConcept, skos:exactMatch, rdfs:subClassOf, owl:disjointWith, rdfs:seeAlso
-                ))
-            }
-            UNION
-            {
-                ?property <https://priory.gw2/def/associatedScheme> ?scheme .
-            }
+        SELECT ?scheme ?property (COUNT(?instance) AS ?cnt) WHERE {
+            ?instance ?property ?concept .
+            ?concept a skos:Concept ;
+                     skos:inScheme ?scheme .
+            FILTER(isIRI(?instance))
+            FILTER(?property NOT IN (
+                skos:broader, skos:narrower, skos:inScheme, skos:topConceptOf,
+                skos:hasTopConcept, skos:exactMatch, rdfs:subClassOf, owl:disjointWith,
+                rdfs:seeAlso, owl:hasValue, owl:someValuesFrom, owl:allValuesFrom
+            ))
         }
+        GROUP BY ?scheme ?property
+        ORDER BY ASC(?cnt)
         """
         for row in self.graph.query(sparql_scheme_props):
             scheme = str(row[0])
             prop_curie = to_curie(str(row[1]))
             self._scheme_to_property[scheme] = prop_curie
+
+        for prop_node, scheme_node in self.graph.subject_objects(URIRef("https://priory.gw2/def/associatedScheme")):
+            self._scheme_to_property[str(scheme_node)] = to_curie(str(prop_node))
 
         # 3. Query all OWL DatatypeProperties and ObjectProperties metadata
         sparql_props = """

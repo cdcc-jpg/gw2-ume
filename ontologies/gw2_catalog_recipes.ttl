@@ -1,0 +1,3743 @@
+@prefix currency: <https://priory.gw2/ref/currency/> .
+@prefix discipline: <https://priory.gw2/ref/discipline/> .
+@prefix gamemode: <https://priory.gw2/ref/gamemode/> .
+@prefix item: <https://priory.gw2/id/item/> .
+@prefix itemtype: <https://priory.gw2/ref/itemtype/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix priory: <https://priory.gw2/def/> .
+@prefix rarity: <https://priory.gw2/ref/rarity/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix recipe: <https://priory.gw2/id/recipe/> .
+@prefix role: <https://priory.gw2/ref/role/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix slot: <https://priory.gw2/ref/slot/> .
+@prefix weapon: <https://priory.gw2/ref/weapon/> .
+@prefix weight: <https://priory.gw2/ref/armor-weight/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+item:100098 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Bag of Coins"@en ;
+    priory:gw2Id 100098 ;
+    priory:hasRarity rarity:Basic ;
+    priory:isAccountBound true .
+
+item:100788 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:VIPLoungePass ;
+    rdfs:label "Wizard's Tower Teleportation Scroll"@en ;
+    rdfs:comment "Permanent teleportation scroll granting access to the Wizard's Tower in Secrets of the Obscure featuring Astral Ward merchants, convergence portals, crafting, and Mystic Forge."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Wizard%27s_Tower_Teleportation_Scroll> ;
+    priory:chatCode "[&AgG0iQEA]" ;
+    priory:chatLink "[&AgG0iQEA]" ;
+    priory:gw2Id 100788 ;
+    priory:hasBank true ;
+    priory:hasCraftingStations true ;
+    priory:hasFeature priory:FeatureBank,
+        priory:FeatureCraftingStations,
+        priory:FeatureMysticForge,
+        priory:FeatureStrikePortals,
+        priory:FeatureTradingPost,
+        priory:FeatureVendor ;
+    priory:hasInstantReturn false ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasMysticForge true ;
+    priory:hasRarity rarity:Exotic ;
+    priory:hasTradingPost true ;
+    priory:hasVendor true ;
+    priory:isAccountBound true .
+
+item:19675 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Mystic Clover"@en ;
+    skos:definition "Account-bound material obtained from Wizard's Vault, Fractal vendors, or Mystic Forge gambling."@en ;
+    priory:acquiredVia item:exchange_clover_fractals,
+        item:exchange_clover_vault,
+        item:forge_clovers ;
+    priory:gw2Id 19675 ;
+    priory:hasRarity rarity:Legendary,
+        rarity:Rare ;
+    priory:hasSubstituteSource [ a priory:VendorExchangePath ;
+            rdfs:label "Wizard's Vault Astral Rewards"@en ;
+            priory:requiredQuantity 60 ;
+            priory:requiresCurrency currency:AstralAcclaim ],
+        [ a priory:VendorExchangePath ;
+            priory:hasTimeGate [ ] ;
+            priory:nearestWaypoint "[&DYEFAAA=]" ;
+            priory:requiredQuantity 150 ;
+            priory:requiresCurrency currency:FractalRelic ;
+            priory:vendorNPC "BUY-2046"@en ;
+            priory:zoneName "Mistlock Sanctuary / Fractals of the Mists"@en ],
+        [ a priory:RewardTrackPath ;
+            rdfs:label "WvW Non-Repeatable Reward Tracks"@en ;
+            priory:hasGameMode gamemode:WvWRewardTrack ] ;
+    priory:isAccountBound true ;
+    priory:isContainerized true ;
+    priory:playsRole role:CraftingIngredient .
+
+item:19701 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Orichalcum Ore"@en ;
+    priory:gw2Id 19701 ;
+    priory:hasItemType itemtype:CraftingMaterial ;
+    priory:hasRarity rarity:Basic,
+        rarity:Fine ;
+    priory:isAccountBound false .
+
+item:19721 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Glob of Ectoplasm"@en ;
+    priory:gw2Id 19721 ;
+    priory:hasRarity rarity:Rare ;
+    priory:isAccountBound false ;
+    priory:isContainerized true ;
+    priory:isDestroyable true ;
+    priory:isMailable true ;
+    priory:isSalvageable true ;
+    priory:isTradeable true ;
+    priory:maxStackSize 250 ;
+    priory:playsRole role:CraftingIngredient,
+        role:CurrencyExchange,
+        role:MarketCommodity,
+        role:SalvageTarget .
+
+item:19970 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Mystic Coin"@en ;
+    rdfs:comment "Mystic Forge catalyst currency used in high-tier exotic and legendary transmutations."@en ;
+    skos:altLabel "Mystic Coins"@en ;
+    priory:chatCode "[&AgEITgAA]" ;
+    priory:chatLink "[&AgEITgAA]" ;
+    priory:gw2Id 19970 ;
+    priory:hasRarity rarity:Rare ;
+    priory:isAccountBound false .
+
+item:19976 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Mystic Coin"@en ;
+    skos:altLabel "Mystic Coins"@en ;
+    priory:chatCode "[&AgEITgAA]" ;
+    priory:chatLink "[&AgEITgAA]" ;
+    priory:gw2Id 19976 ;
+    priory:hasRarity rarity:Rare ;
+    priory:isAccountBound false ;
+    priory:isContainerized true ;
+    priory:isDestroyable true ;
+    priory:isMailable true ;
+    priory:isSalvageable false ;
+    priory:isTradeable true ;
+    priory:maxStackSize 250 ;
+    priory:playsRole role:CraftingIngredient,
+        role:CurrencyExchange,
+        role:MarketCommodity .
+
+item:19983 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Tome of Knowledge"@en ;
+    rdfs:comment "Grants 1 character level or 1 Spirit Shard if consumed on a level 80 character. Sourced from WvW/PvP reward tracks, daily logins, and Wizard's Vault."@en ;
+    priory:acquiredVia [ a priory:RewardTrackPath ;
+            rdfs:label "WvW / PvP Reward Track Progression"@en ;
+            priory:hasGameMode gamemode:WvWRewardTrack ] ;
+    priory:gw2Id 19983 ;
+    priory:hasRarity rarity:Rare ;
+    priory:isAccountBound true .
+
+item:19995 a owl:NamedIndividual,
+        priory:AccountStorageUpgrade,
+        priory:ConvenienceGizmo,
+        priory:Item ;
+    rdfs:label "Bank Tab Expansion"@en ;
+    rdfs:comment "Account upgrade that adds one additional 30-slot tab to the account bank vault."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Bank_Tab_Expansion> ;
+    priory:chatCode "[&AgEbTgAA]" ;
+    priory:chatLink "[&AgEbTgAA]" ;
+    priory:gw2Id 19995 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Masterwork ;
+    priory:isAccountBound true .
+
+item:20030 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:PortalTome ;
+    rdfs:label "Hall of Monuments Portal Stone"@en ;
+    rdfs:comment "Teleportation stone granting access to the historic Hall of Monuments in the Eye of the North."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Hall_of_Monuments_Portal_Stone> ;
+    priory:chatCode "[&AgE+TgAA]" ;
+    priory:chatLink "[&AgE+TgAA]" ;
+    priory:gw2Id 20030 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Fine ;
+    priory:isAccountBound true .
+
+item:2059 a owl:NamedIndividual,
+        priory:Item,
+        priory:ItemBuff ;
+    rdfs:label "Experience Booster"@en ;
+    rdfs:comment "Grants +50% Experience in all game types and +50% WvW / PvP Reward Track gain for 2 hours."@en ;
+    priory:accelerationMultiplier "1.5" ;
+    priory:acquiredVia [ a priory:VendorExchangePath ;
+            rdfs:label "Gem Store / Black Lion Chest Exchange"@en ;
+            priory:requiredQuantity 10000 ;
+            priory:requiresCurrency currency:Coin ] ;
+    priory:duration "120 minutes" ;
+    priory:gw2Id 2059 ;
+    priory:hasRarity rarity:Rare .
+
+item:35727 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item ;
+    rdfs:label "Mystic Forge Conduit"@en ;
+    rdfs:comment "Crafted portable Mystic Forge conduit made by combining Mystic Forge Conduit components."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Mystic_Forge_Conduit> ;
+    priory:chatCode "[&AgG/IgAA]" ;
+    priory:chatLink "[&AgG/IgAA]" ;
+    priory:gw2Id 35727 ;
+    priory:hasFeature priory:FeatureMysticForge ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasMysticForge true ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:35976 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:PermanentContract ;
+    rdfs:label "Permanent Bank Access Contract"@en ;
+    rdfs:comment "Permanent account contract granting unlimited, portable access to your account bank and material storage anywhere in the game world."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Permanent_Bank_Access_Contract> ;
+    priory:chatCode "[&AgEgDAEA]" ;
+    priory:chatLink "[&AgEgDAEA]" ;
+    priory:gw2Id 35976 ;
+    priory:hasBank true ;
+    priory:hasFeature priory:FeatureBank ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:35977 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:PermanentContract ;
+    rdfs:label "Permanent Black Lion Merchant Contract"@en ;
+    rdfs:comment "Permanent contract that summons a Black Lion Merchant to sell basic gathering tools, salvage kits, and purchase vendor junk anywhere in Tyria."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Permanent_Black_Lion_Merchant_Contract> ;
+    priory:chatCode "[&AgEhDAEA]" ;
+    priory:chatLink "[&AgEhDAEA]" ;
+    priory:gw2Id 35977 ;
+    priory:hasFeature priory:FeatureVendor ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Exotic ;
+    priory:hasVendor true ;
+    priory:isAccountBound true .
+
+item:35978 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:PermanentContract ;
+    rdfs:label "Permanent Trading Post Express Contract"@en ;
+    rdfs:comment "Permanent contract granting on-demand access to the Black Lion Trading Post to buy, sell, and collect delivered items and gold anywhere."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Permanent_Trading_Post_Express_Contract> ;
+    priory:chatCode "[&AgEiDAEA]" ;
+    priory:chatLink "[&AgEiDAEA]" ;
+    priory:gw2Id 35978 ;
+    priory:hasFeature priory:FeatureTradingPost ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Exotic ;
+    priory:hasTradingPost true ;
+    priory:isAccountBound true .
+
+item:35984 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:PermanentContract ;
+    rdfs:label "Permanent Hair Stylist Contract"@en ;
+    rdfs:comment "Permanent contract that summons a personal hair stylist allowing complete, unlimited changes to character hairstyle, hair color, horn, and accessory options."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Permanent_Hair_Stylist_Contract> ;
+    priory:chatCode "[&AgEoDAEA]" ;
+    priory:chatLink "[&AgEoDAEA]" ;
+    priory:gw2Id 35984 ;
+    priory:hasFeature priory:FeatureStylist ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:42932 a owl:NamedIndividual,
+        priory:AccountStorageUpgrade,
+        priory:ConvenienceGizmo,
+        priory:Item ;
+    rdfs:label "Material Storage Expander"@en ;
+    rdfs:comment "Account upgrade that increases the maximum stack size for every material in Material Storage by 250."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Material_Storage_Expander> ;
+    priory:chatCode "[&AgG0pwAA]" ;
+    priory:chatLink "[&AgG0pwAA]" ;
+    priory:gw2Id 42932 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Rare ;
+    priory:isAccountBound true .
+
+item:42970 a owl:NamedIndividual,
+        priory:Item,
+        priory:ItemBuff ;
+    rdfs:label "Heroic Booster"@en ;
+    rdfs:comment "Combines Experience and Item Booster benefits: +50% Experience gain, +50% WvW Reward Track gain, and +50% Karma gain for 2 hours."@en ;
+    priory:accelerationMultiplier "1.5" ;
+    priory:acquiredVia [ a priory:VendorExchangePath ;
+            rdfs:label "Gem Store / Black Lion Chest Exchange"@en ;
+            priory:requiredQuantity 15000 ;
+            priory:requiresCurrency currency:Coin ] ;
+    priory:duration "120 minutes" ;
+    priory:gw2Id 42970 ;
+    priory:hasRarity rarity:Exotic .
+
+item:44602 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:InfiniteSalvageItem,
+        priory:Item ;
+    rdfs:label "Copper-Fed Salvage-o-Matic"@en ;
+    rdfs:comment "Infinite-use salvage tool costing 3 copper per use. Equivalent to a Basic Salvage Kit with 10% chance of rarer materials and 20% chance of recovering upgrades. Optimal for salvaging white, blue, and green equipment."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Copper-Fed_Salvage-o-Matic> ;
+    priory:chatCode "[&AgE6rgAA]" ;
+    priory:chatLink "[&AgE6rgAA]" ;
+    priory:gw2Id 44602 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Rare ;
+    priory:isAccountBound true ;
+    priory:salvageCostPerUse 3 ;
+    priory:salvageRarityRate 0.10 ;
+    priory:salvageUpgradeRate 0.20 .
+
+item:45005 a owl:NamedIndividual,
+        priory:Item,
+        priory:ItemBuff ;
+    rdfs:label "Celebration Booster"@en ;
+    rdfs:comment "Grants +100% Experience in all game types and +10% WvW / PvP Reward Track gain for 1 hour."@en ;
+    priory:accelerationMultiplier "1.1" ;
+    priory:acquiredVia [ a priory:AchievementCollectionPath ;
+            rdfs:label "Achievement Milestone and Festival Rewards"@en ] ;
+    priory:duration "60 minutes" ;
+    priory:gw2Id 45005 ;
+    priory:hasRarity rarity:Masterwork .
+
+item:49149 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:VIPLoungePass ;
+    rdfs:label "Royal Terrace Pass"@en ;
+    rdfs:comment "Permanent pass granting unlimited access to the Royal Terrace lounge in Divinity's Reach with full crafting, bank, trading post, and merchant services."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Royal_Terrace_Pass> ;
+    priory:chatCode "[&AgH9vwAA]" ;
+    priory:chatLink "[&AgH9vwAA]" ;
+    priory:gw2Id 49149 ;
+    priory:hasBank true ;
+    priory:hasCraftingStations true ;
+    priory:hasFeature priory:FeatureBank,
+        priory:FeatureCraftingStations,
+        priory:FeatureMysticForge,
+        priory:FeatureTradingPost,
+        priory:FeatureVendor ;
+    priory:hasInstantReturn false ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasMysticForge true ;
+    priory:hasRarity rarity:Exotic ;
+    priory:hasTradingPost true ;
+    priory:hasVendor true ;
+    priory:isAccountBound true .
+
+item:49424 a owl:NamedIndividual,
+        priory:Item,
+        priory:ItemBuff ;
+    rdfs:label "Birthday Booster"@en ;
+    rdfs:comment "Grants +100% Experience in all game types and +10% WvW / PvP Reward Track gain for 24 hours."@en ;
+    priory:accelerationMultiplier "1.1" ;
+    priory:acquiredVia [ a priory:AchievementCollectionPath ;
+            rdfs:label "Character Birthday Gift Delivery"@en ] ;
+    priory:duration "24 hours" ;
+    priory:gw2Id 49424 ;
+    priory:hasRarity rarity:Rare .
+
+item:49449 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:VIPLoungePass ;
+    rdfs:label "Captain's Airship Pass"@en ;
+    rdfs:comment "Permanent pass granting access to the Havoc's Heir airship lounge floating above Gendarran Fields with full crafting, bank, TP, and vendor amenities."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Captain%27s_Airship_Pass> ;
+    priory:chatCode "[&AgEpwQAA]" ;
+    priory:chatLink "[&AgEpwQAA]" ;
+    priory:gw2Id 49449 ;
+    priory:hasBank true ;
+    priory:hasCraftingStations true ;
+    priory:hasFeature priory:FeatureBank,
+        priory:FeatureCraftingStations,
+        priory:FeatureMysticForge,
+        priory:FeatureTradingPost,
+        priory:FeatureVendor ;
+    priory:hasInstantReturn false ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasMysticForge true ;
+    priory:hasRarity rarity:Exotic ;
+    priory:hasTradingPost true ;
+    priory:hasVendor true ;
+    priory:isAccountBound true .
+
+item:66624 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:CurrencyConverter,
+        priory:Item ;
+    rdfs:label "Karmic Converter"@en ;
+    rdfs:comment "Exotic Hunter reward gizmo that exchanges Karma daily for utility bags, crafting materials, or trade goods."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Karmic_Converter> ;
+    priory:chatCode "[&AgHgAQEA]" ;
+    priory:chatLink "[&AgHgAQEA]" ;
+    priory:gw2Id 66624 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:67027 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:InfiniteSalvageItem,
+        priory:Item ;
+    rdfs:label "Silver-Fed Salvage-o-Matic"@en ;
+    rdfs:comment "Infinite-use salvage tool costing 60 copper per use. Equivalent to a Master's Salvage Kit with 25% chance of rarer materials and 80% chance of recovering upgrades. Optimal for salvaging rare (yellow) gear for Globs of Ectoplasm."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Silver-Fed_Salvage-o-Matic> ;
+    priory:chatCode "[&AgHTBQEA]" ;
+    priory:chatLink "[&AgHTBQEA]" ;
+    priory:gw2Id 67027 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Rare ;
+    priory:isAccountBound true ;
+    priory:salvageCostPerUse 60 ;
+    priory:salvageRarityRate 0.25 ;
+    priory:salvageUpgradeRate 0.80 .
+
+item:67037 a owl:NamedIndividual,
+        priory:Item,
+        priory:ItemBuff ;
+    rdfs:label "Candy Corn Gobbler"@en ;
+    rdfs:comment "Consumes 3x Piece of Candy Corn (item:36041) to grant random booster enhancements including Experience Booster and Karma Booster."@en ;
+    priory:accelerationMultiplier "1.5" ;
+    priory:acquiredVia [ a priory:VendorExchangePath ;
+            rdfs:label "Gem Store Halloween Special"@en ;
+            priory:requiredQuantity 30000 ;
+            priory:requiresCurrency currency:Coin ] ;
+    priory:duration "Variable (7-10 minutes per boost)" ;
+    priory:gw2Id 67037 ;
+    priory:hasRarity rarity:Rare .
+
+item:67071 a owl:NamedIndividual,
+        priory:AccountStorageUpgrade,
+        priory:ConvenienceGizmo,
+        priory:Item ;
+    rdfs:label "Shared Inventory Slot"@en ;
+    rdfs:comment "Account upgrade that adds a shared inventory slot accessible by every character on the account."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Shared_Inventory_Slot> ;
+    priory:chatCode "[&AgH/BQEA]" ;
+    priory:chatLink "[&AgH/BQEA]" ;
+    priory:gw2Id 67071 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Rare ;
+    priory:isAccountBound true .
+
+item:67280 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:CurrencyConverter,
+        priory:Item ;
+    rdfs:label "Ley-Energy Matter Converter"@en ;
+    rdfs:comment "Heart of Thorns converter that exchanges map currencies (Airship Parts, Aurillium, Ley Line Crystals) or gives a free daily item/key."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Ley-Energy_Matter_Converter> ;
+    priory:chatCode "[&AgGgCgEA]" ;
+    priory:chatLink "[&AgGgCgEA]" ;
+    priory:gw2Id 67280 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:67390 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:SafeStagingBag ;
+    rdfs:label "20-Slot Invisible Bag"@en ;
+    rdfs:comment "A 20-slot inventory bag whose items are hidden from vendors, immune to deposit all materials, and never affected by inventory compacting. Essential for safe staging of high-value unbound legendaries and precursors during the Eternity loop."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/20_Slot_Invisible_Bag> ;
+    skos:altLabel "20 Slot Invisible Bag"@en,
+        "Invisible Bag"@en ;
+    priory:bagSlots 20 ;
+    priory:chatCode "[&AgG5VAAA]" ;
+    priory:chatLink "[&AgG5VAAA]" ;
+    priory:gw2Id 67390 ;
+    priory:hasRarity rarity:Rare ;
+    priory:isAccountBound false .
+
+item:67393 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:CurrencyConverter,
+        priory:Item ;
+    rdfs:label "Candy Corn Gobbler"@en ;
+    rdfs:comment "Halloween festival gobbler that consumes Candy Corn to grant random transformation and booster effects (XP, karma, magic find, speed)."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Candy_Corn_Gobbler> ;
+    priory:chatCode "[&AgFBBwEA]" ;
+    priory:chatLink "[&AgFBBwEA]" ;
+    priory:gw2Id 67393 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Rare ;
+    priory:isAccountBound true .
+
+item:67836 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:CurrencyConverter,
+        priory:Item,
+        priory:ItemBuff ;
+    rdfs:label "Zhaitaffy Gobbler"@en ;
+    rdfs:comment "Converts Piece of Zhaitaffy into Dragon Bash festival buffs, providing bonus experience, karma, and magic find."@en,
+        "Dragon Bash festival gobbler that consumes Pieces of Zhaitaffy in exchange for Dragon Coffers or Festival Gobbler Boosts."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Zhaitaffy_Gobbler> ;
+    priory:accelerationMultiplier "1.25" ;
+    priory:acquiredVia [ a priory:VendorExchangePath ;
+            rdfs:label "Gem Store Dragon Bash Special"@en ;
+            priory:requiredQuantity 30000 ;
+            priory:requiresCurrency currency:Coin ] ;
+    priory:chatCode "[&AgFsCQEA]" ;
+    priory:chatLink "[&AgFsCQEA]" ;
+    priory:duration "15 minutes" ;
+    priory:gw2Id 67836 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Rare ;
+    priory:isAccountBound true .
+
+item:68093 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item ;
+    rdfs:label "Mystic Forge Node"@en ;
+    rdfs:comment "Personal home node and portable conduit enabling direct Mystic Forge recipe forging anywhere."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Mystic_Forge_Node> ;
+    priory:chatCode "[&AgFdCgEA]" ;
+    priory:chatLink "[&AgFdCgEA]" ;
+    priory:gw2Id 68093 ;
+    priory:hasFeature priory:FeatureMysticForge ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasMysticForge true ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:70010 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item ;
+    rdfs:label "Permanent Mystic Forge Conduit"@en ;
+    rdfs:comment "Reusable gizmo granting instantaneous, portable access to the Mystic Forge anywhere in the world without requiring a hub visit."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Mystic_Forge_Conduit_(container)> ;
+    priory:chatCode "[&AgF6EQEA]" ;
+    priory:chatLink "[&AgF6EQEA]" ;
+    priory:gw2Id 70010 ;
+    priory:hasFeature priory:FeatureMysticForge ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasMysticForge true ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:73618 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Gloominator"@en ;
+    rdfs:comment "Arcane sensor gizmo used to capture 27 ambient glooms across Tyria and Fractals of the Mists."@en ;
+    priory:gw2Id 73618 ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:74978 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Unbound"@en ;
+    priory:gw2Id 74978 .
+
+item:75479 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:VIPLoungePass ;
+    rdfs:label "Noble's Folly Pass"@en ;
+    rdfs:comment "Permanent pass granting access to the Noble's Folly canopy lounge in Verdant Brink with gliding updrafts, full crafting, Mystic Forge, and trading post services."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Noble%27s_Folly_Pass> ;
+    priory:chatCode "[&AgHnJgEA]" ;
+    priory:chatLink "[&AgHnJgEA]" ;
+    priory:gw2Id 75479 ;
+    priory:hasBank true ;
+    priory:hasCraftingStations true ;
+    priory:hasFeature priory:FeatureBank,
+        priory:FeatureCraftingStations,
+        priory:FeatureMysticForge,
+        priory:FeatureTradingPost,
+        priory:FeatureVendor ;
+    priory:hasInstantReturn false ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasMysticForge true ;
+    priory:hasRarity rarity:Exotic ;
+    priory:hasTradingPost true ;
+    priory:hasVendor true ;
+    priory:isAccountBound true .
+
+item:78954 a owl:NamedIndividual,
+        priory:Item,
+        priory:ItemBuff ;
+    rdfs:label "Black Lion Booster"@en ;
+    rdfs:comment "Increases WvW reward track gain by 50%, karma gain by 50%, experience gain by 50%, and magic find by 50% for 30 minutes."@en ;
+    priory:accelerationMultiplier "1.5" ;
+    priory:acquiredVia [ a priory:VendorExchangePath ;
+            rdfs:label "Black Lion Statuette Vendor Exchange"@en ;
+            priory:requiredQuantity 10000 ;
+            priory:requiresCurrency currency:Coin ] ;
+    priory:duration "30 minutes" ;
+    priory:gw2Id 78954 ;
+    priory:hasRarity rarity:Rare .
+
+item:79103 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Star of Glory"@en ;
+    priory:gw2Id 79103 ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true ;
+    priory:producedBy priory:Recipe_StarOfGlory .
+
+item:79230 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Mist Core Fragment"@en ;
+    priory:gw2Id 79230 ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:79500 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:VIPLoungePass ;
+    rdfs:label "Lava Lounge Pass"@en ;
+    rdfs:comment "Permanent pass granting access to the Lava Lounge in Ember Bay (Ring of Fire) with thermal tube networks, full crafting, Mystic Forge, and trading post services."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Lava_Lounge_Pass> ;
+    priory:chatCode "[&AgGMNgEA]" ;
+    priory:chatLink "[&AgGMNgEA]" ;
+    priory:gw2Id 79500 ;
+    priory:hasBank true ;
+    priory:hasCraftingStations true ;
+    priory:hasFeature priory:FeatureBank,
+        priory:FeatureCraftingStations,
+        priory:FeatureMysticForge,
+        priory:FeatureTradingPost,
+        priory:FeatureVendor ;
+    priory:hasInstantReturn false ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasMysticForge true ;
+    priory:hasRarity rarity:Exotic ;
+    priory:hasTradingPost true ;
+    priory:hasVendor true ;
+    priory:isAccountBound true .
+
+item:79523 a owl:NamedIndividual,
+        priory:Item,
+        priory:ItemBuff ;
+    rdfs:label "Snowflake Gobbler"@en ;
+    rdfs:comment "Consumes Snowflakes to generate Wintersday Gifts or grant the Winter's Blessing enhancement (+25% XP, +25% Reward Track progress, +10% Karma)."@en ;
+    priory:accelerationMultiplier "1.25" ;
+    priory:acquiredVia [ a priory:VendorExchangePath ;
+            rdfs:label "Wintersday Festival Vendor Exchange"@en ;
+            priory:requiredQuantity 50000 ;
+            priory:requiresCurrency currency:Karma ] ;
+    priory:duration "15 minutes" ;
+    priory:gw2Id 79523 ;
+    priory:hasRarity rarity:Rare .
+
+item:79558 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:CurrencyConverter,
+        priory:Item ;
+    rdfs:label "Sentient Aberration"@en ;
+    rdfs:comment "Living World Season 3 converter consuming Dragonite Ore and Empyreal Fragments in exchange for Fluctuating Mass."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Sentient_Aberration> ;
+    priory:chatCode "[&AgEmOwEA]" ;
+    priory:chatLink "[&AgEmOwEA]" ;
+    priory:gw2Id 79558 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Ascended ;
+    priory:isAccountBound true .
+
+item:79744 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:PortalTome ;
+    rdfs:label "Exalted Portal Stone"@en ;
+    rdfs:comment "Infinite-use teleportation stone that teleports the player directly to Tarir, the Forgotten City in Auric Basin."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Exalted_Portal_Stone> ;
+    priory:chatCode "[&AgEwTgEA]" ;
+    priory:chatLink "[&AgEwTgEA]" ;
+    priory:gw2Id 79744 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:80087 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:CurrencyConverter,
+        priory:Item ;
+    rdfs:label "Sentient Anomaly"@en ;
+    rdfs:comment "Living World Season 3 converter consuming Dragonite Ore and Bloodstone Dust in exchange for Fluctuating Mass."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Sentient_Anomaly> ;
+    priory:chatCode "[&AgFnOAEA]" ;
+    priory:chatLink "[&AgFnOAEA]" ;
+    priory:gw2Id 80087 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Ascended ;
+    priory:isAccountBound true .
+
+item:80261 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Triumphant Hero's Legguards (Precursor)"@en ;
+    priory:gw2Id 80261 .
+
+item:80273 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Triumphant Hero's Leggings (Precursor)"@en ;
+    priory:gw2Id 80273 .
+
+item:80289 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Triumphant Hero's Pants (Precursor)"@en ;
+    priory:gw2Id 80289 .
+
+item:80321 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Triumphant Hero's Shoulderguards (Precursor)"@en ;
+    priory:gw2Id 80321 .
+
+item:80332 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:CraftingMaterial,
+        priory:Item,
+        priory:PortalTome ;
+    rdfs:label "Jade Shard"@en,
+        "Living World Season 3 Portal Tome"@en,
+        "Triumphant Hero's Mantle (Precursor)"@en ;
+    rdfs:comment "Portal tome holding portal scrolls for all Living World Season 3 zones (Bloodstone Fen, Ember Bay, Bitterfrost Frontier, Lake Doric, Draconis Mons, Siren's Landing)."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Living_World_Season_3_Portal_Tome> ;
+    skos:definition "LWS3 map currency from Lake Doric used for Aurora."@en ;
+    priory:chatCode "[&AgHMTgEA]" ;
+    priory:chatLink "[&AgHMTgEA]" ;
+    priory:gw2Id 80332 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Ascended ;
+    priory:isAccountBound true ;
+    priory:zoneName "Lake Doric" .
+
+item:80345 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Triumphant Hero's Pauldrons (Precursor)"@en ;
+    priory:gw2Id 80345 .
+
+item:80388 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Triumphant Hero's Vambraces (Precursor)"@en ;
+    priory:gw2Id 80388 .
+
+item:80399 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Triumphant Hero's Gloves (Precursor)"@en ;
+    priory:gw2Id 80399 .
+
+item:80489 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Triumphant Hero's Mask (Precursor)"@en ;
+    priory:gw2Id 80489 .
+
+item:80498 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Triumphant Hero's Hood (Precursor)"@en ;
+    priory:gw2Id 80498 .
+
+item:80509 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Triumphant Hero's Greaves (Precursor)"@en ;
+    priory:gw2Id 80509 .
+
+item:80512 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Triumphant Hero's Helm (Precursor)"@en ;
+    priory:gw2Id 80512 .
+
+item:80562 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Triumphant Hero's Boots (Precursor)"@en ;
+    priory:gw2Id 80562 .
+
+item:80574 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Triumphant Hero's Shoes (Precursor)"@en ;
+    priory:gw2Id 80574 .
+
+item:80612 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Ardent Glorious Breastplate (Precursor)"@en ;
+    priory:gw2Id 80612 .
+
+item:80634 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Ardent Glorious Jerkin (Precursor)"@en ;
+    priory:gw2Id 80634 .
+
+item:80655 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Ardent Glorious Vestments (Precursor)"@en ;
+    priory:gw2Id 80655 .
+
+item:81120 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:CurrencyConverter,
+        priory:Item ;
+    rdfs:label "Sentient Singularity"@en ;
+    rdfs:comment "Living World Season 3 converter consuming Unbound Magic in exchange for Fluctuating Mass."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Sentient_Singularity> ;
+    priory:chatCode "[&AgHgPwEA]" ;
+    priory:chatLink "[&AgHgPwEA]" ;
+    priory:gw2Id 81120 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Ascended ;
+    priory:isAccountBound true .
+
+item:81432 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Slumbering Conflux"@en ;
+    priory:gw2Id 81432 .
+
+item:81464 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Commander's Compendium"@en ;
+    priory:gw2Id 81464 .
+
+item:81664 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:VIPLoungePass ;
+    rdfs:label "Mistlock Sanctuary Passkey"@en ;
+    rdfs:comment "Permanent passkey to the Mistlock Sanctuary fractal lounge in the Mists with complete crafting, vendors, bank, TP, Mystic Forge, and return-to-previous-map skill."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Mistlock_Sanctuary_Passkey> ;
+    priory:chatCode "[&AgEAPwEA]" ;
+    priory:chatLink "[&AgEAPwEA]" ;
+    priory:gw2Id 81664 ;
+    priory:hasBank true ;
+    priory:hasCraftingStations true ;
+    priory:hasFeature priory:FeatureBank,
+        priory:FeatureCraftingStations,
+        priory:FeatureFractalLobby,
+        priory:FeatureInstantReturn,
+        priory:FeatureMysticForge,
+        priory:FeatureTradingPost,
+        priory:FeatureVendor ;
+    priory:hasInstantReturn true ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasMysticForge true ;
+    priory:hasRarity rarity:Exotic ;
+    priory:hasTradingPost true ;
+    priory:hasVendor true ;
+    priory:isAccountBound true .
+
+item:81781 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:CurrencyConverter,
+        priory:Item ;
+    rdfs:label "Sentient Seed"@en ;
+    rdfs:comment "Sentient converter component and trophy tied to Unbound Magic and Aurora legendary collection."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Sentient_Seed> ;
+    priory:chatCode "[&AgFlPQEA]" ;
+    priory:chatLink "[&AgFlPQEA]" ;
+    priory:gw2Id 81781 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:82449 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Spark of Sentience"@en ;
+    priory:gw2Id 82449 .
+
+item:82791 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:CraftingMaterial,
+        priory:Item,
+        priory:VIPLoungePass ;
+    rdfs:label "Champion's Rest Pass"@en,
+        "Gift of Bloodstone Magic"@en ;
+    rdfs:comment "Exclusive VIP pass granting access to the Champion's Rest lounge overlooking the Heart of the Mists PvP arena with full crafting, bank, TP, and return functionality."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Champion%27s_Rest_Pass> ;
+    priory:chatCode "[&AgFnQwEA]" ;
+    priory:chatLink "[&AgFnQwEA]" ;
+    priory:gw2Id 82791 ;
+    priory:hasBank true ;
+    priory:hasCraftingStations true ;
+    priory:hasFeature priory:FeatureBank,
+        priory:FeatureCraftingStations,
+        priory:FeatureInstantReturn,
+        priory:FeatureMysticForge,
+        priory:FeatureTradingPost,
+        priory:FeatureVendor ;
+    priory:hasInstantReturn true ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasMysticForge true ;
+    priory:hasRarity rarity:Exotic ;
+    priory:hasTradingPost true ;
+    priory:hasVendor true ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_gift_of_bloodstone_magic .
+
+item:83457 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:VIPLoungePass ;
+    rdfs:label "Passkey to the Lily of the Elon"@en ;
+    rdfs:comment "Permanent VIP pass granting access to the luxury river barge Lily of the Elon in Amnoon (Crystal Oasis) with full crafting, Mystic Forge, bank, and trading post services."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Passkey_to_the_Lily_of_the_Elon> ;
+    skos:altLabel "Lily of the Elon"@en ;
+    priory:chatCode "[&AgEBRgEA]" ;
+    priory:chatLink "[&AgEBRgEA]" ;
+    priory:gw2Id 83457 ;
+    priory:hasBank true ;
+    priory:hasCraftingStations true ;
+    priory:hasFeature priory:FeatureBank,
+        priory:FeatureCraftingStations,
+        priory:FeatureMysticForge,
+        priory:FeatureTradingPost,
+        priory:FeatureVendor ;
+    priory:hasInstantReturn false ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasMysticForge true ;
+    priory:hasRarity rarity:Exotic ;
+    priory:hasTradingPost true ;
+    priory:hasVendor true ;
+    priory:isAccountBound true .
+
+item:84950 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:PermanentContract ;
+    rdfs:label "Permanent Tool Delivery Box"@en ;
+    rdfs:comment "Permanent contract allowing players to request deliveries of infinite gathering tool charges and harvesting supplies anywhere in Tyria."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Permanent_Black_Lion_Delivery_Box> ;
+    skos:altLabel "Permanent Tool Delivery Contract"@en ;
+    priory:chatCode "[&AgH6SwEA]" ;
+    priory:chatLink "[&AgH6SwEA]" ;
+    priory:gw2Id 84950 ;
+    priory:hasFeature priory:FeatureToolDelivery ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:87400 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:InfiniteSalvageItem,
+        priory:Item ;
+    rdfs:label "Runecrafter's Salvage-o-Matic"@en ;
+    rdfs:comment "Infinite-use salvage tool costing 30 copper per use. Features a 100% chance of recovering upgrades as Charms, Symbols, and Lucent Motes. Optimal for salvaging masterwork (green) gear containing sigils or runes."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Runecrafter%27s_Salvage-o-Matic> ;
+    priory:chatCode "[&AgFoVQEA]" ;
+    priory:chatLink "[&AgFoVQEA]" ;
+    priory:gw2Id 87400 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Rare ;
+    priory:isAccountBound true ;
+    priory:salvageCostPerUse 30 ;
+    priory:salvageRarityRate 0.20 ;
+    priory:salvageUpgradeRate 1.00 .
+
+item:87508 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:PortalTome ;
+    rdfs:label "Living World Season 4 Portal Tome"@en ;
+    rdfs:comment "Portal tome holding portal scrolls for all Living World Season 4 zones (Domain of Istan, Sandswept Isles, Domain of Kourna, Jahai Bluffs, Thunderhead Peaks, Dragonfall)."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Living_World_Season_4_Portal_Tome> ;
+    priory:chatCode "[&AgFUVQEA]" ;
+    priory:chatLink "[&AgFUVQEA]" ;
+    priory:gw2Id 87508 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Ascended ;
+    priory:isAccountBound true .
+
+item:8941 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Heavy Crafting Bag"@en ;
+    priory:gw2Id 8941 ;
+    priory:hasRarity rarity:Fine ;
+    priory:isAccountBound false .
+
+item:8948 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:SafeStagingBag ;
+    rdfs:label "20 Slot Invisible Bag"@en ;
+    rdfs:comment "A 20-slot invisible bag crafted by Tailors whose contents remain locked in position and hidden from vendors."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/20_Slot_Invisible_Bag> ;
+    skos:altLabel "Invisible Bag (Tailor)"@en ;
+    priory:bagSlots 20 ;
+    priory:chatCode "[&AgH0IgAA]" ;
+    priory:chatLink "[&AgH0IgAA]" ;
+    priory:gw2Id 8948 ;
+    priory:hasRarity rarity:Rare ;
+    priory:isAccountBound false .
+
+item:90002 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:CurrencyConverter,
+        priory:Item ;
+    rdfs:label "Hlish Hiss"@en ;
+    rdfs:comment "Convenience converter and barter gizmo for festival and event tokens."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Portable_exchanger> ;
+    priory:chatCode "[&AgHiXwEA]" ;
+    priory:chatLink "[&AgHiXwEA]" ;
+    priory:gw2Id 90002 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Rare ;
+    priory:isAccountBound true .
+
+item:90011 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:VIPLoungePass ;
+    rdfs:label "Armistice Bastion Pass"@en ;
+    rdfs:comment "Permanent pass to Armistice Bastion WvW lounge in the Mists with team chat, WvW vendors, siege training arena, crafting stations, bank, TP, and instant return."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Armistice_Bastion_Pass> ;
+    priory:chatCode "[&AgGbXwEA]" ;
+    priory:chatLink "[&AgGbXwEA]" ;
+    priory:gw2Id 90011 ;
+    priory:hasBank true ;
+    priory:hasCraftingStations true ;
+    priory:hasFeature priory:FeatureBank,
+        priory:FeatureCraftingStations,
+        priory:FeatureInstantReturn,
+        priory:FeatureMysticForge,
+        priory:FeatureTradingPost,
+        priory:FeatureVendor,
+        priory:FeatureWvWVendors ;
+    priory:hasInstantReturn true ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasMysticForge true ;
+    priory:hasRarity rarity:Exotic ;
+    priory:hasTradingPost true ;
+    priory:hasVendor true ;
+    priory:isAccountBound true .
+
+item:90335 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:PortalTome ;
+    rdfs:label "Recharging Teleport to Friend"@en ;
+    rdfs:comment "Infinite reusable gizmo that teleports you directly to the location of a party or squad member anywhere across Tyria on a 1-hour cooldown."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Recharging_Teleport_to_Friend> ;
+    priory:chatCode "[&AgHfYAEA]" ;
+    priory:chatLink "[&AgHfYAEA]" ;
+    priory:gw2Id 90335 ;
+    priory:hasFeature priory:FeatureInstantReturn ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:91223 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Coalescence I: Unbridled"@en ;
+    priory:gw2Id 91223 .
+
+item:91876 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:PermanentContract ;
+    rdfs:label "Endless Repair Canister"@en ;
+    rdfs:comment "Infinite-use repair canister that instantly restores and repairs damaged armor and reinforces gear attributes anywhere."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Endless_Repair_Canister> ;
+    priory:chatCode "[&AgH0ZgEA]" ;
+    priory:chatLink "[&AgH0ZgEA]" ;
+    priory:gw2Id 91876 ;
+    priory:hasFeature priory:FeatureRepair ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:92055 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:VIPLoungePass ;
+    rdfs:label "Invitation to the Eye of the North"@en ;
+    rdfs:comment "Permanent portal invitation granting instant access to the Eye of the North hub with Aurene crafting, strike mission portals, bank, TP, and merchants."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Invitation_to_the_Eye_of_the_North> ;
+    skos:altLabel "Eye of the North Portal Scroll"@en ;
+    priory:chatCode "[&AgH3ZwEA]" ;
+    priory:chatLink "[&AgH3ZwEA]" ;
+    priory:gw2Id 92055 ;
+    priory:hasBank true ;
+    priory:hasCraftingStations true ;
+    priory:hasFeature priory:FeatureBank,
+        priory:FeatureCraftingStations,
+        priory:FeatureMysticForge,
+        priory:FeatureStrikePortals,
+        priory:FeatureTradingPost,
+        priory:FeatureVendor ;
+    priory:hasInstantReturn false ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasMysticForge true ;
+    priory:hasRarity rarity:Exotic ;
+    priory:hasTradingPost true ;
+    priory:hasVendor true ;
+    priory:isAccountBound true .
+
+item:92209 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:CurrencyConverter,
+        priory:Item ;
+    rdfs:label "Gleam of Sentience"@en ;
+    rdfs:comment "Consolidated Sentient converter created in the Mystic Forge from four sentient components, consuming Bloodstone Dust, Dragonite Ore, and Empyreal Fragments for Fluctuating Masses."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Gleam_of_Sentience> ;
+    priory:chatCode "[&AgExaQEA]" ;
+    priory:chatLink "[&AgExaQEA]" ;
+    priory:gw2Id 92209 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Ascended ;
+    priory:isAccountBound true .
+
+item:92585 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:CurrencyConverter,
+        priory:Item ;
+    rdfs:label "Snowflake Gobbler"@en ;
+    rdfs:comment "Wintersday festival gobbler that consumes Snowflakes in exchange for Wintersday Gifts and Festival Gobbler Boosts."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Snowflake_Gobbler> ;
+    priory:chatCode "[&AgGpaQEA]" ;
+    priory:chatLink "[&AgGpaQEA]" ;
+    priory:gw2Id 92585 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Rare ;
+    priory:isAccountBound true .
+
+item:92850 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:PortalTome ;
+    rdfs:label "Icebrood Saga Portal Tome"@en ;
+    rdfs:comment "Portal tome holding portal scrolls for Icebrood Saga zones (Grothmar Valley, Bjora Marches, Drizzlewood Coast, Eye of the North)."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/The_Icebrood_Saga_Portal_Tome> ;
+    priory:chatCode "[&AgGiaQEA]" ;
+    priory:chatLink "[&AgGiaQEA]" ;
+    priory:gw2Id 92850 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Ascended ;
+    priory:isAccountBound true .
+
+item:92992 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Slumbering Transcendence"@en ;
+    priory:gw2Id 92992 .
+
+item:93121 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:InfiniteSalvageItem,
+        priory:Item ;
+    rdfs:label "Endless Upgrade Extractor"@en ;
+    rdfs:comment "Infinite-use extraction tool that safely removes upgrades (runes, sigils, infusions, enrichments) from equipment without destroying either the gear or the upgrade component."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Endless_Upgrade_Extractor> ;
+    priory:chatCode "[&AgHxmwEA]" ;
+    priory:chatLink "[&AgHxmwEA]" ;
+    priory:gw2Id 93121 ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true ;
+    priory:salvageCostPerUse 0 ;
+    priory:salvageRarityRate 0.00 ;
+    priory:salvageUpgradeRate 1.00 .
+
+item:94875 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Memory of Twilight"@en ;
+    rdfs:comment "An armory-bound trophy granted when Twilight is bound to your Legendary Armory. Used in the Mystic Forge to craft an Account Bound Eternity."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Memory_of_Twilight> ;
+    skos:altLabel "Twilight Memory"@en ;
+    priory:chatCode "[&AgFucwEA]" ;
+    priory:chatLink "[&AgFucwEA]" ;
+    priory:gw2Id 94875 ;
+    priory:hasRarity rarity:Legendary ;
+    priory:isAccountBound true .
+
+item:94917 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Memory of Sunrise"@en ;
+    rdfs:comment "An armory-bound trophy granted when Sunrise is bound to your Legendary Armory. Used in the Mystic Forge to craft an Account Bound Eternity."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Memory_of_Sunrise> ;
+    skos:altLabel "Sunrise Memory"@en ;
+    priory:chatCode "[&AgGdcwEA]" ;
+    priory:chatLink "[&AgGdcwEA]" ;
+    priory:gw2Id 94917 ;
+    priory:hasRarity rarity:Legendary ;
+    priory:isAccountBound true .
+
+item:95814 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:Item ;
+    rdfs:label "Dragon's Insight"@en ;
+    priory:gw2Id 95814 ;
+    priory:isContainerized true ;
+    priory:isEquipable true ;
+    priory:playsRole role:CraftingIngredient,
+        role:EquippedGear,
+        role:Precursor .
+
+item:95834 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:Item ;
+    rdfs:label "Dragon's Flight"@en ;
+    priory:gw2Id 95834 ;
+    priory:isContainerized true ;
+    priory:isEquipable true ;
+    priory:playsRole role:CraftingIngredient,
+        role:EquippedGear,
+        role:Precursor .
+
+item:9584 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:SafeStagingBag ;
+    rdfs:label "20 Slot Invisible Pack"@en ;
+    rdfs:comment "A 20-slot invisible pack crafted by Leatherworkers whose contents are protected from accidental sale, sorting, and deposit actions."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/20_Slot_Invisible_Pack> ;
+    skos:altLabel "20-Slot Invisible Pack"@en,
+        "Invisible Pack"@en ;
+    priory:bagSlots 20 ;
+    priory:chatCode "[&AgFwJQAA]" ;
+    priory:chatLink "[&AgFwJQAA]" ;
+    priory:gw2Id 9584 ;
+    priory:hasRarity rarity:Rare ;
+    priory:isAccountBound false .
+
+item:95920 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:Item ;
+    rdfs:label "Dragon's Weight"@en ;
+    priory:gw2Id 95920 ;
+    priory:isContainerized true ;
+    priory:isEquipable true ;
+    priory:playsRole role:CraftingIngredient,
+        role:EquippedGear,
+        role:Precursor .
+
+item:9594 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:SafeStagingBag ;
+    rdfs:label "20 Slot Safe Box"@en ;
+    rdfs:comment "A 20-slot safe box crafted by Armorsmiths whose contents will not be sold to vendors or moved during inventory sorting."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/20_Slot_Safe_Box> ;
+    skos:altLabel "20-Slot Safe Box"@en,
+        "Safe Box"@en ;
+    priory:bagSlots 20 ;
+    priory:chatCode "[&AgF6JQAA]" ;
+    priory:chatLink "[&AgF6JQAA]" ;
+    priory:gw2Id 9594 ;
+    priory:hasRarity rarity:Rare ;
+    priory:isAccountBound false .
+
+item:95967 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:Item ;
+    rdfs:label "Dragon's Claw"@en ;
+    priory:gw2Id 95967 ;
+    priory:isContainerized true ;
+    priory:isEquipable true ;
+    priory:playsRole role:CraftingIngredient,
+        role:EquippedGear,
+        role:Precursor .
+
+item:95994 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:Item ;
+    rdfs:label "Dragon's Fang"@en ;
+    priory:gw2Id 95994 ;
+    priory:isContainerized true ;
+    priory:isEquipable true ;
+    priory:playsRole role:CraftingIngredient,
+        role:EquippedGear,
+        role:Precursor .
+
+item:96193 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:Item ;
+    rdfs:label "Dragon's Wisdom"@en ;
+    priory:gw2Id 96193 ;
+    priory:isContainerized true ;
+    priory:isEquipable true ;
+    priory:playsRole role:CraftingIngredient,
+        role:EquippedGear,
+        role:Precursor .
+
+item:96303 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:Item ;
+    rdfs:label "Dragon's Gaze"@en ;
+    priory:gw2Id 96303 ;
+    priory:isContainerized true ;
+    priory:isEquipable true ;
+    priory:playsRole role:CraftingIngredient,
+        role:EquippedGear,
+        role:Precursor .
+
+item:96330 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:Item ;
+    rdfs:label "Dragon's Wing"@en ;
+    priory:gw2Id 96330 ;
+    priory:isContainerized true ;
+    priory:isEquipable true ;
+    priory:playsRole role:CraftingIngredient,
+        role:EquippedGear,
+        role:Precursor .
+
+item:96357 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:Item ;
+    rdfs:label "Dragon's Bite"@en ;
+    priory:gw2Id 96357 ;
+    priory:isContainerized true ;
+    priory:isEquipable true ;
+    priory:playsRole role:CraftingIngredient,
+        role:EquippedGear,
+        role:Precursor .
+
+item:96827 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:Item ;
+    rdfs:label "Dragon's Tail"@en ;
+    priory:gw2Id 96827 ;
+    priory:isContainerized true ;
+    priory:isEquipable true ;
+    priory:playsRole role:CraftingIngredient,
+        role:EquippedGear,
+        role:Precursor .
+
+item:96915 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:Item ;
+    rdfs:label "Dragon's Argument"@en ;
+    priory:gw2Id 96915 ;
+    priory:isContainerized true ;
+    priory:isEquipable true ;
+    priory:playsRole role:CraftingIngredient,
+        role:EquippedGear,
+        role:Precursor .
+
+item:96925 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:Item ;
+    rdfs:label "Dragon's Breath"@en ;
+    priory:gw2Id 96925 ;
+    priory:isContainerized true ;
+    priory:isEquipable true ;
+    priory:playsRole role:CraftingIngredient,
+        role:EquippedGear,
+        role:Precursor .
+
+item:97009 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:VIPLoungePass ;
+    rdfs:label "Arborstone Portal Scroll"@en ;
+    rdfs:comment "Permanent teleportation tome granting instant travel to Arborstone commercial hub in Echovald Wilds featuring Rested XP buff, EoD Strike portals, crafting stations, and vendors."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Arborstone_Portal_Scroll> ;
+    priory:chatCode "[&AgHxegEA]" ;
+    priory:chatLink "[&AgHxegEA]" ;
+    priory:gw2Id 97009 ;
+    priory:hasBank true ;
+    priory:hasCraftingStations true ;
+    priory:hasFeature priory:FeatureBank,
+        priory:FeatureCraftingStations,
+        priory:FeatureMysticForge,
+        priory:FeatureStrikePortals,
+        priory:FeatureTradingPost,
+        priory:FeatureVendor ;
+    priory:hasInstantReturn false ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasMysticForge true ;
+    priory:hasRarity rarity:Exotic ;
+    priory:hasTradingPost true ;
+    priory:hasVendor true ;
+    priory:isAccountBound true .
+
+item:97267 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:Item ;
+    rdfs:label "Dragon's Persuasion"@en ;
+    priory:gw2Id 97267 ;
+    priory:isContainerized true ;
+    priory:isEquipable true ;
+    priory:playsRole role:CraftingIngredient,
+        role:EquippedGear,
+        role:Precursor .
+
+item:97449 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:Item ;
+    rdfs:label "Dragon's Rending"@en ;
+    priory:gw2Id 97449 ;
+    priory:isContainerized true ;
+    priory:isEquipable true ;
+    priory:playsRole role:CraftingIngredient,
+        role:EquippedGear,
+        role:Precursor .
+
+item:97513 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:Item ;
+    rdfs:label "Dragon's Voice"@en ;
+    priory:gw2Id 97513 ;
+    priory:isContainerized true ;
+    priory:isEquipable true ;
+    priory:playsRole role:CraftingIngredient,
+        role:EquippedGear,
+        role:Precursor .
+
+item:97594 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Recipe: Jade Tech Hammer"@en ;
+    priory:gw2Id 97594 ;
+    priory:hasPrecursorType priory:DragonVendorPrecursor .
+
+item:97691 a owl:NamedIndividual,
+        priory:ContainerizedToken,
+        priory:Item ;
+    rdfs:label "Dragon's Scale"@en ;
+    priory:gw2Id 97691 ;
+    priory:isContainerized true ;
+    priory:isEquipable true ;
+    priory:playsRole role:CraftingIngredient,
+        role:EquippedGear,
+        role:Precursor .
+
+item:98048 a owl:NamedIndividual,
+        priory:ConvenienceGizmo,
+        priory:Item,
+        priory:VIPLoungePass ;
+    rdfs:label "Thousand Seas Pavilion Pass"@en ;
+    rdfs:comment "Permanent pass to Thousand Seas Pavilion aquatic lounge in Cantha featuring fishing holes, Jade Bot workbench, Strike Mission portals, crafting stations, bank, TP, and instant return."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Thousand_Seas_Pavilion_Pass> ;
+    priory:chatCode "[&AgEAfwEA]" ;
+    priory:chatLink "[&AgEAfwEA]" ;
+    priory:gw2Id 98048 ;
+    priory:hasBank true ;
+    priory:hasCraftingStations true ;
+    priory:hasFeature priory:FeatureBank,
+        priory:FeatureCraftingStations,
+        priory:FeatureFishing,
+        priory:FeatureInstantReturn,
+        priory:FeatureMysticForge,
+        priory:FeatureStrikePortals,
+        priory:FeatureTradingPost,
+        priory:FeatureVendor ;
+    priory:hasInstantReturn true ;
+    priory:hasItemType itemtype:Gizmo ;
+    priory:hasMysticForge true ;
+    priory:hasRarity rarity:Exotic ;
+    priory:hasTradingPost true ;
+    priory:hasVendor true ;
+    priory:isAccountBound true .
+
+recipe:1 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Copper Ingot"@en ;
+    priory:gw2RecipeId 1 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:19680 ;
+    priory:requiredRating 0 ;
+    priory:requiresDiscipline discipline:Weaponsmith .
+
+recipe:10 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Green Wood Plank"@en ;
+    priory:gw2RecipeId 10 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:19710 ;
+    priory:requiredRating 0 ;
+    priory:requiresDiscipline discipline:Huntsman .
+
+recipe:11 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Soft Wood Plank"@en ;
+    priory:gw2RecipeId 11 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:19713 ;
+    priory:requiredRating 75 ;
+    priory:requiresDiscipline discipline:Huntsman .
+
+recipe:1205 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Berserker's Iron Sword of Earth"@en ;
+    priory:gw2RecipeId 1205 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:26220 ;
+    priory:requiredRating 375 ;
+    priory:requiresDiscipline discipline:Weaponsmith .
+
+recipe:14 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Elder Wood Plank"@en ;
+    priory:gw2RecipeId 14 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:19709 ;
+    priory:requiredRating 300 ;
+    priory:requiresDiscipline discipline:Huntsman .
+
+recipe:15 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Ancient Wood Plank"@en ;
+    priory:gw2RecipeId 15 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:19712 ;
+    priory:requiredRating 400 ;
+    priory:requiresDiscipline discipline:Huntsman .
+
+recipe:2 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Iron Ingot"@en ;
+    priory:gw2RecipeId 2 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:19683 ;
+    priory:requiredRating 75 ;
+    priory:requiresDiscipline discipline:Weaponsmith .
+
+recipe:22 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Bolt of Jute"@en ;
+    priory:gw2RecipeId 22 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:19720 ;
+    priory:requiredRating 0 ;
+    priory:requiresDiscipline discipline:Tailor .
+
+recipe:2209 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: +9 Agony Infusion"@en ;
+    priory:gw2RecipeId 2209 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:49432 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Artificer .
+
+recipe:2210 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Magical Enrichment"@en ;
+    priory:gw2RecipeId 2210 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:39333 ;
+    priory:requiredRating 400 ;
+    priory:requiresDiscipline discipline:Artificer .
+
+recipe:2301 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Amber Pebble"@en ;
+    priory:gw2RecipeId 2301 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:24534 ;
+    priory:requiredRating 0 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:2302 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Garnet Pebble"@en ;
+    priory:gw2RecipeId 2302 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:24464 ;
+    priory:requiredRating 0 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:2303 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Malachite Pebble"@en ;
+    priory:gw2RecipeId 2303 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:24466 ;
+    priory:requiredRating 0 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:2304 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Pearl"@en ;
+    priory:gw2RecipeId 2304 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:24500 ;
+    priory:requiredRating 0 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:2305 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Turquoise Pebble"@en ;
+    priory:gw2RecipeId 2305 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:24465 ;
+    priory:requiredRating 0 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:2306 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Amethyst Nugget"@en ;
+    priory:gw2RecipeId 2306 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:24501 ;
+    priory:requiredRating 75 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:2307 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Carnelian Nugget"@en ;
+    priory:gw2RecipeId 2307 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:24469 ;
+    priory:requiredRating 75 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:2308 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Lapis Nugget"@en ;
+    priory:gw2RecipeId 2308 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:24470 ;
+    priory:requiredRating 75 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:2309 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Peridot Nugget"@en ;
+    priory:gw2RecipeId 2309 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:24468 ;
+    priory:requiredRating 75 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:2310 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Spinel Nugget"@en ;
+    priory:gw2RecipeId 2310 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:24889 ;
+    priory:requiredRating 75 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:2311 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Sunstone Nugget"@en ;
+    priory:gw2RecipeId 2311 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:24471 ;
+    priory:requiredRating 75 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:2312 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Topaz Nugget"@en ;
+    priory:gw2RecipeId 2312 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:24535 ;
+    priory:requiredRating 75 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:2313 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Amethyst Lump"@en ;
+    priory:gw2RecipeId 2313 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:24527 ;
+    priory:requiredRating 150 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:3 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Steel Ingot"@en ;
+    priory:gw2RecipeId 3 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:19688 ;
+    priory:requiredRating 150 ;
+    priory:requiresDiscipline discipline:Weaponsmith .
+
+recipe:3301 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Large Mist Offensive Potion"@en ;
+    priory:gw2RecipeId 3301 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:71659 ;
+    priory:requiredRating 400 ;
+    priory:requiresDiscipline discipline:Artificer .
+
+recipe:3302 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Large Mist Mobility Potion"@en ;
+    priory:gw2RecipeId 3302 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:75427 ;
+    priory:requiredRating 400 ;
+    priory:requiresDiscipline discipline:Artificer .
+
+recipe:3303 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Mist Offensive Potion"@en ;
+    priory:gw2RecipeId 3303 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:73070 ;
+    priory:requiredRating 400 ;
+    priory:requiresDiscipline discipline:Artificer .
+
+recipe:3304 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Mist Mobility Potion"@en ;
+    priory:gw2RecipeId 3304 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:74185 ;
+    priory:requiredRating 400 ;
+    priory:requiresDiscipline discipline:Artificer .
+
+recipe:3305 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Anguished Tear of Alba"@en ;
+    priory:gw2RecipeId 3305 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:70596 ;
+    priory:requiredRating 400 ;
+    priory:requiresDiscipline discipline:Artificer .
+
+recipe:3306 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Mist Defensive Potion"@en ;
+    priory:gw2RecipeId 3306 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:74426 ;
+    priory:requiredRating 400 ;
+    priory:requiresDiscipline discipline:Artificer .
+
+recipe:3307 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Large Mist Defensive Potion"@en ;
+    priory:gw2RecipeId 3307 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:76150 ;
+    priory:requiredRating 400 ;
+    priory:requiresDiscipline discipline:Artificer .
+
+recipe:3401 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Exotic Essence of Luck"@en ;
+    priory:gw2RecipeId 3401 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:45178 ;
+    priory:requiredRating 400 ;
+    priory:requiresDiscipline discipline:Artificer .
+
+recipe:3402 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Rare Essence of Luck"@en ;
+    priory:gw2RecipeId 3402 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:45177 ;
+    priory:requiredRating 300 ;
+    priory:requiresDiscipline discipline:Artificer .
+
+recipe:4 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Darksteel Ingot"@en ;
+    priory:gw2RecipeId 4 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:19681 ;
+    priory:requiredRating 225 ;
+    priory:requiresDiscipline discipline:Weaponsmith .
+
+recipe:4501 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Frostfang"@en ;
+    priory:gw2RecipeId 4501 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30684 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Weaponsmith .
+
+recipe:4502 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Kudzu"@en ;
+    priory:gw2RecipeId 4502 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30685 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Huntsman .
+
+recipe:4503 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: The Dreamer"@en ;
+    priory:gw2RecipeId 4503 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30686 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Huntsman .
+
+recipe:4504 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Incinerator"@en ;
+    priory:gw2RecipeId 4504 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30687 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Weaponsmith .
+
+recipe:4505 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: The Minstrel"@en ;
+    priory:gw2RecipeId 4505 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30688 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Artificer .
+
+recipe:4506 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: The Juggernaut"@en ;
+    priory:gw2RecipeId 4506 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30690 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Weaponsmith .
+
+recipe:4507 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Kamohoali'i Kotaki"@en ;
+    priory:gw2RecipeId 4507 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30691 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Weaponsmith .
+
+recipe:4508 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: The Moot"@en ;
+    priory:gw2RecipeId 4508 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30692 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Weaponsmith .
+
+recipe:4509 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Quip"@en ;
+    priory:gw2RecipeId 4509 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30693 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Huntsman .
+
+recipe:4510 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: The Predator"@en ;
+    priory:gw2RecipeId 4510 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30694 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Huntsman .
+
+recipe:4511 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Meteorlogicus"@en ;
+    priory:gw2RecipeId 4511 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30695 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Artificer .
+
+recipe:4512 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Eternity"@en ;
+    priory:gw2RecipeId 4512 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30689 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Weaponsmith .
+
+recipe:4513 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: The Flameseeker Prophecies"@en ;
+    priory:gw2RecipeId 4513 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30696 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Armorsmith .
+
+recipe:4514 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Frenzy"@en ;
+    priory:gw2RecipeId 4514 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30697 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Huntsman .
+
+recipe:4515 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: The Bifrost"@en ;
+    priory:gw2RecipeId 4515 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30698 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Artificer .
+
+recipe:4516 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Bolt"@en ;
+    priory:gw2RecipeId 4516 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30699 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Weaponsmith .
+
+recipe:4517 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Rodgort"@en ;
+    priory:gw2RecipeId 4517 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30700 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Huntsman .
+
+recipe:4518 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Kraitkin"@en ;
+    priory:gw2RecipeId 4518 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30701 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Artificer .
+
+recipe:4519 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Howler"@en ;
+    priory:gw2RecipeId 4519 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30702 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Huntsman .
+
+recipe:4520 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Sunrise"@en ;
+    priory:gw2RecipeId 4520 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30703 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Weaponsmith .
+
+recipe:4521 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Twilight"@en ;
+    priory:gw2RecipeId 4521 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:30704 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Weaponsmith .
+
+recipe:5 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Mithril Ingot"@en ;
+    priory:gw2RecipeId 5 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:19684 ;
+    priory:requiredRating 300 ;
+    priory:requiresDiscipline discipline:Weaponsmith .
+
+recipe:5001 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Ralena's Band (Infused)"@en ;
+    priory:gw2RecipeId 5001 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:49405 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:5002 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Fledgling Charm"@en ;
+    priory:gw2RecipeId 5002 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:39554 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:5003 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Ralena's Band"@en ;
+    priory:gw2RecipeId 5003 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:37077 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:5004 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Fierceshot's Arrowhead"@en ;
+    priory:gw2RecipeId 5004 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:39231 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:5005 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Ettinband (Infused)"@en ;
+    priory:gw2RecipeId 5005 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:49416 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:5006 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Palawa Joko's Finger Cuff"@en ;
+    priory:gw2RecipeId 5006 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:39605 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:5007 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Bearkin Carved Shell"@en ;
+    priory:gw2RecipeId 5007 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:103023 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:5008 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Druid's Circle"@en ;
+    priory:gw2RecipeId 5008 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:39596 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:5009 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Seal of the Khan-Ur (Infused)"@en ;
+    priory:gw2RecipeId 5009 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:49409 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:5010 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Purge Signet"@en ;
+    priory:gw2RecipeId 5010 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:39609 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:5011 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Ouroboros Loop"@en ;
+    priory:gw2RecipeId 5011 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:37085 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:5012 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Palawa Joko's Finger Cuff (Infused)"@en ;
+    priory:gw2RecipeId 5012 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:49419 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:5013 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Crystalline Band"@en ;
+    priory:gw2RecipeId 5013 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:37075 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:5014 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Marriner's Flask"@en ;
+    priory:gw2RecipeId 5014 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:39230 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:5015 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Band of the Brotherhood"@en ;
+    priory:gw2RecipeId 5015 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:39612 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:6 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Orichalcum Ingot"@en ;
+    priory:gw2RecipeId 6 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:19685 ;
+    priory:requiredRating 400 ;
+    priory:requiresDiscipline discipline:Weaponsmith .
+
+recipe:6850 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Dusk"@en ;
+    priory:gw2RecipeId 6850 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:29185 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Weaponsmith .
+
+recipe:7 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Silver Ingot"@en ;
+    priory:gw2RecipeId 7 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:19687 ;
+    priory:requiredRating 75 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:7380 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Hronk's Claymore"@en ;
+    priory:gw2RecipeId 7380 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:46971 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Weaponsmith .
+
+recipe:7389 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Recipe: Zojja's Artifact"@en ;
+    priory:gw2RecipeId 7389 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:45316 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Artificer .
+
+recipe:8 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Gold Ingot"@en ;
+    priory:gw2RecipeId 8 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:19682 ;
+    priory:requiredRating 150 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:8064 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Recipe: Wupwup Leggings"@en ;
+    priory:gw2RecipeId 8064 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:48290 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Leatherworker .
+
+recipe:8065 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Recipe: Occam's Leggings"@en ;
+    priory:gw2RecipeId 8065 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:48308 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Leatherworker .
+
+recipe:8088 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Recipe: Wupwup Shoulderguard"@en ;
+    priory:gw2RecipeId 8088 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:48291 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Leatherworker .
+
+recipe:8196 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Recipe: Wupwup Visage"@en ;
+    priory:gw2RecipeId 8196 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:48289 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Leatherworker .
+
+recipe:8232 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Recipe: Wupwup Breeches"@en ;
+    priory:gw2RecipeId 8232 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:48284 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Tailor .
+
+recipe:9 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Platinum Ingot"@en ;
+    priory:gw2RecipeId 9 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:19686 ;
+    priory:requiredRating 225 ;
+    priory:requiresDiscipline discipline:Jeweler .
+
+recipe:9011 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Perfected Envoy Breastplate"@en ;
+    priory:gw2RecipeId 9011 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:80258 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Armorsmith .
+
+recipe:9012 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Perfected Envoy Pauldrons"@en ;
+    priory:gw2RecipeId 9012 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:80435 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Armorsmith .
+
+recipe:9013 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Perfected Envoy Helm"@en ;
+    priory:gw2RecipeId 9013 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:80384 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Armorsmith .
+
+recipe:9014 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Perfected Envoy Gauntlets"@en ;
+    priory:gw2RecipeId 9014 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:80145 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Armorsmith .
+
+recipe:9015 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Perfected Envoy Tassets"@en ;
+    priory:gw2RecipeId 9015 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:80161 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Armorsmith .
+
+recipe:9016 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Perfected Envoy Greaves"@en ;
+    priory:gw2RecipeId 9016 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:80248 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Armorsmith .
+
+recipe:9021 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Perfected Envoy Jerkin"@en ;
+    priory:gw2RecipeId 9021 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:80277 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Leatherworker .
+
+recipe:9022 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Perfected Envoy Shoulderguards"@en ;
+    priory:gw2RecipeId 9022 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:80190 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Leatherworker .
+
+recipe:9023 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Perfected Envoy Mask"@en ;
+    priory:gw2RecipeId 9023 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:80296 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Leatherworker .
+
+recipe:9024 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Perfected Envoy Vambraces"@en ;
+    priory:gw2RecipeId 9024 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:80252 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Leatherworker .
+
+recipe:9025 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Perfected Envoy Leggings"@en ;
+    priory:gw2RecipeId 9025 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:80281 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Leatherworker .
+
+recipe:9026 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Perfected Envoy Boots"@en ;
+    priory:gw2RecipeId 9026 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:80557 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Leatherworker .
+
+recipe:9031 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Perfected Envoy Vestments"@en ;
+    priory:gw2RecipeId 9031 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:80131 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Tailor .
+
+recipe:9032 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Perfected Envoy Mantle"@en ;
+    priory:gw2RecipeId 9032 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:80356 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Tailor .
+
+recipe:9033 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Perfected Envoy Hood"@en ;
+    priory:gw2RecipeId 9033 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:80200 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Tailor .
+
+recipe:9035 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Recipe: Perfected Envoy Pants"@en ;
+    priory:gw2RecipeId 9035 ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:80196 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Tailor .
+
+recipe:craft_gift_of_darkness a priory:DisciplineRecipe ;
+    rdfs:label "Craft Gift of Darkness"@en ;
+    priory:hasIngredientRequirement [ a priory:IngredientRequirement ;
+            priory:requiredQuantity 100 ;
+            priory:requiresItem item:24310 ],
+        [ a priory:IngredientRequirement ;
+            priory:requiredQuantity 250 ;
+            priory:requiresItem item:19685 ],
+        [ a priory:IngredientRequirement ;
+            priory:requiredQuantity 250 ;
+            priory:requiresItem item:19732 ],
+        [ a priory:IngredientRequirement ;
+            priory:requiredQuantity 1 ;
+            priory:requiresItem item:19640 ] ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:19647 ;
+    priory:requiresDiscipline discipline:Armorsmith ;
+    priory:requiresRating 400 .
+
+recipe:craft_gift_of_metal a priory:DisciplineRecipe ;
+    rdfs:label "Craft Gift of Metal"@en ;
+    priory:hasIngredientRequirement [ a priory:IngredientRequirement ;
+            priory:requiredQuantity 250 ;
+            priory:requiresItem item:19684 ],
+        [ a priory:IngredientRequirement ;
+            priory:requiredQuantity 250 ;
+            priory:requiresItem item:19685 ],
+        [ a priory:IngredientRequirement ;
+            priory:requiredQuantity 250 ;
+            priory:requiresItem item:19686 ],
+        [ a priory:IngredientRequirement ;
+            priory:requiredQuantity 250 ;
+            priory:requiresItem item:19681 ] ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:19623 ;
+    priory:requiresDiscipline discipline:Weaponsmith ;
+    priory:requiresRating 400 .
+
+recipe:craft_mystic_mote a priory:DisciplineRecipe ;
+    rdfs:label "Craft Mystic Mote"@en ;
+    priory:hasIngredientRequirement [ a priory:IngredientRequirement ;
+            priory:requiredQuantity 1 ;
+            priory:requiresItem item:89258 ],
+        [ a priory:IngredientRequirement ;
+            priory:requiredQuantity 1 ;
+            priory:requiresItem item:89182 ],
+        [ a priory:IngredientRequirement ;
+            priory:requiredQuantity 1 ;
+            priory:requiresItem item:89140 ],
+        [ a priory:IngredientRequirement ;
+            priory:requiredQuantity 10 ;
+            priory:requiresItem item:89103 ] ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:89175 ;
+    priory:requiresDiscipline discipline:Weaponsmith ;
+    priory:requiresRating 75 .
+
+item:103023 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Bearkin Carved Shell"@en ;
+    priory:gw2Id 103023 ;
+    priory:hasItemType itemtype:Trinket ;
+    priory:hasRarity rarity:Ascended .
+
+item:19680 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Copper Ingot"@en ;
+    priory:gw2Id 19680 ;
+    priory:hasItemType itemtype:CraftingMaterial ;
+    priory:hasRarity rarity:Basic .
+
+item:20796 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Philosopher's Stone"@en ;
+    priory:gw2Id 20796 ;
+    priory:hasItemType itemtype:CraftingMaterial ;
+    priory:hasRarity rarity:Basic .
+
+item:19682 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Gold Ingot"@en ;
+    priory:gw2Id 19682 ;
+    priory:hasItemType itemtype:CraftingMaterial ;
+    priory:hasRarity rarity:Basic ;
+    priory:isAccountBound false .
+
+item:19683 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Iron Ingot"@en ;
+    priory:gw2Id 19683 ;
+    priory:hasItemType itemtype:CraftingMaterial ;
+    priory:hasRarity rarity:Basic ;
+    priory:isAccountBound false .
+
+item:19687 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Silver Ingot"@en ;
+    priory:gw2Id 19687 ;
+    priory:hasItemType itemtype:CraftingMaterial ;
+    priory:hasRarity rarity:Basic ;
+    priory:isAccountBound false .
+
+item:19688 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Steel Ingot"@en ;
+    priory:gw2Id 19688 ;
+    priory:hasItemType itemtype:CraftingMaterial ;
+    priory:hasRarity rarity:Basic ;
+    priory:isAccountBound false .
+
+item:19709 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Elder Wood Plank"@en ;
+    priory:gw2Id 19709 ;
+    priory:hasItemType itemtype:CraftingMaterial ;
+    priory:hasRarity rarity:Basic ;
+    priory:isAccountBound false .
+
+item:19710 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Green Wood Plank"@en ;
+    priory:gw2Id 19710 ;
+    priory:hasItemType itemtype:CraftingMaterial ;
+    priory:hasRarity rarity:Basic ;
+    priory:isAccountBound false .
+
+item:19712 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Ancient Wood Plank"@en ;
+    priory:gw2Id 19712 ;
+    priory:hasItemType itemtype:CraftingMaterial ;
+    priory:hasRarity rarity:Basic ;
+    priory:isAccountBound false .
+
+item:19713 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Soft Wood Plank"@en ;
+    priory:gw2Id 19713 ;
+    priory:hasItemType itemtype:CraftingMaterial ;
+    priory:hasRarity rarity:Basic ;
+    priory:isAccountBound false .
+
+item:19720 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Bolt of Jute"@en ;
+    priory:gw2Id 19720 ;
+    priory:hasItemType itemtype:CraftingMaterial ;
+    priory:hasRarity rarity:Basic ;
+    priory:isAccountBound false .
+
+item:19732 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Hardened Leather Section"@en ;
+    priory:gw2Id 19732 ;
+    priory:hasItemType itemtype:CraftingMaterial ;
+    priory:hasRarity rarity:Basic ;
+    priory:isAccountBound false .
+
+item:24277 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Pile of Crystalline Dust"@en ;
+    rdfs:comment "Tier 6 fine crafting material used as catalyst in Mystic Forge recipes."@en ;
+    skos:altLabel "Crystalline Dust"@en ;
+    priory:chatCode "[&AgHVXwAA]" ;
+    priory:chatLink "[&AgHVXwAA]" ;
+    priory:gw2Id 24277 ;
+    priory:hasRarity rarity:Rare ;
+    priory:isAccountBound false .
+
+item:24464 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Garnet Pebble"@en ;
+    priory:gw2Id 24464 ;
+    priory:hasItemType itemtype:UpgradeComponent ;
+    priory:hasRarity rarity:Fine .
+
+item:24465 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Turquoise Pebble"@en ;
+    priory:gw2Id 24465 ;
+    priory:hasItemType itemtype:UpgradeComponent ;
+    priory:hasRarity rarity:Fine .
+
+item:24466 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Malachite Pebble"@en ;
+    priory:gw2Id 24466 ;
+    priory:hasItemType itemtype:UpgradeComponent ;
+    priory:hasRarity rarity:Fine .
+
+item:24468 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Peridot Nugget"@en ;
+    priory:gw2Id 24468 ;
+    priory:hasItemType itemtype:UpgradeComponent ;
+    priory:hasRarity rarity:Fine .
+
+item:24469 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Carnelian Nugget"@en ;
+    priory:gw2Id 24469 ;
+    priory:hasItemType itemtype:UpgradeComponent ;
+    priory:hasRarity rarity:Fine .
+
+item:24470 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Lapis Nugget"@en ;
+    priory:gw2Id 24470 ;
+    priory:hasItemType itemtype:UpgradeComponent ;
+    priory:hasRarity rarity:Fine .
+
+item:24471 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Sunstone Nugget"@en ;
+    priory:gw2Id 24471 ;
+    priory:hasItemType itemtype:UpgradeComponent ;
+    priory:hasRarity rarity:Fine .
+
+item:24500 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Pearl"@en ;
+    priory:gw2Id 24500 ;
+    priory:hasItemType itemtype:UpgradeComponent ;
+    priory:hasRarity rarity:Fine .
+
+item:24501 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Amethyst Nugget"@en ;
+    priory:gw2Id 24501 ;
+    priory:hasItemType itemtype:UpgradeComponent ;
+    priory:hasRarity rarity:Fine .
+
+item:24527 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Amethyst Lump"@en ;
+    priory:gw2Id 24527 ;
+    priory:hasItemType itemtype:UpgradeComponent ;
+    priory:hasRarity rarity:Fine .
+
+item:24534 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Amber Pebble"@en ;
+    priory:gw2Id 24534 ;
+    priory:hasItemType itemtype:UpgradeComponent ;
+    priory:hasRarity rarity:Fine .
+
+item:24535 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Topaz Nugget"@en ;
+    priory:gw2Id 24535 ;
+    priory:hasItemType itemtype:UpgradeComponent ;
+    priory:hasRarity rarity:Fine .
+
+item:24889 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Spinel Nugget"@en ;
+    priory:gw2Id 24889 ;
+    priory:hasItemType itemtype:UpgradeComponent ;
+    priory:hasRarity rarity:Fine .
+
+item:26220 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Berserker's Iron Sword of Earth"@en ;
+    priory:gw2Id 26220 ;
+    priory:hasItemType itemtype:Weapon ;
+    priory:hasRarity rarity:Exotic .
+
+item:30684 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "Frostfang"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Frostfang> ;
+    skos:altLabel "Gen 1 Axe"@en,
+        "Gen 1 Legendary Axe"@en,
+        "Gen One Axe"@en,
+        "Generation 1 Axe"@en,
+        "Generation One Axe"@en,
+        "The Legendary Axe"@en ;
+    priory:gw2Id 30684 ;
+    priory:hasItemType itemtype:Axe,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Axe ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_frostfang .
+
+item:30685 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "Kudzu"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Kudzu> ;
+    skos:altLabel "Gen 1 Legendary Longbow"@en,
+        "Gen 1 Longbow"@en,
+        "Gen One Longbow"@en,
+        "Generation 1 Longbow"@en,
+        "Generation One Longbow"@en,
+        "The Legendary Longbow"@en ;
+    priory:gw2Id 30685 ;
+    priory:hasItemType itemtype:Longbow,
+        itemtype:Weapon ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Longbow ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_kudzu .
+
+item:30686 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "The Dreamer"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/The_Dreamer> ;
+    skos:altLabel "Gen 1 Legendary Short bow"@en,
+        "Gen 1 Short bow"@en,
+        "Gen 1 ShortBow"@en,
+        "Gen One Short bow"@en,
+        "Gen One ShortBow"@en,
+        "Generation 1 Short bow"@en,
+        "Generation 1 ShortBow"@en,
+        "Generation One Short bow"@en,
+        "The Legendary ShortBow"@en ;
+    priory:gw2Id 30686 ;
+    priory:hasItemType itemtype:ShortBow,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:ShortBow ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_the_dreamer .
+
+item:30687 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "Incinerator"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Incinerator> ;
+    skos:altLabel "Gen 1 Dagger"@en,
+        "Gen 1 Legendary Dagger"@en,
+        "Gen One Dagger"@en,
+        "Generation 1 Dagger"@en,
+        "Generation One Dagger"@en,
+        "The Legendary Dagger"@en ;
+    priory:gw2Id 30687 ;
+    priory:hasItemType itemtype:Dagger,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Dagger ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_incinerator .
+
+item:30688 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "The Minstrel"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/The_Minstrel> ;
+    skos:altLabel "Gen 1 Focus"@en,
+        "Gen 1 Legendary Focus"@en,
+        "Gen One Focus"@en,
+        "Generation 1 Focus"@en,
+        "Generation One Focus"@en,
+        "The Legendary Focus"@en ;
+    priory:gw2Id 30688 ;
+    priory:hasItemType itemtype:Focus,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Focus ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_the_minstrel .
+
+item:30689 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "Eternity"@en ;
+    rdfs:comment "Generation 1 Legendary Greatsword formed by uniting Twilight and Sunrise. When forged from crafted/unbound precursors and weapons, Eternity is tradeable and unbound, enabling the Eternity Commercial Loop on the Black Lion Trading Post."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Eternity> ;
+    skos:altLabel "Gen 1 Greatsword"@en,
+        "Gen 1 Legendary Greatsword"@en,
+        "Gen One Greatsword"@en,
+        "Generation 1 Greatsword"@en,
+        "Generation One Greatsword"@en ;
+    priory:armoryMaxCap 1 ;
+    priory:chatCode "[&AgExZwAA]" ;
+    priory:chatLink "[&AgExZwAA]" ;
+    priory:gw2Id 30689 ;
+    priory:hasItemType itemtype:Greatsword,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Greatsword ;
+    priory:isAccountBound false,
+        true ;
+    priory:playsRole role:EquippedGear,
+        role:Precursor ;
+    priory:producedBy priory:Recipe_Eternity,
+        recipe:recipe_forge_eternity_bound,
+        recipe:recipe_forge_eternity_unbound .
+
+item:30690 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "The Juggernaut"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/The_Juggernaut> ;
+    skos:altLabel "Gen 1 Hammer"@en,
+        "Gen 1 Legendary Hammer"@en,
+        "Gen One Hammer"@en,
+        "Generation 1 Hammer"@en,
+        "Generation One Hammer"@en,
+        "The Legendary Hammer"@en ;
+    priory:gw2Id 30690 ;
+    priory:hasItemType itemtype:Hammer,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Hammer ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_the_juggernaut .
+
+item:30691 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "Kamohoali'i Kotaki"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Kamohoali'i_Kotaki> ;
+    skos:altLabel "Gen 1 Legendary Spear"@en,
+        "Gen 1 Spear"@en,
+        "Gen One Spear"@en,
+        "Generation 1 Spear"@en,
+        "Generation One Spear"@en,
+        "The Legendary Spear"@en ;
+    priory:gw2Id 30691 ;
+    priory:hasItemType itemtype:Spear,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Spear ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_kamohoalii_kotaki .
+
+item:30692 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "The Moot"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/The_Moot> ;
+    skos:altLabel "Gen 1 Legendary Mace"@en,
+        "Gen 1 Mace"@en,
+        "Gen One Mace"@en,
+        "Generation 1 Mace"@en,
+        "Generation One Mace"@en,
+        "The Legendary Mace"@en ;
+    priory:gw2Id 30692 ;
+    priory:hasItemType itemtype:Mace,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Mace ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_the_moot .
+
+item:30693 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "Quip"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Quip> ;
+    skos:altLabel "Gen 1 Legendary Pistol"@en,
+        "Gen 1 Pistol"@en,
+        "Gen One Pistol"@en,
+        "Generation 1 Pistol"@en,
+        "Generation One Pistol"@en,
+        "The Legendary Pistol"@en ;
+    priory:gw2Id 30693 ;
+    priory:hasItemType itemtype:Pistol,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Pistol ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_quip .
+
+item:30694 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "The Predator"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/The_Predator> ;
+    skos:altLabel "Gen 1 Legendary Rifle"@en,
+        "Gen 1 Rifle"@en,
+        "Gen One Rifle"@en,
+        "Generation 1 Rifle"@en,
+        "Generation One Rifle"@en,
+        "The Legendary Rifle"@en ;
+    priory:gw2Id 30694 ;
+    priory:hasItemType itemtype:Rifle,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Rifle ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_the_predator .
+
+item:30695 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "Meteorlogicus"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Meteorlogicus> ;
+    skos:altLabel "Gen 1 Legendary Scepter"@en,
+        "Gen 1 Scepter"@en,
+        "Gen One Scepter"@en,
+        "Generation 1 Scepter"@en,
+        "Generation One Scepter"@en,
+        "The Legendary Scepter"@en ;
+    priory:gw2Id 30695 ;
+    priory:hasItemType itemtype:Scepter,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Scepter ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_meteorlogicus .
+
+item:30696 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "The Flameseeker Prophecies"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/The_Flameseeker_Prophecies> ;
+    skos:altLabel "Gen 1 Legendary Shield"@en,
+        "Gen 1 Shield"@en,
+        "Gen One Shield"@en,
+        "Generation 1 Shield"@en,
+        "Generation One Shield"@en,
+        "The Legendary Shield"@en ;
+    priory:gw2Id 30696 ;
+    priory:hasItemType itemtype:Shield,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Shield ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_the_flameseeker_prophecies .
+
+item:30697 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "Frenzy"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Frenzy> ;
+    skos:altLabel "Gen 1 Harpoon gun"@en,
+        "Gen 1 HarpoonGun"@en,
+        "Gen 1 Legendary Harpoon gun"@en,
+        "Gen One Harpoon gun"@en,
+        "Gen One HarpoonGun"@en,
+        "Generation 1 Harpoon gun"@en,
+        "Generation 1 HarpoonGun"@en,
+        "Generation One Harpoon gun"@en,
+        "The Legendary HarpoonGun"@en ;
+    priory:gw2Id 30697 ;
+    priory:hasItemType itemtype:HarpoonGun,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:HarpoonGun ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_frenzy .
+
+item:30698 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "The Bifrost"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/The_Bifrost> ;
+    skos:altLabel "Gen 1 Legendary Staff"@en,
+        "Gen 1 Staff"@en,
+        "Gen One Staff"@en,
+        "Generation 1 Staff"@en,
+        "Generation One Staff"@en,
+        "The Legendary Staff"@en ;
+    priory:gw2Id 30698 ;
+    priory:hasItemType itemtype:Staff,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Staff ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_the_bifrost .
+
+item:30699 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "Bolt"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Bolt> ;
+    skos:altLabel "Gen 1 Legendary Sword"@en,
+        "Gen 1 Sword"@en,
+        "Gen One Sword"@en,
+        "Generation 1 Sword"@en,
+        "Generation One Sword"@en,
+        "The Legendary Sword"@en ;
+    priory:gw2Id 30699 ;
+    priory:hasItemType itemtype:Sword,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Sword ;
+    priory:isAccountBound true ;
+    priory:playsRole role:EquippedGear ;
+    priory:producedBy recipe:forge_bolt .
+
+item:30700 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "Rodgort"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Rodgort> ;
+    skos:altLabel "Gen 1 Legendary Torch"@en,
+        "Gen 1 Torch"@en,
+        "Gen One Torch"@en,
+        "Generation 1 Torch"@en,
+        "Generation One Torch"@en,
+        "The Legendary Torch"@en ;
+    priory:gw2Id 30700 ;
+    priory:hasItemType itemtype:Torch,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Torch ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_rodgort .
+
+item:30701 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "Kraitkin"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Kraitkin> ;
+    skos:altLabel "Gen 1 Legendary Trident"@en,
+        "Gen 1 Trident"@en,
+        "Gen One Trident"@en,
+        "Generation 1 Trident"@en,
+        "Generation One Trident"@en,
+        "The Legendary Trident"@en ;
+    priory:gw2Id 30701 ;
+    priory:hasItemType itemtype:Trident,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Trident ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_kraitkin .
+
+item:30702 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "Howler"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Howler> ;
+    skos:altLabel "Gen 1 Legendary Warhorn"@en,
+        "Gen 1 Warhorn"@en,
+        "Gen One Warhorn"@en,
+        "Generation 1 Warhorn"@en,
+        "Generation One Warhorn"@en,
+        "The Legendary Warhorn"@en ;
+    priory:gw2Id 30702 ;
+    priory:hasItemType itemtype:Warhorn,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Warhorn ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_howler .
+
+item:30703 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "Sunrise"@en ;
+    rdfs:comment "Generation 1 Legendary Greatsword representing the light of day. Forged from Dawn, Gift of Mastery, Gift of Fortune, and Gift of Sunrise. Tradeable until bound to the account armory."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Sunrise> ;
+    skos:altLabel "Gen 1 Greatsword"@en,
+        "Gen 1 Legendary Greatsword"@en,
+        "Gen One Greatsword"@en,
+        "Generation 1 Greatsword"@en,
+        "Generation One Greatsword"@en,
+        "The Legendary Greatsword"@en ;
+    priory:armoryMaxCap 1 ;
+    priory:chatCode "[&AgEvZwAA]" ;
+    priory:chatLink "[&AgEvZwAA]" ;
+    priory:gw2Id 30703 ;
+    priory:hasItemType itemtype:Greatsword,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Greatsword ;
+    priory:isAccountBound false,
+        true ;
+    priory:producedBy recipe:forge_sunrise .
+
+item:30704 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryWeapon ;
+    rdfs:label "Twilight"@en ;
+    rdfs:comment "Generation 1 Legendary Greatsword representing the darkness of night. Forged from Dusk, Gift of Mastery, Gift of Fortune, and Gift of Twilight. Tradeable until bound to the account armory."@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Twilight> ;
+    skos:altLabel "Gen 1 Greatsword"@en,
+        "Gen 1 Legendary Greatsword"@en,
+        "Gen One Greatsword"@en,
+        "Generation 1 Greatsword"@en,
+        "Generation One Greatsword"@en,
+        "The Legendary Greatsword"@en ;
+    priory:armoryMaxCap 1 ;
+    priory:chatCode "[&AgErZgAA]" ;
+    priory:chatLink "[&AgErZgAA]" ;
+    priory:gw2Id 30704 ;
+    priory:hasItemType itemtype:Greatsword,
+        itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Legendary ;
+    priory:hasWeaponType weapon:Greatsword ;
+    priory:isAccountBound false,
+        true ;
+    priory:playsRole role:EquippedGear ;
+    priory:producedBy recipe:forge_twilight .
+
+item:37075 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Crystalline Band"@en ;
+    priory:gw2Id 37075 ;
+    priory:hasItemType itemtype:Trinket ;
+    priory:hasRarity rarity:Ascended .
+
+item:37077 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Ralena's Band"@en ;
+    priory:gw2Id 37077 ;
+    priory:hasItemType itemtype:Trinket ;
+    priory:hasRarity rarity:Ascended .
+
+item:37085 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Ouroboros Loop"@en ;
+    priory:gw2Id 37085 ;
+    priory:hasItemType itemtype:Trinket ;
+    priory:hasRarity rarity:Ascended .
+
+item:39230 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Marriner's Flask"@en ;
+    priory:gw2Id 39230 ;
+    priory:hasItemType itemtype:Trinket ;
+    priory:hasRarity rarity:Ascended .
+
+item:39231 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Fierceshot's Arrowhead"@en ;
+    priory:gw2Id 39231 ;
+    priory:hasItemType itemtype:Trinket ;
+    priory:hasRarity rarity:Ascended .
+
+item:39333 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Magical Enrichment"@en ;
+    priory:gw2Id 39333 ;
+    priory:hasItemType itemtype:UpgradeComponent ;
+    priory:hasRarity rarity:Fine .
+
+item:39554 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Fledgling Charm"@en ;
+    priory:gw2Id 39554 ;
+    priory:hasItemType itemtype:Trinket ;
+    priory:hasRarity rarity:Ascended .
+
+item:39596 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Druid's Circle"@en ;
+    priory:gw2Id 39596 ;
+    priory:hasItemType itemtype:Trinket ;
+    priory:hasRarity rarity:Ascended .
+
+item:39605 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Palawa Joko's Finger Cuff"@en ;
+    priory:gw2Id 39605 ;
+    priory:hasItemType itemtype:Trinket ;
+    priory:hasRarity rarity:Ascended .
+
+item:39609 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Purge Signet"@en ;
+    priory:gw2Id 39609 ;
+    priory:hasItemType itemtype:Trinket ;
+    priory:hasRarity rarity:Ascended .
+
+item:39612 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Band of the Brotherhood"@en ;
+    priory:gw2Id 39612 ;
+    priory:hasItemType itemtype:Trinket ;
+    priory:hasRarity rarity:Ascended .
+
+item:45177 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Rare Essence of Luck"@en ;
+    priory:gw2Id 45177 ;
+    priory:hasItemType itemtype:Consumable ;
+    priory:hasRarity rarity:Rare .
+
+item:45178 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Exotic Essence of Luck"@en ;
+    priory:gw2Id 45178 ;
+    priory:hasItemType itemtype:Consumable ;
+    priory:hasRarity rarity:Exotic .
+
+item:45316 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Recipe: Zojja's Artifact"@en ;
+    priory:gw2Id 45316 ;
+    priory:hasItemType itemtype:Consumable ;
+    priory:hasRarity rarity:Ascended .
+
+item:46971 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Hronk's Claymore"@en ;
+    priory:gw2Id 46971 ;
+    priory:hasItemType itemtype:Weapon ;
+    priory:hasRarity rarity:Ascended .
+
+item:48284 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Recipe: Wupwup Breeches"@en ;
+    priory:gw2Id 48284 ;
+    priory:hasItemType itemtype:Consumable ;
+    priory:hasRarity rarity:Ascended .
+
+item:48289 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Recipe: Wupwup Visage"@en ;
+    priory:gw2Id 48289 ;
+    priory:hasItemType itemtype:Consumable ;
+    priory:hasRarity rarity:Ascended .
+
+item:48290 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Recipe: Wupwup Leggings"@en ;
+    priory:gw2Id 48290 ;
+    priory:hasItemType itemtype:Consumable ;
+    priory:hasRarity rarity:Ascended .
+
+item:48291 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Recipe: Wupwup Shoulderguard"@en ;
+    priory:gw2Id 48291 ;
+    priory:hasItemType itemtype:Consumable ;
+    priory:hasRarity rarity:Ascended .
+
+item:48308 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Recipe: Occam's Leggings"@en ;
+    priory:gw2Id 48308 ;
+    priory:hasItemType itemtype:Consumable ;
+    priory:hasRarity rarity:Ascended .
+
+item:49405 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Ralena's Band (Infused)"@en ;
+    priory:gw2Id 49405 ;
+    priory:hasItemType itemtype:Trinket ;
+    priory:hasRarity rarity:Ascended .
+
+item:49409 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Seal of the Khan-Ur (Infused)"@en ;
+    priory:gw2Id 49409 ;
+    priory:hasItemType itemtype:Trinket ;
+    priory:hasRarity rarity:Ascended .
+
+item:49416 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Ettinband (Infused)"@en ;
+    priory:gw2Id 49416 ;
+    priory:hasItemType itemtype:Trinket ;
+    priory:hasRarity rarity:Ascended .
+
+item:49419 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Palawa Joko's Finger Cuff (Infused)"@en ;
+    priory:gw2Id 49419 ;
+    priory:hasItemType itemtype:Trinket ;
+    priory:hasRarity rarity:Ascended .
+
+item:49432 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "+9 Agony Infusion"@en ;
+    priory:gw2Id 49432 ;
+    priory:hasItemType itemtype:UpgradeComponent ;
+    priory:hasRarity rarity:Ascended .
+
+item:70596 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Anguished Tear of Alba"@en ;
+    priory:gw2Id 70596 ;
+    priory:hasItemType itemtype:Consumable ;
+    priory:hasRarity rarity:Rare .
+
+item:71659 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Large Mist Offensive Potion"@en ;
+    priory:gw2Id 71659 ;
+    priory:hasItemType itemtype:Consumable ;
+    priory:hasRarity rarity:Rare .
+
+item:71850 a owl:NamedIndividual,
+        priory:Item,
+        priory:PrecursorWeapon ;
+    rdfs:label "Dusk Experiment"@en ;
+    rdfs:comment "First-tier experimental greatsword precursor crafted after completing the Dusk I collection."@en ;
+    priory:acquiredVia priory:col_dusk_vol1 ;
+    priory:craftedByDiscipline discipline:artificer ;
+    priory:gw2Id 71850 ;
+    priory:hasRarity rarity:Exotic ;
+    priory:hasWeaponType weapon:Greatsword ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:craft_dusk_experiment ;
+    priory:requiresIngredient item:24294 ;
+    priory:requiresMasteryTier priory:mastery_revered_antiquarian .
+
+item:73070 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Mist Offensive Potion"@en ;
+    priory:gw2Id 73070 ;
+    priory:hasItemType itemtype:Consumable ;
+    priory:hasRarity rarity:Rare .
+
+item:74185 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Mist Mobility Potion"@en ;
+    priory:gw2Id 74185 ;
+    priory:hasItemType itemtype:Consumable ;
+    priory:hasRarity rarity:Rare .
+
+item:74426 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Mist Defensive Potion"@en ;
+    priory:gw2Id 74426 ;
+    priory:hasItemType itemtype:Consumable ;
+    priory:hasRarity rarity:Rare .
+
+item:74483 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Spirit of the Perfected Nightsword"@en ;
+    rdfs:comment "Acquired by salvaging the Perfected Nightsword. Essential component for forging the final precursor Dusk."@en ;
+    priory:gw2Id 74483 ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:74895 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Dimensional Destabilizer"@en ;
+    rdfs:comment "Rift stabilization gizmo crafted with Mystic Binding Agents and Globs of Dark Matter for Dusk."@en ;
+    priory:gw2Id 74895 ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:75037 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Spirit of the Dusk Experiment"@en ;
+    rdfs:comment "Acquired by salvaging the Dusk Experiment with a salvage kit. Essential component for Tier 2."@en ;
+    priory:gw2Id 75037 ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:75427 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Large Mist Mobility Potion"@en ;
+    priory:gw2Id 75427 ;
+    priory:hasItemType itemtype:Consumable ;
+    priory:hasRarity rarity:Rare .
+
+item:75878 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Mirror of the Night"@en ;
+    rdfs:comment "Polished dark mirror crafted for the final forging of Dusk."@en ;
+    priory:gw2Id 75878 ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:76081 a owl:NamedIndividual,
+        priory:Item,
+        priory:PrecursorWeapon ;
+    rdfs:label "Perfected Nightsword"@en ;
+    rdfs:comment "Second-tier perfected greatsword precursor crafted after completing the Dusk II collection."@en ;
+    priory:acquiredVia priory:col_dusk_vol2 ;
+    priory:craftedByDiscipline discipline:artificer ;
+    priory:gw2Id 76081 ;
+    priory:hasRarity rarity:Exotic ;
+    priory:hasWeaponType weapon:Greatsword ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:craft_perfected_nightsword ;
+    priory:requiresIngredient item:24294 ;
+    priory:requiresMasteryTier priory:mastery_magister_of_legends .
+
+item:76150 a owl:NamedIndividual,
+        priory:Item ;
+    rdfs:label "Large Mist Defensive Potion"@en ;
+    priory:gw2Id 76150 ;
+    priory:hasItemType itemtype:Consumable ;
+    priory:hasRarity rarity:Rare .
+
+item:76377 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Essence of Gloom"@en ;
+    rdfs:comment "Rewarded from the Chest of Gloom upon completing the Dusk III achievement collection."@en ;
+    priory:gw2Id 76377 ;
+    priory:hasRarity rarity:Exotic ;
+    priory:isAccountBound true .
+
+item:80131 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryArmor ;
+    rdfs:label "Perfected Envoy Vestments"@en ;
+    skos:altLabel "Envoy Light Chest"@en,
+        "Legendary Light Chest"@en,
+        "Raid Light Chest"@en ;
+    priory:gw2Id 80131 ;
+    priory:hasArmorWeight weight:Light ;
+    priory:hasEquipmentSlot slot:Chest ;
+    priory:hasItemType itemtype:Armor ;
+    priory:hasRarity rarity:Ascended,
+        rarity:Legendary ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_perfected_envoy_vestments .
+
+item:80145 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryArmor ;
+    rdfs:label "Perfected Envoy Gauntlets"@en,
+        "Perfected Envoy Gloves"@en ;
+    skos:altLabel "Envoy Heavy Gloves"@en,
+        "Envoy Light Gloves"@en,
+        "Legendary Heavy Gloves"@en,
+        "Legendary Light Gloves"@en,
+        "Raid Heavy Gloves"@en,
+        "Raid Light Gloves"@en ;
+    priory:gw2Id 80145 ;
+    priory:hasArmorWeight weight:Heavy,
+        weight:Light ;
+    priory:hasEquipmentSlot slot:Gloves ;
+    priory:hasItemType itemtype:Armor ;
+    priory:hasRarity rarity:Ascended,
+        rarity:Legendary ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_perfected_envoy_gauntlets,
+        recipe:forge_perfected_envoy_gloves .
+
+item:80161 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryArmor ;
+    rdfs:label "Perfected Envoy Shoes"@en,
+        "Perfected Envoy Tassets"@en ;
+    skos:altLabel "Envoy Heavy Legs"@en,
+        "Envoy Light Boots"@en,
+        "Legendary Heavy Legs"@en,
+        "Legendary Light Boots"@en,
+        "Raid Heavy Legs"@en,
+        "Raid Light Boots"@en ;
+    priory:gw2Id 80161 ;
+    priory:hasArmorWeight weight:Heavy,
+        weight:Light ;
+    priory:hasEquipmentSlot slot:Boots,
+        slot:Legs ;
+    priory:hasItemType itemtype:Armor ;
+    priory:hasRarity rarity:Ascended,
+        rarity:Legendary ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_perfected_envoy_shoes,
+        recipe:forge_perfected_envoy_tassets .
+
+item:80190 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryArmor ;
+    rdfs:label "Perfected Envoy Shoulderguards"@en ;
+    skos:altLabel "Envoy Medium Shoulders"@en,
+        "Legendary Medium Shoulders"@en,
+        "Raid Medium Shoulders"@en ;
+    priory:gw2Id 80190 ;
+    priory:hasArmorWeight weight:Medium ;
+    priory:hasEquipmentSlot slot:Shoulders ;
+    priory:hasItemType itemtype:Armor ;
+    priory:hasRarity rarity:Ascended,
+        rarity:Legendary ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_perfected_envoy_shoulderguards .
+
+item:80196 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryArmor ;
+    rdfs:label "Perfected Envoy Pants"@en ;
+    skos:altLabel "Envoy Light Legs"@en,
+        "Legendary Light Legs"@en,
+        "Raid Light Legs"@en ;
+    priory:gw2Id 80196 ;
+    priory:hasArmorWeight weight:Light ;
+    priory:hasEquipmentSlot slot:Legs ;
+    priory:hasItemType itemtype:Armor ;
+    priory:hasRarity rarity:Ascended,
+        rarity:Legendary ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_perfected_envoy_pants .
+
+item:80200 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryArmor ;
+    rdfs:label "Perfected Envoy Hood"@en ;
+    skos:altLabel "Envoy Light Helm"@en,
+        "Legendary Light Helm"@en,
+        "Raid Light Helm"@en ;
+    priory:gw2Id 80200 ;
+    priory:hasArmorWeight weight:Light ;
+    priory:hasEquipmentSlot slot:Helm ;
+    priory:hasItemType itemtype:Armor ;
+    priory:hasRarity rarity:Ascended,
+        rarity:Legendary ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_perfected_envoy_hood .
+
+item:80248 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryArmor ;
+    rdfs:label "Perfected Envoy Greaves"@en,
+        "Triumphant Hero's Jerkin (Precursor)"@en ;
+    skos:altLabel "Envoy Heavy Boots"@en,
+        "Legendary Heavy Boots"@en,
+        "Raid Heavy Boots"@en ;
+    priory:gw2Id 80248 ;
+    priory:hasArmorWeight weight:Heavy ;
+    priory:hasEquipmentSlot slot:Boots ;
+    priory:hasItemType itemtype:Armor ;
+    priory:hasRarity rarity:Ascended,
+        rarity:Legendary ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_perfected_envoy_greaves .
+
+item:80252 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryArmor ;
+    rdfs:label "Perfected Envoy Vambraces"@en ;
+    skos:altLabel "Envoy Medium Gloves"@en,
+        "Legendary Medium Gloves"@en,
+        "Raid Medium Gloves"@en ;
+    priory:gw2Id 80252 ;
+    priory:hasArmorWeight weight:Medium ;
+    priory:hasEquipmentSlot slot:Gloves ;
+    priory:hasItemType itemtype:Armor ;
+    priory:hasRarity rarity:Ascended,
+        rarity:Legendary ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_perfected_envoy_vambraces .
+
+item:80258 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryArmor ;
+    rdfs:label "Perfected Envoy Breastplate"@en ;
+    skos:altLabel "Envoy Heavy Chest"@en,
+        "Legendary Heavy Chest"@en,
+        "Raid Heavy Chest"@en ;
+    priory:gw2Id 80258 ;
+    priory:hasArmorWeight weight:Heavy ;
+    priory:hasEquipmentSlot slot:Chest ;
+    priory:hasItemType itemtype:Armor ;
+    priory:hasRarity rarity:Ascended,
+        rarity:Legendary ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_perfected_envoy_breastplate .
+
+item:80277 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryArmor ;
+    rdfs:label "Perfected Envoy Jerkin"@en ;
+    skos:altLabel "Envoy Medium Chest"@en,
+        "Legendary Medium Chest"@en,
+        "Raid Medium Chest"@en ;
+    priory:gw2Id 80277 ;
+    priory:hasArmorWeight weight:Medium ;
+    priory:hasEquipmentSlot slot:Chest ;
+    priory:hasItemType itemtype:Armor ;
+    priory:hasRarity rarity:Ascended,
+        rarity:Legendary ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_perfected_envoy_jerkin .
+
+item:80281 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryArmor ;
+    rdfs:label "Perfected Envoy Leggings"@en ;
+    skos:altLabel "Envoy Medium Legs"@en,
+        "Legendary Medium Legs"@en,
+        "Raid Medium Legs"@en ;
+    priory:gw2Id 80281 ;
+    priory:hasArmorWeight weight:Medium ;
+    priory:hasEquipmentSlot slot:Legs ;
+    priory:hasItemType itemtype:Armor ;
+    priory:hasRarity rarity:Ascended,
+        rarity:Legendary ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_perfected_envoy_leggings .
+
+item:80296 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryArmor ;
+    rdfs:label "Perfected Envoy Mask"@en ;
+    skos:altLabel "Envoy Medium Helm"@en,
+        "Legendary Medium Helm"@en,
+        "Raid Medium Helm"@en ;
+    priory:gw2Id 80296 ;
+    priory:hasArmorWeight weight:Medium ;
+    priory:hasEquipmentSlot slot:Helm ;
+    priory:hasItemType itemtype:Armor ;
+    priory:hasRarity rarity:Ascended,
+        rarity:Legendary ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_perfected_envoy_mask .
+
+item:80356 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryArmor ;
+    rdfs:label "Perfected Envoy Mantle"@en,
+        "Triumphant Hero's Vestments (Precursor)"@en ;
+    skos:altLabel "Envoy Light Shoulders"@en,
+        "Legendary Light Shoulders"@en,
+        "Raid Light Shoulders"@en ;
+    priory:gw2Id 80356 ;
+    priory:hasArmorWeight weight:Light ;
+    priory:hasEquipmentSlot slot:Shoulders ;
+    priory:hasItemType itemtype:Armor ;
+    priory:hasRarity rarity:Ascended,
+        rarity:Legendary ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_perfected_envoy_mantle .
+
+item:80384 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryArmor ;
+    rdfs:label "Perfected Envoy Helm"@en,
+        "Triumphant Hero's Warplate (Precursor)"@en ;
+    skos:altLabel "Envoy Heavy Helm"@en,
+        "Legendary Heavy Helm"@en,
+        "Raid Heavy Helm"@en ;
+    priory:gw2Id 80384 ;
+    priory:hasArmorWeight weight:Heavy ;
+    priory:hasEquipmentSlot slot:Helm ;
+    priory:hasItemType itemtype:Armor ;
+    priory:hasRarity rarity:Ascended,
+        rarity:Legendary ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_perfected_envoy_helm .
+
+item:80435 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryArmor ;
+    rdfs:label "Perfected Envoy Pauldrons"@en,
+        "Triumphant Hero's Gauntlets (Precursor)"@en ;
+    skos:altLabel "Envoy Heavy Shoulders"@en,
+        "Legendary Heavy Shoulders"@en,
+        "Raid Heavy Shoulders"@en ;
+    priory:gw2Id 80435 ;
+    priory:hasArmorWeight weight:Heavy ;
+    priory:hasEquipmentSlot slot:Shoulders ;
+    priory:hasItemType itemtype:Armor ;
+    priory:hasRarity rarity:Ascended,
+        rarity:Legendary ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_perfected_envoy_pauldrons .
+
+item:80557 a owl:NamedIndividual,
+        priory:Item,
+        priory:LegendaryArmor ;
+    rdfs:label "Perfected Envoy Boots"@en ;
+    skos:altLabel "Envoy Medium Boots"@en,
+        "Legendary Medium Boots"@en,
+        "Raid Medium Boots"@en ;
+    priory:gw2Id 80557 ;
+    priory:hasArmorWeight weight:Medium ;
+    priory:hasEquipmentSlot slot:Boots ;
+    priory:hasItemType itemtype:Armor ;
+    priory:hasRarity rarity:Ascended,
+        rarity:Legendary ;
+    priory:isAccountBound true ;
+    priory:producedBy recipe:forge_perfected_envoy_boots .
+
+recipe:craft_dusk_experiment a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Craft Dusk Experiment"@en ;
+    rdfs:comment "Crafted at Weaponsmithing rating 450 using Essence of the End, Experimental Nightsword Blade, Experimental Nightsword Hilt, and Legendary Inscription."@en ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:71850 ;
+    priory:requiredRating 450 ;
+    priory:requiresDiscipline discipline:Weaponsmith ;
+    priory:requiresMasteryTier priory:mastery_revered_antiquarian .
+
+recipe:craft_dusk_tier3 a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Craft Dusk (Tier 3 Collection)"@en ;
+    rdfs:comment "Final Weaponsmith 500 precursor recipe producing Dusk, requiring Central Tyria Mastery Tier 3: Historian of the Armaments."@en ;
+    priory:hasIngredientRequirement [ a priory:IngredientRequirement ;
+            priory:requiredQuantity 1 ;
+            priory:requiresItem item:76377 ],
+        [ a priory:IngredientRequirement ;
+            priory:requiredQuantity 1 ;
+            priory:requiresItem item:74483 ],
+        [ a priory:IngredientRequirement ;
+            priory:requiredQuantity 1 ;
+            priory:requiresItem item:75878 ],
+        [ a priory:IngredientRequirement ;
+            priory:requiredQuantity 1 ;
+            priory:requiresItem item:74895 ] ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:29185 ;
+    priory:requiredRating 500 ;
+    priory:requiresDiscipline discipline:Weaponsmith ;
+    priory:requiresMasteryTier priory:mastery_historian_of_the_armaments .
+
+recipe:craft_perfected_nightsword a owl:NamedIndividual,
+        priory:DisciplineRecipe ;
+    rdfs:label "Craft Perfected Nightsword"@en ;
+    rdfs:comment "Crafted at Weaponsmithing rating 450 using Spirit of the Dusk Experiment, Expertise in Nightsword Crafting, Jar of Luminesce Polish, and Prismatic Lodestone."@en ;
+    priory:hasIngredientRequirement [ a priory:IngredientRequirement ;
+            priory:requiredQuantity 1 ;
+            priory:requiresItem item:75037 ] ;
+    priory:outputQuantity 1 ;
+    priory:producesItem item:76081 ;
+    priory:requiredRating 450 ;
+    priory:requiresDiscipline discipline:Weaponsmith ;
+    priory:requiresMasteryTier priory:mastery_magister_of_legends .
+
+item:19681 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Darksteel Ingot"@en ;
+    priory:gw2Id 19681 ;
+    priory:hasItemType itemtype:CraftingMaterial ;
+    priory:hasRarity rarity:Basic ;
+    priory:isAccountBound false .
+
+item:19684 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Mithril Ingot"@en ;
+    priory:gw2Id 19684 ;
+    priory:hasItemType itemtype:CraftingMaterial ;
+    priory:hasRarity rarity:Basic ;
+    priory:isAccountBound false .
+
+item:19686 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Platinum Ingot"@en ;
+    priory:gw2Id 19686 ;
+    priory:hasItemType itemtype:CraftingMaterial ;
+    priory:hasRarity rarity:Basic ;
+    priory:isAccountBound false .
+
+item:29185 a owl:NamedIndividual,
+        priory:Item,
+        priory:PrecursorWeapon ;
+    rdfs:label "Dusk"@en ;
+    rdfs:seeAlso <https://wiki.guildwars2.com/wiki/Dusk> ;
+    priory:acquiredVia priory:col_dusk_vol3 ;
+    priory:chatCode "[&AgEpZgAA]" ;
+    priory:craftedByDiscipline discipline:artificer ;
+    priory:gw2Id 29185 ;
+    priory:hasItemType itemtype:Weapon ;
+    priory:hasPrecursorType priory:TradablePrecursor ;
+    priory:hasRarity rarity:Exotic,
+        rarity:Precursor ;
+    priory:hasSubstituteSource [ a priory:TradingPostPurchasePath ],
+        [ a priory:AchievementCollectionPath ] ;
+    priory:hasWeaponType weapon:Greatsword ;
+    priory:isAccountBound false ;
+    priory:playsRole role:EquippedGear,
+        role:Precursor ;
+    priory:producedBy recipe:craft_dusk_tier3 ;
+    priory:requiresIngredient item:24294 ;
+    priory:requiresMasteryTier priory:mastery_historian_of_the_armaments .
+
+item:19685 a owl:NamedIndividual,
+        priory:CraftingMaterial,
+        priory:Item ;
+    rdfs:label "Orichalcum Ingot"@en ;
+    priory:gw2Id 19685 ;
+    priory:hasItemType itemtype:CraftingMaterial ;
+    priory:hasRarity rarity:Basic,
+        rarity:Fine ;
+    priory:isAccountBound false .
+

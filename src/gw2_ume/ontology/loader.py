@@ -219,6 +219,7 @@ class OntologyLoader:
             "staff": DISCIPLINE.artificer,
             "scepter": DISCIPLINE.artificer,
             "focus": DISCIPLINE.artificer,
+            "trident": DISCIPLINE.artificer,
             "sword": DISCIPLINE.weaponsmith,
             "greatsword": DISCIPLINE.weaponsmith,
             "axe": DISCIPLINE.weaponsmith,
@@ -226,12 +227,16 @@ class OntologyLoader:
             "hammer": DISCIPLINE.weaponsmith,
             "mace": DISCIPLINE.weaponsmith,
             "shield": DISCIPLINE.weaponsmith,
+            "spear": DISCIPLINE.weaponsmith,
             "pistol": DISCIPLINE.huntsman,
             "rifle": DISCIPLINE.huntsman,
             "short_bow": DISCIPLINE.huntsman,
+            "shortbow": DISCIPLINE.huntsman,
             "longbow": DISCIPLINE.huntsman,
             "torch": DISCIPLINE.huntsman,
             "warhorn": DISCIPLINE.huntsman,
+            "harpoon_gun": DISCIPLINE.huntsman,
+            "harpoongun": DISCIPLINE.huntsman,
         }
 
         for wpn_key, wpn_uri in CONTROLLED_WEAPONS.items():
@@ -259,6 +264,21 @@ class OntologyLoader:
             self._graph.add((s, PROP_REQUIRES_INGREDIENT, o))
         for s, o in list(self._graph.subject_objects(gw2_core_ns.hasMysticForgeIngredient)):
             self._graph.add((s, PROP_REQUIRES_INGREDIENT, o))
+        for s, req in list(self._graph.subject_objects(PRIORY.hasIngredientRequirement)):
+            for item in self._graph.objects(req, PRIORY.requiresItem):
+                self._graph.add((s, PROP_REQUIRES_INGREDIENT, item))
+            for curr in self._graph.objects(req, PRIORY.requiresCurrency):
+                self._graph.add((s, PROP_REQUIRES_INGREDIENT, curr))
+        for item_node, rec_node in list(self._graph.subject_objects(PRIORY.producedBy)):
+            for ing in self._graph.objects(rec_node, PROP_REQUIRES_INGREDIENT):
+                self._graph.add((item_node, PROP_REQUIRES_INGREDIENT, ing))
+            for disc in self._graph.objects(rec_node, PRIORY.requiresDiscipline):
+                self._graph.add((item_node, PROP_CRAFTED_BY_DISCIPLINE, disc))
+        for wpn_item, wpn_type in list(self._graph.subject_objects(PRIORY.hasWeaponType)):
+            w_key = str(wpn_type).split("/")[-1].split("#")[-1].lower()
+            disc_target = weapon_discipline_map.get(w_key)
+            if disc_target:
+                self._graph.add((wpn_item, PROP_CRAFTED_BY_DISCIPLINE, disc_target))
         for s, o in list(self._graph.subject_objects(gw2_core_ns.producesItem)):
             self._graph.add((s, PROP_PRODUCES_ITEM, o))
         for s, o in list(self._graph.subject_objects(gw2_core_ns.hasDiscipline)):

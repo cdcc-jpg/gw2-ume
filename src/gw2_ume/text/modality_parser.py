@@ -408,6 +408,8 @@ class ModalityParser:
         pattern = r"(?<!\w)" + escaped + r"(?!\w)"
 
         if is_short_common:
+            if alias_clean.islower():
+                return False
             # Case-sensitive exact word or acronym match
             return bool(re.search(pattern, text))
         else:
